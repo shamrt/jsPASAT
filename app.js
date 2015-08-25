@@ -35,7 +35,10 @@ app.set('views', __dirname + '/public/views');
 
 // ICF route
 app.get('/', function(request, response) {
-    response.render('experiment.html', { js_filename: 'instructions'})
+    response.render('experiment.html', {
+        js_filename: 'instructions',
+        jspsych_plugins: ['instructions']
+    });
 });
 
 // experiment route

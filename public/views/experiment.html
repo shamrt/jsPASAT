@@ -14,6 +14,8 @@
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="../../jsPsych/jspsych.js"></script>
-  <script src="../../jsPsych/plugins/jspsych-text.js"></script>
+  <% jspsych_plugins.forEach(function(plugin){ %>
+  <script src="../../jsPsych/plugins/jspsych-<%= plugin %>.js"></script>
+  <% }) %>
   <script src="../js/<%= js_filename %>.js"></script>
 </html>

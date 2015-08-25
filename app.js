@@ -35,7 +35,7 @@ app.set('views', __dirname + '/public/views');
 
 // ICF route
 app.get('/', function(request, response) {
-    response.render('index.html')
+    response.render('instructions.html')
 });
 
 // experiment route

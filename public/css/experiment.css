@@ -8,6 +8,19 @@ body {
     text-align: center;
 }
 
+p {
+    max-width: 48em;
+}
+
+code {
+    background: #ddd;
+    padding: 0 0.3em;
+}
+code.typed {
+    background: #999;
+    color: #eee;
+}
+
 .container {
     position:absolute;
     top:0;

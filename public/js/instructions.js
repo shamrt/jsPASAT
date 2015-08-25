@@ -6,7 +6,7 @@ var instructions = [];
 var instructionBlock = function(text, practice_button) {
 var proceed_text = "<p>Press enter to proceed.</p>";
 if (practice_button) {
-  proceed_text = "<button type='button' id='ready-to-practice'>I'm ready to practive adding up numbers</button>"
+  proceed_text = "<button type='button' id='ready-to-practice'>I'm ready to practice adding up numbers</button>"
 }
 
 var text_block = {

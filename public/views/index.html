@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <title>My experiment</title>
+    <link href="../../jsPsych/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+    <link href="../css/experiment.css" rel="stylesheet" type="text/css"></link>
+  </head>
+  <body>
+    <div class="container">
+      <div class="container-inner">
+        <p>
+          Something, something, darkside...
+        </p>
+        <button type='button' id="agreed">I agree to donate my body to science</button>
+      </div>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="../../jsPsych/jspsych.js"></script>
+  <script src="../../jsPsych/plugins/jspsych-text.js"></script>
+  <script>
+  $(document).ready(function() {
+    $('#agreed').click(function(e) {
+      e.preventDefault();
+      window.location='experiment';
+    })
+  });
+  </script>
+</html>

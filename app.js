@@ -41,18 +41,26 @@ app.get('/', function(request, response) {
     });
 });
 
+// practice route
+app.get('/practice', function(request, response) {
+    response.render('experiment.html', {
+        js_filename: 'practice',
+        jspsych_plugins: ['text', 'multi-stim-multi-response']
+    });
+});
+
 // experiment route
 app.get('/experiment', function(request, response) {
-    response.render('go-nogo.html')
+    response.render('go-nogo.html');
 });
 
 // experiment route
 app.get('/finish', function(request, response) {
-    response.render('finished.html')
+    response.render('finished.html');
 });
 
 // experment data route
-app.post('/experiment-data', function(request, response){
+app.post('/experiment-data', function(request, response) {
     Entry.create({
         "data": request.body
     });

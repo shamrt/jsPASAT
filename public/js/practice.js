@@ -11,14 +11,49 @@ var practice = [];
 // }
 // practice.push(pre_practice_block_1);
 
-// keep track of status
-var current_trial_val,
-    last_trial_val;
 
+function addTrialResults() {
+  var expected,
+      response,
+      correct,
+      current_trial = jsPsych.data.getLastTrialData(),
+      current_index = current_trial.trial_index;
 
-function getExpectedValue(trial_data) {
-  var correct = false,
-      response
+  // nothing expected on first trial
+  if (current_index != 0) {
+    var previous_index = current_index - 1,
+        current_value = current_trial.block_stimuli[current_index],
+        previous_value = current_trial.block_stimuli[previous_index];
+
+    // expected (correct) response for the last trial
+    expected = current_value + previous_value;
+
+    // response given in the last trial
+    var key_presses = eval(current_trial.key_press);
+    var digit_presses = [];
+    for (var i = 0; i < key_presses.length; i++) {
+      var key_press = key_presses[i];
+      if (key_press !== -1) {
+        // normalize keycode from numpad to numrow
+        if (key_press >= 96 && key_press <= 105) {
+          key_press = key_press - 48;
+        }
+
+        var digit = String.fromCharCode(key_press);
+        digit_presses.push(digit);
+      }
+    }
+    response = parseInt(digit_presses.join(''));
+
+    // was the response given as expected (correct)?
+    correct = (expected === response) ? true : false;
+  }
+
+  return {
+    expected: expected,
+    response: response,
+    correct: correct
+  }
 }
 
 
@@ -26,47 +61,57 @@ function createStimuli(trials) {
   var stimuli = [];
   for (var i = 0; i < trials.length; i++) {
     var trial_stimuli = [];
-    for (var j = 0; j < trials[i].length; j++) {
-      trial_html = "<h1>" + trials[i][j] + "</h1><script>beep.play()</script>"
-      trial_stimuli.push(trial_html);
-    }
+    trial_html = "<h1>" + trials[i] + "</h1><script>beep.play()</script>";
+    trial_stimuli.push(trial_html);
     stimuli.push(trial_stimuli);
   }
+  console.log(stimuli)
   return stimuli;
 }
 
 
-function createChoicesArray(stimuli) {
-  choices = [];
-  for (var i = 0; i < stimuli.length; i++) {
-    choices.push(_.range(48,58));
-  }
-  return choices;
+// fixation stimulation
+var fixation_cross = "<h3>+</h3>";
+var fixation_trial = {
+  type: 'single-stim',
+  stimuli: ['+'],
+  is_html: true,
+  timing_response: 2000,
+  timing_post_trial: 500,
+  choices: 'none'
 }
+practice.push(fixation_trial)
+
+
+// block setup
+var digit_keycodes = (_.range(48, 58)).concat(_.range(96, 106));
+var block_stimuli = [9, 1, 3, 5, 2, 6];
 
 
 // practice block 1
 var practice_block_1 = {
   type: "multi-stim-multi-response",
-  stimuli: createStimuli([[9], [1], [3], [5], [2], [6]]),
+  stimuli: createStimuli(block_stimuli),
+  choices: [digit_keycodes, digit_keycodes],
+  // prompt: "<div style='position:relative; bottom:20px'>+</div>",
   is_html: true,
-  timing_response: 1000,
-  timing_post_trial: 3000,
+  timing_stim: [1000],
+  timing_response: 4000,
   response_ends_trial: false,
-  data: { expected: 5 },
+  data: {block_stimuli: block_stimuli},
   on_finish: function() {
+    jsPsych.data.addDataToLastTrial(addTrialResults())
     console.log(jsPsych.data.getLastTrialData())
   }
 }
-practice_block_1['choices'] = createChoicesArray(practice_block_1['stimuli']);
-console.log(practice_block_1)
 practice.push(practice_block_1);
+
 
 jsPsych.init({
   experiment_structure: practice,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    jsPsych.data.displayData();
+    console.log(jsPsych.data.displayData())
   }
   // on_finish: function() {
   //   window.location = 'pasat';

@@ -45,7 +45,7 @@ app.get('/', function(request, response) {
 app.get('/practice', function(request, response) {
     response.render('experiment.html', {
         js_filename: 'practice',
-        jspsych_plugins: ['text', 'multi-stim-multi-response']
+        jspsych_plugins: ['text', 'multi-stim-multi-response_custom', 'single-stim']
     });
 });
 

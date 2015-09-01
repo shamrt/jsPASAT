@@ -97,22 +97,20 @@ function createPasatBlock(stimuli, give_feedback) {
 
     timing_stim: [1000],
     timing_response: 4000,
+    response_ends_trial: false,
 
     data: {block_stimuli: stimuli},
     on_finish: function() {
       jsPsych.data.addDataToLastTrial(addTrialResults())
-      var trial_data = jsPsych.data.getLastTrialData();
       if (give_feedback) {
+        var trial_data = jsPsych.data.getLastTrialData();
         displayTrialFeedback(trial_data);
       }
     }
   }
-
   if (give_feedback) {
-    block['response_ends_trial'] = false;
+    // add post-trial time for feedback display
     block['timing_post_trial'] = 1000;
-  } else {
-    block['response_ends_trial'] = true;
   }
 
   return block;

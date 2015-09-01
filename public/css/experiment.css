@@ -43,3 +43,10 @@ code.typed {
 .jspsych-categorize-stimulus {
     vertical-align: middle
 }
+
+#jspsych-feedback .correct {
+    color: #2a953b;
+}
+#jspsych-feedback .incorrect {
+    color: #c13f3f;
+}

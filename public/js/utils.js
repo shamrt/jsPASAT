@@ -63,8 +63,61 @@ function addTrialResults() {
 }
 
 
-// create a list of trial stimuli for a block
-function createStimuli(trials) {
+// display trial feedback, based on response judgement
+function displayTrialFeedback(trial_data) {
+  if (typeof trial_data.correct !== "undefined") {
+    var feedback_text = trial_data.correct ? "Correct!" : "Incorrect";
+    var feedback_class = trial_data.correct ? "correct" : "incorrect";
+    var feedback_html = '<h3 class="'+feedback_class+'">'+feedback_text+'</h3>';
+
+    // show feedback
+    $('#jspsych-feedback').html(feedback_html);
+    // hide feedback
+    window.setTimeout(function() {
+      $('#jspsych-feedback').empty();
+    }, 800);
+  }
+}
+
+
+// create a block of trials
+function createPasatBlock(stimuli, give_feedback) {
+  var digit_keycodes = (_.range(48, 58)).concat(_.range(96, 106));
+  var give_feedback = (typeof give_feedback === "undefined") ? false : give_feedback;
+
+  var block = {
+    type: "multi-stim-multi-response",
+
+    stimuli: formatBlockStimuli(stimuli),
+    is_html: true,
+    choices: [digit_keycodes, digit_keycodes],
+
+    timing_stim: [1000],
+    timing_response: 4000,
+
+    data: {block_stimuli: stimuli},
+    on_finish: function() {
+      jsPsych.data.addDataToLastTrial(addTrialResults())
+      var trial_data = jsPsych.data.getLastTrialData();
+      if (give_feedback) {
+        displayTrialFeedback(trial_data);
+      }
+    }
+  }
+
+  if (give_feedback) {
+    block['response_ends_trial'] = false;
+    block['timing_post_trial'] = 1000;
+  } else {
+    block['response_ends_trial'] = true;
+  }
+
+  return block;
+}
+
+
+// create a formatted list of trial stimuli for a block
+function formatBlockStimuli(trials) {
   var stimuli = [];
   for (var i = 0; i < trials.length; i++) {
     var trial_stimuli = [];

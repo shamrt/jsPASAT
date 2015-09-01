@@ -1,6 +1,6 @@
-// NOTE: Prompt sound used in this file is courtesy SoundBible.com - http://soundbible.com/1252-Bleep.html
-
-var beep = new Howl({urls: ['../audio/bleep.mp3', '../audio/bleep.ogg']});
+/**
+ * Practice blocks for jsPASAT
+ */
 var practice = [];
 
 // practice block 1 notice

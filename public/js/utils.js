@@ -1,5 +1,16 @@
+/**
+ * Common utility values and functions for jsPASAT
+ */
+
 // Reuseable stimuli
 // ------------------------
+
+// NOTE: Prompt sound used in this file is courtesy SoundBible.com - http://soundbible.com/1252-Bleep.html
+var beep = new Howl({
+  urls: ['../audio/bleep.mp3', '../audio/bleep.ogg'],
+  volume: 0.7
+});
+var play_beep = "<script>beep.play()</script>";
 
 // HTML for text plugin
 var continue_html = "<p>Press the <code>enter</code> key to continue.</p>";
@@ -8,10 +19,10 @@ var continue_html = "<p>Press the <code>enter</code> key to continue.</p>";
 var fixation_cross = "<h1>+</h1>";
 var fixation_trial = {
   type: 'single-stim',
-  stimuli: ['+'],
+  stimuli: [fixation_cross + play_beep],
   is_html: true,
-  timing_response: 2000,
-  timing_post_trial: 500,
+  timing_response: 1000,
+  timing_post_trial: 3000,
   choices: 'none'
 }
 
@@ -122,7 +133,7 @@ function formatBlockStimuli(trials) {
   var stimuli = [];
   for (var i = 0; i < trials.length; i++) {
     var trial_stimuli = [];
-    trial_html = "<h1>" + trials[i] + "</h1><script>beep.play()</script>";
+    trial_html = "<h1>" + trials[i] + "</h1>" + play_beep;
     trial_stimuli.push(trial_html);
     stimuli.push(trial_stimuli);
   }

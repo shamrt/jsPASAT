@@ -128,3 +128,58 @@ function formatBlockStimuli(trials) {
   }
   return stimuli;
 }
+
+
+// generate random stimuli for PASAT blocks
+function generateStimuli(difficulty, num_trials) {
+  var difficulty = (typeof difficulty === "undefined") ? 'medium' : difficulty;
+  var num_trials = (typeof num_trials === "undefined") ? 15 : num_trials;
+
+  var stimuli;
+  var i = 1;
+  switch (difficulty) {
+    case 'easy':
+      // Note: Easy Block defined by 2 digits summing to <= 9
+      var digit_max = 7;
+      stimuli = [_.random(1, digit_max)]  // add first random number
+      while (i < num_trials) {
+        var trial_value = _.random(1, digit_max);
+        var digit_sum = trial_value + _.last(stimuli);
+        if (digit_sum <= 9) {
+          stimuli.push(trial_value);
+          i++;
+        }
+      }
+      break;
+    case 'medium':
+      // Note: Medium Block defined by 2 digits summing to >= 9
+      var digit_max = 9;
+      stimuli = [_.random(1, digit_max)]  // add first random number
+      while (i < num_trials) {
+        var trial_value = _.random(1, digit_max);
+        var digit_sum = trial_value + _.last(stimuli);
+        if (digit_sum >= 9) {
+          stimuli.push(trial_value);
+          i++;
+        }
+      }
+      break;
+    case 'hard':
+      // Note: Hard Block defined as each trial has one double digit stimuli
+      var digit_max = 19;
+      stimuli = [_.random(1, digit_max)]  // add first random number
+      while (i < num_trials) {
+        var trial_value = _.random(1, digit_max);
+        var index_is_even = (i % 2 == 0);
+        if (index_is_even && trial_value >= 10) {
+          stimuli.push(trial_value);
+          i++;
+        } else if (!index_is_even && trial_value < 10) {
+          stimuli.push(trial_value);
+          i++;
+        }
+      }
+      break;
+  }
+  return stimuli
+}

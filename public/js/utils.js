@@ -130,7 +130,42 @@ function formatBlockStimuli(trials) {
 }
 
 
+// generate random condition
+function generateCondition() {
+  return _.random(1, 4)
+}
+
+
+// generate a set of randomized blocks
+// return list of block difficulty and block stimuli
+function generateRandomBlocks(condition) {
+  // calculate number of middle medium blocks
+  // note: condition ranges 1--4, number of blocks ranges 6--9, minus 2 'medium'
+  // blocks at beginning and end of the list, minus 1 'easy' and 1 'hard' block
+  var num_middle_medium_blocks = condition + 5 - 2 - 2;
+
+  // add unshuffled middle 'medium', 'easy' and 'hard' blocks
+  var unshuffled_middle_blocks = Array.apply(
+    null, Array(num_middle_medium_blocks)).map(function() {return 'medium'});
+  unshuffled_middle_blocks.push('easy', 'hard');
+
+  // randomize blocks
+  random_middle_blocks = _.shuffle(unshuffled_middle_blocks);
+
+  // complete block generation
+  var blocks = ['medium'].concat(random_middle_blocks).concat(['medium']);
+
+  // get random stimuli for each block
+  var stimuli = _.map(blocks, function(difficulty) {
+    return generateStimuli(difficulty);
+  });
+
+  return {blocks: blocks, stimuli: stimuli}
+}
+
+
 // generate random stimuli for PASAT blocks
+// return list of trial values
 function generateStimuli(difficulty, num_trials) {
   var difficulty = (typeof difficulty === "undefined") ? 'medium' : difficulty;
   var num_trials = (typeof num_trials === "undefined") ? 15 : num_trials;

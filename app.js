@@ -46,10 +46,11 @@ app.get('/practice', function(request, response) {
     response.render('experiment.html', {
         js_filename: 'practice',
         jspsych_plugins: [
-            'text', 
+            'text',
             'instructions',
             'multi-stim-multi-response_custom',
-            'single-stim'
+            'single-stim',
+            'survey-likert',
         ]
     });
 });

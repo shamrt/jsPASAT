@@ -1,6 +1,9 @@
 // Reuseable stimuli
 // ------------------------
 
+// HTML for text plugin
+var continue_html = "<p>Press the <code>enter</code> key to continue.</p>";
+
 // fixation stimulus
 var fixation_cross = "<h1>+</h1>";
 var fixation_trial = {

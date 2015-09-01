@@ -6,7 +6,7 @@ var practice = [];
 // practice block 1 notice
 var practice_block_1_notice = {
   type: "text",
-  text: "<p>For the first practice block, you will be given feedback after each item so that you know how you performed the task.</p> <p>Press the <code>enter</code> key when you are ready to begin.</p>",
+  text: "<p>For the first practice block, you will be given feedback after each item so that you know how you performed the task.</p>" + continue_html,
   cont_key: 13
 }
 practice.push(practice_block_1_notice);
@@ -38,6 +38,39 @@ var block_2_stimuli = [6, 4, 5, 7, 2, 8, 4, 5, 9, 3, 6, 9, 2, 7, 3, 8];
 var practice_block_2 = createPasatBlock(block_2_stimuli);
 practice.push(fixation_trial);
 practice.push(practice_block_2);
+
+
+// practice likert questions
+var post_practice_instructions = {
+  type: "text",
+  text:
+    "<p>Please answer the following questions. Just give the first rating that comes to mind. Don’t spend a lot of time thinking about your answer</p>" + continue_html,
+  cont_key: 13
+}
+var likert_scale = ["None", "A Lot"];
+var practice_survey = {
+    type: 'survey-likert',
+    questions: [
+      ["Rate your current level of mental effort."],
+      ["Rate your current level of discomfort or distress."]
+    ],
+    labels: [[likert_scale], [likert_scale]],
+    intervals: [[7], [7]]
+}
+practice.push(post_practice_instructions);
+practice.push(practice_survey);
+
+
+
+// post-practice notice
+var post_practice_notice = {
+  type: "text",
+  text:
+    "<p><strong>OK, that's the end of the practice block.</strong></p> <p>Do you have any questions at all? Remember, this is a challenging task. If you lose your place, just jump right back in. Watch for two numbers in a row and add them up and keep going.</p> <p>At several points in the task you will pause briefly to report your experience and then continue with the task.</p>" + continue_html,
+  cont_key: 13
+}
+practice.push(post_practice_notice);
+
 
 
 jsPsych.init({

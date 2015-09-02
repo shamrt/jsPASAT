@@ -3,7 +3,7 @@
  */
 var
  practice = [],
- participant_id = 999;
+ participant_id = getParticipantId();
 
 // practice block 1 notice
 var practice_block_1_notice_text = "<p>For the first practice block, you will be given feedback after each item so that you know how you performed the task.</p>";
@@ -73,6 +73,7 @@ jsPsych.init({
   experiment_structure: practice,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    postDataToDb(jsPsych.data.getData(), participant_id, 'experiment');
+    var url = 'experiment?pid=' + participant_id;
+    postDataToDb(jsPsych.data.getData(), participant_id, url);
   }
 });

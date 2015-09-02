@@ -1,7 +1,9 @@
 /**
  * Instructions view block for jsPASAT
  */
-var instructions = [];
+var
+  instructions = [],
+  participant_id = getParticipantId();
 
 var instructions_block = {
   type: "instructions",
@@ -26,6 +28,7 @@ jsPsych.init({
   experiment_structure: instructions,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    window.location = 'practice';
+    var url = 'practice?pid=' + participant_id;
+    window.location = url;
   }
 });

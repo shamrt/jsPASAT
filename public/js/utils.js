@@ -35,6 +35,26 @@ var likert_scale_2 = [
 // Functions
 // ------------------------
 
+// try to get a participant ID
+function getParticipantId() {
+  var pid;
+
+  // first attempt to get PID via URL params
+  var
+    url_params = window.location.search.slice(1),
+    params = $.deparam(url_params);
+  pid = params['pid'];
+
+  // next, get PID via window prompt
+  pid = pid || window.prompt("Please enter a participant ID.");
+
+  // as a last resort, use 99999 with 5-digit random integer appended
+  pid = pid || "99999" + _.random(10000, 99999);
+
+  return pid
+}
+
+
 // create a 'text' plugin block with some defaults
 function createTextBlock(text_html) {
   return {

@@ -1,6 +1,5 @@
 var
   express = require('express'),
-  mongoose = require('mongoose'),
   fs = require('fs'),
   csv = require('fast-csv'),
   body_parser = require('body-parser');
@@ -18,19 +17,6 @@ app.use(body_parser.json());
 // set template engine
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-
-
-// DB setup
-var emptySchema = new mongoose.Schema({}, { strict: false });
-var Entry = mongoose.model('Entry', emptySchema);
-
-// connect to DB
-mongoose.connect('mongodb://localhost/jsPASAT');
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error'));
-db.once('open', function callback() {
-    console.log('database opened');
-});
 
 
 // setup views
@@ -73,7 +59,7 @@ app.get('/finish', function(request, response) {
     response.render('finished.html');
 });
 
-// experment data route
+// experiment data route
 app.post('/experiment-data', function(request, response) {
   var
     headers = [

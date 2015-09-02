@@ -3,7 +3,7 @@
  */
 var
   experiment = [],
-  participant_id = 999;
+  participant_id = getParticipantId();
 
 // prospective survey notice and questions
 var prospective_survey_text = "<p>Before we begin, we would like to know what you <strong>expect to experience</strong> on this <strong>working memory task</strong>. The <strong>working memory task</strong> that will follow is identical to the practice trial you have just completed, although it will be longer, approximately 5-10 minutes.</p>";

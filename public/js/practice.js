@@ -66,9 +66,6 @@ jsPsych.init({
   experiment_structure: practice,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    console.log(jsPsych.data.displayData())
+    window.location = 'experiment';
   }
-  // on_finish: function() {
-  //   window.location = 'pasat';
-  // }
 });

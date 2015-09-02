@@ -15,7 +15,7 @@ Contributions to the code are welcome. Please use the [Issue tracker system](htt
 Need help?
 ----------
 
-For questions about using the library, please post to the [jsPsych e-mail list](https://groups.google.com/forum/#!forum/jspsych). This creates a publically available archive of questions and solutions.
+For questions about using the library, please post to the [jsPsych e-mail list](https://groups.google.com/forum/#!forum/jspsych). This creates a publicly available archive of questions and solutions.
 
 Contact
 -------

@@ -46,12 +46,13 @@ function createTextBlock(text_html) {
 
 
 // add results data to the last trial
-function addTrialResults() {
+function addTrialResults(added_data) {
   var expected,
       response,
       correct,
       current_trial = jsPsych.data.getLastTrialData(),
-      current_index = current_trial.trial_index;
+      current_index = current_trial.trial_index,
+      added_data = added_data || {};
 
   // nothing expected on first trial
   if (current_index != 0) {
@@ -83,11 +84,11 @@ function addTrialResults() {
     correct = (expected === response) ? true : false;
   }
 
-  var trial_results = {
+  var trial_results = $.extend({
     expected: expected,
     response: response,
     correct: correct
-  }
+  }, added_data);  // merge with given data
   return trial_results;
 }
 
@@ -110,10 +111,12 @@ function displayTrialFeedback(trial_data) {
 
 
 // create a block of trials
-function createPasatBlock(stimuli, give_feedback) {
-  var digit_keycodes = (_.range(48, 58)).concat(_.range(96, 106));
-  var give_feedback = (typeof give_feedback === "undefined") ? false : give_feedback;
+function createPasatBlock(stimuli, options) {
+  var options = options || {};
+  var give_feedback = options.give_feedback || false;
+  var added_data = options.added_data || {};
 
+  var digit_keycodes = (_.range(48, 58)).concat(_.range(96, 106));
   var block = {
     type: "multi-stim-multi-response",
 
@@ -127,7 +130,7 @@ function createPasatBlock(stimuli, give_feedback) {
 
     data: {block_stimuli: stimuli},
     on_finish: function() {
-      jsPsych.data.addDataToLastTrial(addTrialResults())
+      jsPsych.data.addDataToLastTrial(addTrialResults(added_data));
       if (give_feedback) {
         var trial_data = jsPsych.data.getLastTrialData();
         displayTrialFeedback(trial_data);
@@ -144,8 +147,8 @@ function createPasatBlock(stimuli, give_feedback) {
 
 
 // generate a complete PASAT experiment chunk, complete with survey
-function generatePasatExperimentChunk(stimuli) {
-  var pasat_block = createPasatBlock(stimuli);
+function generatePasatExperimentChunk(stimuli, options) {
+  var pasat_block = createPasatBlock(stimuli, options);
 
   var survey_questions = [
     "Rate your current level of <strong>mental effort</strong>.",
@@ -202,22 +205,26 @@ function generateRandomBlocks(condition) {
   random_middle_blocks = _.shuffle(unshuffled_middle_blocks);
 
   // complete block difficulty order generation
-  var block_order = ['medium'].concat(random_middle_blocks).concat(['medium']);
+  var block_types = ['medium'].concat(random_middle_blocks).concat(['medium']);
 
   // get random stimuli for each block
-  var stimuli = _.map(block_order, function(difficulty) {
+  var block_stimuli = _.map(block_types, function(difficulty) {
     return generateStimuli(difficulty);
   });
 
   // generate jsPsych block objects
-  var blocks = _.map(stimuli, function(stimuli) {
-    return generatePasatExperimentChunk(stimuli);
+  var stimuli_types = _.zip(block_stimuli, block_types);
+  var formatted_stimuli = _.map(stimuli_types, function(stimuli_type) {
+    var added_data = {block_type: stimuli_type[1]}
+    return generatePasatExperimentChunk(stimuli_type[0], {
+      added_data: added_data
+    });
   });
 
   return {
-    block_order: block_order,
-    stimuli: stimuli,
-    blocks: blocks
+    block_types: block_types,
+    block_stimuli: block_stimuli,
+    formatted_stimuli: formatted_stimuli
   }
 }
 

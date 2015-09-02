@@ -1,7 +1,9 @@
 /**
  * Practice view blocks for jsPASAT
  */
-var practice = [];
+var
+ practice = [],
+ participant_id = 999;
 
 // practice block 1 notice
 var practice_block_1_notice_text = "<p>For the first practice block, you will be given feedback after each item so that you know how you performed the task.</p>";
@@ -11,7 +13,7 @@ practice.push(practice_block_1_notice);
 
 // practice block 1
 var block_1_stimuli = [9, 1, 3, 5, 2, 6];
-var practice_block_1 = createPasatBlock(block_1_stimuli, true);
+var practice_block_1 = createPasatBlock(block_1_stimuli, {give_feedback: true});
 practice.push(fixation_trial);
 practice.push(practice_block_1);
 
@@ -61,11 +63,16 @@ var post_practice_notice = createTextBlock(post_practice_notice_text);
 practice.push(post_practice_notice);
 
 
+// add generated experiment settings to saved data
+jsPsych.data.addProperties({
+  participant_id: participant_id,
+});
+
 
 jsPsych.init({
   experiment_structure: practice,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    postDataToDb(jsPsych.data.getData(), 999, 'experiment');
+    postDataToDb(jsPsych.data.getData(), participant_id, 'experiment');
   }
 });

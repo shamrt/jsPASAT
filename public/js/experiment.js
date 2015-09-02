@@ -1,7 +1,9 @@
 /**
  * Experiment view blocks for jsPASAT
  */
-var experiment = [];
+var
+  experiment = [],
+  participant_id = 999;
 
 // prospective survey notice and questions
 var prospective_survey_text = "<p>Before we begin, we would like to know what you <strong>expect to experience</strong> on this <strong>working memory task</strong>. The <strong>working memory task</strong> that will follow is identical to the practice trial you have just completed, although it will be longer, approximately 5-10 minutes.</p>";
@@ -32,22 +34,21 @@ experiment.push(experiment_notice);
 // generate the experiment blocks
 var condition = generateCondition();
 var pasat = generateRandomBlocks(condition);
-experiment = experiment.concat(pasat.blocks);
+experiment = experiment.concat(pasat.formatted_stimuli);
 
 
 // add generated experiment settings to saved data
-var added_data_properties = {
+jsPsych.data.addProperties({
   condition: condition,
-  block_order: pasat.block_order,
-}
-jsPsych.data.addProperties(added_data_properties);
+  block_order: pasat.block_types,
+  participant_id: participant_id,
+});
 
 
 jsPsych.init({
   experiment_structure: experiment,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    postDataToDb(jsPsych.data.getData(), 999, 'finish');
-
+    postDataToDb(jsPsych.data.getData(), participant_id, 'finish');
   }
 });

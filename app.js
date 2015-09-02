@@ -76,7 +76,13 @@ app.get('/finish', function(request, response) {
 // experment data route
 app.post('/experiment-data', function(request, response) {
   var
-    headers = ["internal_chunk_id", "key_press", "rt", "time_elapsed", "trial_index", "trial_index_global", "trial_type", "block_stimuli", "correct", "response", "expected"],
+    headers = [
+      "internal_chunk_id", "participant_id", "condition", "block_order",
+      "key_press", "responses", "rt", "time_elapsed",
+      "trial_index", "trial_index_global", "trial_type",
+      "block_stimuli", "block_type",
+      "correct", "response", "expected"
+    ],
     file_path = ["data", request.body.pathname, request.body.filename + ".csv"].join('/');
   csv
    .writeToPath(file_path, request.body.data, {headers: headers})

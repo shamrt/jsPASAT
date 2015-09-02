@@ -26,9 +26,24 @@ var fixation_trial = {
   choices: 'none'
 }
 
+// for 'survey-likert' plugin
+var likert_scale_1 = ["None", "A Lot"];
+var likert_scale_2 = [
+  "Significantly Below Average", "Average", "Significantly Above Average"];
+
 
 // Functions
 // ------------------------
+
+// create a 'text' plugin block with some defaults
+function createTextBlock(text_html) {
+  return {
+    type: "text",
+    text: text_html + continue_html,
+    cont_key: 13
+  }
+}
+
 
 // add results data to the last trial
 function addTrialResults() {
@@ -128,6 +143,29 @@ function createPasatBlock(stimuli, give_feedback) {
 }
 
 
+// generate a complete PASAT experiment chunk, complete with survey
+function generatePasatExperimentChunk(stimuli) {
+  var pasat_block = createPasatBlock(stimuli);
+
+  var survey_questions = [
+    "Rate your current level of <strong>mental effort</strong>.",
+    "Rate your current level of <strong>discomfort or distress</strong>."
+  ];
+  var survey = {
+      type: 'survey-likert',
+      questions: [survey_questions],
+      labels: [[likert_scale_1, likert_scale_1]],
+      intervals: [[7, 7]]
+  }
+
+  var chunk = {
+    chunk_type: 'linear',
+    timeline: [fixation_trial, pasat_block, survey]
+  }
+  return chunk
+}
+
+
 // create a formatted list of trial stimuli for a block
 function formatBlockStimuli(trials) {
   var stimuli = [];
@@ -163,15 +201,24 @@ function generateRandomBlocks(condition) {
   // randomize blocks
   random_middle_blocks = _.shuffle(unshuffled_middle_blocks);
 
-  // complete block generation
-  var blocks = ['medium'].concat(random_middle_blocks).concat(['medium']);
+  // complete block difficulty order generation
+  var block_order = ['medium'].concat(random_middle_blocks).concat(['medium']);
 
   // get random stimuli for each block
-  var stimuli = _.map(blocks, function(difficulty) {
+  var stimuli = _.map(block_order, function(difficulty) {
     return generateStimuli(difficulty);
   });
 
-  return {blocks: blocks, stimuli: stimuli}
+  // generate jsPsych block objects
+  var blocks = _.map(stimuli, function(stimuli) {
+    return generatePasatExperimentChunk(stimuli);
+  });
+
+  return {
+    block_order: block_order,
+    stimuli: stimuli,
+    blocks: blocks
+  }
 }
 
 

@@ -1,6 +1,6 @@
-// jsPsych blocks
-// --------------
-
+/**
+ * Instructions view block for jsPASAT
+ */
 var instructions = [];
 
 var instructions_block = {

@@ -41,23 +41,28 @@ app.get('/', function(request, response) {
     });
 });
 
+var experiment_plugins = [
+    'text',
+    'instructions',
+    'multi-stim-multi-response_custom',
+    'single-stim',
+    'survey-likert',
+];
+
 // practice route
 app.get('/practice', function(request, response) {
     response.render('experiment.html', {
         js_filename: 'practice',
-        jspsych_plugins: [
-            'text',
-            'instructions',
-            'multi-stim-multi-response_custom',
-            'single-stim',
-            'survey-likert',
-        ]
+        jspsych_plugins: experiment_plugins
     });
 });
 
 // experiment route
 app.get('/experiment', function(request, response) {
-    response.render('go-nogo.html');
+    response.render('experiment.html', {
+        js_filename: 'experiment',
+        jspsych_plugins: experiment_plugins
+    });
 });
 
 // experiment route

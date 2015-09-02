@@ -276,3 +276,23 @@ function generateStimuli(difficulty, num_trials) {
   }
   return stimuli
 }
+
+
+// post data to the server using an AJAX call
+function postDataToDb(data, filename, redirect) {
+  var pathname = window.location.pathname;
+  $.ajax({
+    type: "POST",
+    url: "/experiment-data",
+    data: JSON.stringify({filename: filename, pathname: pathname, data: data}),
+    contentType: "application/json"
+  })
+  .done(function() {
+    if (typeof redirect === "string") {
+      window.location.href = redirect;
+    }
+  })
+  .fail(function() {
+    alert("A problem occurred while writing to the database. We cannot continue. Please contact the researcher for more information.");
+  });
+}

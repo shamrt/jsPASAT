@@ -1,5 +1,6 @@
 # Project-generated
 min/
+*.csv
 
 # NPM
 node_modules

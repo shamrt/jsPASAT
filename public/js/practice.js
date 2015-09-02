@@ -66,6 +66,6 @@ jsPsych.init({
   experiment_structure: practice,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    window.location = 'experiment';
+    postDataToDb(jsPsych.data.getData(), 999, 'experiment');
   }
 });

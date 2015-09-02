@@ -1,6 +1,9 @@
-var express = require('express'),
-    mongoose = require('mongoose'),
-    body_parser = require('body-parser');
+var
+  express = require('express'),
+  mongoose = require('mongoose'),
+  fs = require('fs'),
+  csv = require('fast-csv'),
+  body_parser = require('body-parser');
 
 // instantiate app
 var app = express();
@@ -72,10 +75,16 @@ app.get('/finish', function(request, response) {
 
 // experment data route
 app.post('/experiment-data', function(request, response) {
-    Entry.create({
-        "data": request.body
-    });
-    response.end();
+  var
+    headers = ["internal_chunk_id", "key_press", "rt", "time_elapsed", "trial_index", "trial_index_global", "trial_type", "block_stimuli", "correct", "response", "expected"],
+    file_path = ["data", request.body.pathname, request.body.filename + ".csv"].join('/');
+  csv
+   .writeToPath(file_path, request.body.data, {headers: headers})
+   .on("finish", function(){
+       console.log("Finished writing to '" + file_path + "'");
+   });
+
+  response.end();
 });
 
 

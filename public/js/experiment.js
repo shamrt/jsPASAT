@@ -47,6 +47,7 @@ jsPsych.init({
   experiment_structure: experiment,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    console.log(jsPsych.data.displayData())
+    postDataToDb(jsPsych.data.getData(), 999, 'finish');
+
   }
 });

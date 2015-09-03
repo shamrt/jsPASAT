@@ -70,11 +70,19 @@ app.post('/experiment-data', function(request, response) {
       "correct", "response", "expected"
     ],
     file_path = ["data", request.body.pathname, request.body.filename + ".csv"].join('/');
+  file_path = [
+    __dirname,
+    "data",
+    request.body.pathname,
+    request.body.filename + ".csv"
+  ].join('/');
+
+  // save data file
   csv
-   .writeToPath(file_path, request.body.data, {headers: headers})
-   .on("finish", function(){
-       console.log("Finished writing to '" + file_path + "'");
-   });
+    .writeToPath(file_path, request.body.data, {headers: headers})
+    .on("finish", function(){
+      console.log("Finished writing to '" + file_path + "'");
+    });
 
   response.end();
 });

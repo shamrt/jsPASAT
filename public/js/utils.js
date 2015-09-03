@@ -307,7 +307,7 @@ function generateStimuli(difficulty, num_trials) {
 
 // post data to the server using an AJAX call
 function postDataToDb(data, filename, redirect) {
-  var pathname = window.location.pathname;
+  var pathname = window.location.pathname.slice(1);
   $.ajax({
     type: "POST",
     url: "/experiment-data",

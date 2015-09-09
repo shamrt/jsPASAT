@@ -16,11 +16,17 @@ var prospective_survey = {
       ["In light of your experience so far, how much do you anticipate <strong><u>enjoying</u></strong> the <strong>working memory task</strong>?"],
       ["In light of your experience so far, how well do you <strong><u>anticipate performing</strong></u> during the <strong>working memory task</strong>?"],
       ["In light of your experience so far, how much <strong><u>mental effort</strong></u> do you expect will be required to complete the <strong>working memory task</strong>?"],
+      ["In light of your experience so far, how much <strong><u>discomfort or distress</strong></u> do you expect to experience during the <strong>working memory task</strong>?"],
       ["In light of your experience so far, how much <strong><u>mental fatigue</strong></u> do you expect to have while completing the <strong>working memory task</strong>?"],
     ],
     labels: [
-      [likert_scale_1], [likert_scale_2], [likert_scale_1], [likert_scale_1]],
-    intervals: [[7], [7], [7], [7]]
+      [likert_scale_1],
+      [likert_scale_2],
+      [likert_scale_1],
+      [likert_scale_1],
+      [likert_scale_1]
+    ],
+    intervals: [[7], [7], [7], [7], [7]]
 }
 experiment.push(prospective_survey);
 

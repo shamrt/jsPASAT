@@ -145,7 +145,7 @@ function createPasatBlock(stimuli, options) {
     choices: [digit_keycodes, digit_keycodes],
 
     timing_stim: [1000],
-    timing_response: 4000,
+    timing_response: 3000,
     response_ends_trial: false,
 
     data: {block_stimuli: stimuli},

@@ -168,6 +168,8 @@ function createPasatBlock(stimuli, options) {
 
 // generate a complete PASAT experiment chunk, complete with survey
 function generatePasatExperimentChunk(stimuli, options) {
+  var notice = createTextBlock("When you're ready to continue, a trial block will begin.")
+
   var pasat_block = createPasatBlock(stimuli, options);
 
   var survey_questions = [
@@ -183,7 +185,7 @@ function generatePasatExperimentChunk(stimuli, options) {
 
   var chunk = {
     chunk_type: 'linear',
-    timeline: [fixation_trial, pasat_block, survey]
+    timeline: [notice, fixation_trial, pasat_block, survey]
   }
   return chunk
 }

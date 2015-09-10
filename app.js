@@ -46,6 +46,14 @@ app.get('/practice', function(request, response) {
     });
 });
 
+// post-test questions route
+app.get('/follow_up', function(request, response) {
+    response.render('experiment.html', {
+        js_filename: 'follow_up',
+        jspsych_plugins: experiment_plugins
+    });
+});
+
 // experiment route
 app.get('/experiment', function(request, response) {
     response.render('experiment.html', {

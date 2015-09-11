@@ -36,6 +36,7 @@ var experiment_plugins = [
     'multi-stim-multi-response',
     'single-stim',
     'survey-multi-choice',
+    'survey-text',
 ];
 
 // practice route
@@ -50,7 +51,7 @@ app.get('/practice', function(request, response) {
 app.get('/follow_up', function(request, response) {
     response.render('experiment.html', {
         js_filename: 'follow_up',
-        jspsych_plugins: experiment_plugins
+        jspsych_plugins: ['survey-multi-choice', 'text', 'survey-text']
     });
 });
 
@@ -71,10 +72,11 @@ app.get('/finish', function(request, response) {
 app.post('/experiment-data', function(request, response) {
   var
     headers = [
-      "internal_chunk_id", "participant_id", "condition", "block_order",
-      "key_press", "responses", "rt", "time_elapsed",
+      "internal_chunk_id",
       "trial_index", "trial_index_global", "trial_type",
+      "participant_id", "condition", "block_order",
       "block_stimuli", "block_type",
+      "key_press", "responses", "rt", "time_elapsed",
       "correct", "response", "expected"
     ],
     file_path = ["data", request.body.pathname, request.body.filename + ".csv"].join('/');

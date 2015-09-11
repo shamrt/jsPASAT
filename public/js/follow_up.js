@@ -2,14 +2,16 @@
  * Experiment view blocks for jsPASAT
  */
 var
-  experiment = [],
+  follow_up = [],
   participant_id = getParticipantId();
 
-// prospective survey notice and questions
+// post-survey notice
 var task_complete_text = "<p><strong>Now you have completed the working memory task.</strong></p> <p>Next you will be asked a series of follow-up questions.</p>";
 var task_complete_notice = createTextBlock(task_complete_text);
-experiment.push(task_complete_notice);
+follow_up.push(task_complete_notice);
 
+
+// post-survey demographics questions
 var demographics_1 = {
   type: 'survey-multi-choice',
   questions: [
@@ -46,8 +48,8 @@ var demographics_4 = {
   type: 'survey-text',
   questions: [
     ["What is your father's occupation?"],
-    ["What was your final average at the end of high school? <em>(indicate percentage; e.g., <code>75%</code>)</em>"],
-    ["Estimate your current university average <em>(estimate percentage; e.g., <code>75%</code>)</em>:"],
+    ["What was your final average at the end of high school?<br><em>(percentage; e.g., <code>75%</code>)</em>"],
+    ["Estimate your current university average<br><em>(estimate percentage; e.g., <code>75%</code>)</em>:"],
   ]
 }
 var demographics_5 = {
@@ -76,7 +78,11 @@ var demographics_6 = {
     ["Please indicate what your current (or intended) university major is:"]
   ]
 }
-experiment.push(
+follow_up.push(
+  demographics_1,
+  demographics_2,
+  demographics_3,
+  demographics_4,
   demographics_5,
   demographics_6
 );
@@ -89,10 +95,9 @@ jsPsych.data.addProperties({
 
 
 jsPsych.init({
-  experiment_structure: experiment,
+  experiment_structure: follow_up,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    console.log(jsPsych.data.displayData())
-    // postDataToDb(jsPsych.data.getData(), participant_id, 'finish');
+    postDataToDb(jsPsych.data.getData(), participant_id, 'finish');
   }
 });

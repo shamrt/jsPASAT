@@ -45,13 +45,13 @@ var post_practice_instructions = createTextBlock(post_practice_text);
 practice.push(post_practice_instructions);
 
 var practice_survey = {
-    type: 'survey-likert',
+    type: 'survey-multi-choice',
     questions: [
       ["Rate your current level of <strong>mental effort</strong>."],
       ["Rate your current level of <strong>discomfort or distress</strong>."]
     ],
-    labels: [[likert_scale_1], [likert_scale_1]],
-    intervals: [[7], [7]]
+    options: [[likert_scale_1], [likert_scale_1]],
+    horizontal: true
 }
 practice.push(practice_survey);
 

@@ -9,6 +9,10 @@ Clone the repository:
 
     git clone git@github.com:shamrt/jsPASAT.git
 
+Clone the jsPsych submodule:
+
+    git submodule init
+    git submodule update
 
 Copy the Upstart configuration file (in `etc/`) to `/etc/init`, edit it as necessary, and make it executable:
 

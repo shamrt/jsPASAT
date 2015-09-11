@@ -33,7 +33,7 @@ app.get('/', function(request, response) {
 var experiment_plugins = [
     'text',
     'instructions',
-    'multi-stim-multi-response_custom',
+    'multi-stim-multi-response',
     'single-stim',
     'survey-likert',
 ];

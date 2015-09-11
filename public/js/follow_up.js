@@ -88,6 +88,38 @@ follow_up.push(
 );
 
 
+// prospective questions notice
+var prospective_survey_text = "<p>Now we are going to ask you some questions about <strong>the working memory task</strong> you completed previously – that is, the task where numbers were presented to you on a computer screen one at a time and you had to add them up.</p>";
+var prospective_survey_notice = createTextBlock(prospective_survey_text);
+follow_up.push(prospective_survey_notice);
+
+
+// prospective questions
+var prospective_survey_questions = {
+  type: 'survey-multi-choice',
+  questions: [
+    ["On this <strong>working memory task</strong>, what was your <u><strong>total amount of mental effort</strong></u>?"],
+    ["On this <strong>working memory task</strong>, what was your total amount of <u><strong>discomfort or distress</strong></u>?"],
+    ["How much did you <u><strong>enjoy</u></strong> doing this <strong>working memory task</strong>?"],
+    ["How well did you <u><strong>perform</u></strong> on the <strong>working memory task</strong>?"],
+    ["How much <u><strong>mental fatigue</u></strong> did you have during the <strong>working memory task</strong>?"],
+    ["How <u><strong>satisfied</u></strong> are you with your performance on the <strong>working memory task</strong>?"],
+    ["How willing would you be to do <strong><u>another</u> working memory task</strong> right now?"],
+  ],
+  options: [
+    [likert_scale_1],
+    [likert_scale_1],
+    [likert_scale_1],
+    [likert_scale_2],
+    [likert_scale_1],
+    [["1<br>Not at all<br>satisfied", "2", "3", "4", "5", "6", "7<br>Completely<br>satisfied"]],
+    [["1<br>Not at all<br>willing", "2", "3", "4", "5", "6", "7<br>Definitely<br>willing"]],
+  ],
+  horizontal: true
+}
+follow_up.push(prospective_survey_questions);
+
+
 // add generated experiment settings to saved data
 jsPsych.data.addProperties({
   participant_id: participant_id,

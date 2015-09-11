@@ -29,13 +29,13 @@ var fixation_trial = {
 // for 'survey-likert' plugin
 var likert_scale_1 = ["1 - None", "2", "3", "4", "5", "6", "7 - A Lot"];
 var likert_scale_2 = [
-  "1 - Significantly Below Average", 
+  "1<br>Significantly<br>Below Average",
   "2",
   "3",
-  "4 - Average",
+  "4<br>Average",
   "5",
   "6",
-  "7 - Significantly Above Average"
+  "7<br>Significantly<br>Above Average"
 ];
 
 

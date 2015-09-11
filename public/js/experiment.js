@@ -11,7 +11,7 @@ var prospective_survey_notice = createTextBlock(prospective_survey_text);
 experiment.push(prospective_survey_notice);
 
 var prospective_survey = {
-    type: 'survey-likert',
+    type: 'survey-multi-choice',
     questions: [
       ["In light of your experience so far, how much do you anticipate <strong><u>enjoying</u></strong> the <strong>working memory task</strong>?"],
       ["In light of your experience so far, how well do you <strong><u>anticipate performing</strong></u> during the <strong>working memory task</strong>?"],
@@ -19,14 +19,14 @@ var prospective_survey = {
       ["In light of your experience so far, how much <strong><u>discomfort or distress</strong></u> do you expect to experience during the <strong>working memory task</strong>?"],
       ["In light of your experience so far, how much <strong><u>mental fatigue</strong></u> do you expect to have while completing the <strong>working memory task</strong>?"],
     ],
-    labels: [
+    options: [
       [likert_scale_1],
       [likert_scale_2],
       [likert_scale_1],
       [likert_scale_1],
       [likert_scale_1]
     ],
-    intervals: [[7], [7], [7], [7], [7]]
+    horizontal: true
 }
 experiment.push(prospective_survey);
 

@@ -35,7 +35,7 @@ var experiment_plugins = [
     'instructions',
     'multi-stim-multi-response',
     'single-stim',
-    'survey-likert',
+    'survey-multi-choice',
 ];
 
 // practice route

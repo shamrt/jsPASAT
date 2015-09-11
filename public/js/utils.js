@@ -27,9 +27,16 @@ var fixation_trial = {
 }
 
 // for 'survey-likert' plugin
-var likert_scale_1 = ["None", "A Lot"];
+var likert_scale_1 = ["1 - None", "2", "3", "4", "5", "6", "7 - A Lot"];
 var likert_scale_2 = [
-  "Significantly Below Average", "Average", "Significantly Above Average"];
+  "1 - Significantly Below Average", 
+  "2",
+  "3",
+  "4 - Average",
+  "5",
+  "6",
+  "7 - Significantly Above Average"
+];
 
 
 // Functions
@@ -177,10 +184,10 @@ function generatePasatExperimentChunk(stimuli, options) {
     "Rate your current level of <strong>discomfort or distress</strong>."
   ];
   var survey = {
-      type: 'survey-likert',
+      type: 'survey-multi-choice',
       questions: [survey_questions],
-      labels: [[likert_scale_1, likert_scale_1]],
-      intervals: [[7, 7]]
+      options: [[likert_scale_1, likert_scale_1]],
+      horizontal: true
   }
 
   var chunk = {

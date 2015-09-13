@@ -20,11 +20,11 @@ var prospective_survey = {
       ["In light of your experience so far, how much <strong><u>mental fatigue</strong></u> do you expect to have while completing the <strong>working memory task</strong>?"],
     ],
     options: [
-      [likert_scale_1],
-      [likert_scale_2],
-      [likert_scale_1],
-      [likert_scale_1],
-      [likert_scale_1]
+      [jsPASAT['LIKERT_SCALE_1']],
+      [jsPASAT['LIKERT_SCALE_2']],
+      [jsPASAT['LIKERT_SCALE_1']],
+      [jsPASAT['LIKERT_SCALE_1']],
+      [jsPASAT['LIKERT_SCALE_1']]
     ],
     horizontal: true
 }

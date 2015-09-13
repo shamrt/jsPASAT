@@ -21,22 +21,10 @@ var fixation_trial = {
   type: 'single-stim',
   stimuli: [fixation_cross + play_beep],
   is_html: true,
-  timing_response: 1000,
-  timing_post_trial: 3000,
+  timing_response: jsPASAT['TIMING_STIM_DISPLAY'],
+  timing_post_trial: jsPASAT['TIMING_POST_STIM'],
   choices: 'none'
 }
-
-// for 'survey-likert' plugin
-var likert_scale_1 = ["1 - None", "2", "3", "4", "5", "6", "7 - A Lot"];
-var likert_scale_2 = [
-  "1<br>Significantly<br>Below Average",
-  "2",
-  "3",
-  "4<br>Average",
-  "5",
-  "6",
-  "7<br>Significantly<br>Above Average"
-];
 
 
 // Functions
@@ -151,8 +139,8 @@ function createPasatBlock(stimuli, options) {
     is_html: true,
     choices: [digit_keycodes, digit_keycodes],
 
-    timing_stim: [1000],
-    timing_response: 3000,
+    timing_stim: [jsPASAT['TIMING_STIM_DISPLAY']],
+    timing_response: jsPASAT['TIMING_POST_STIM'],
     response_ends_trial: false,
 
     data: {block_stimuli: stimuli},
@@ -186,7 +174,7 @@ function generatePasatExperimentChunk(stimuli, options) {
   var survey = {
       type: 'survey-multi-choice',
       questions: [survey_questions],
-      options: [[likert_scale_1, likert_scale_1]],
+      options: [[jsPASAT['LIKERT_SCALE_1'], jsPASAT['LIKERT_SCALE_1']]],
       horizontal: true
   }
 

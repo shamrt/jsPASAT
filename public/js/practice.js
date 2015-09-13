@@ -12,8 +12,9 @@ practice.push(practice_block_1_notice);
 
 
 // practice block 1
-var block_1_stimuli = [9, 1, 3, 5, 2, 6];
-var practice_block_1 = createPasatBlock(block_1_stimuli, {give_feedback: true});
+var practice_block_1 = createPasatBlock(jsPASAT['PRACTICE_BLOCK_1_STIMULI'], {
+  give_feedback: true
+});
 practice.push(fixation_trial);
 practice.push(practice_block_1);
 
@@ -33,8 +34,7 @@ practice.push(practice_block_2_instructions);
 
 
 // practice block 2
-var block_2_stimuli = [6, 4, 5, 7, 2, 8, 4, 5, 9, 3, 6, 9, 2, 7, 3, 8];
-var practice_block_2 = createPasatBlock(block_2_stimuli);
+var practice_block_2 = createPasatBlock(jsPASAT['PRACTICE_BLOCK_2_STIMULI']);
 practice.push(fixation_trial);
 practice.push(practice_block_2);
 
@@ -50,11 +50,10 @@ var practice_survey = {
       ["Rate your current level of <strong>mental effort</strong>."],
       ["Rate your current level of <strong>discomfort or distress</strong>."]
     ],
-    options: [[likert_scale_1], [likert_scale_1]],
+    options: [[jsPASAT['LIKERT_SCALE_1']], [jsPASAT['LIKERT_SCALE_1']]],
     horizontal: true
 }
 practice.push(practice_survey);
-
 
 
 // post-practice notice

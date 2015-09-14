@@ -13,7 +13,7 @@ var jsPASAT = {
   'PRACTICE_BLOCK_2_STIMULI': [6, 4, 5, 7, 2, 8, 4, 5, 9, 3, 6, 9, 2, 7, 3, 8],
 
   // Re-useable Likert scale labels
-  'LIKERT_SCALE_1': ["1 - None", "2", "3", "4", "5", "6", "7 - A Lot"],
+  'LIKERT_SCALE_1': ["1<br>None", "2", "3", "4", "5", "6", "7<br>A Lot"],
   'LIKERT_SCALE_2': [
     "1<br>Significantly<br>Below Average",
     "2",

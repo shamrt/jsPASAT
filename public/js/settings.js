@@ -12,6 +12,9 @@ var jsPASAT = {
   'PRACTICE_BLOCK_1_STIMULI': [9, 1, 3, 5, 2, 6],
   'PRACTICE_BLOCK_2_STIMULI': [6, 4, 5, 7, 2, 8, 4, 5, 9, 3, 6, 9, 2, 7, 3, 8],
 
+  // Block
+  'TRIALS_PER_BLOCK': 15,
+
   // Re-useable Likert scale labels
   'LIKERT_SCALE_1': ["1<br>None", "2", "3", "4", "5", "6", "7<br>A Lot"],
   'LIKERT_SCALE_2': [

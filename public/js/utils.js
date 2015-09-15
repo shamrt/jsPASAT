@@ -250,7 +250,7 @@ function generateRandomBlocks(condition) {
 // return list of trial values
 function generateStimuli(difficulty, num_trials) {
   var difficulty = (typeof difficulty === "undefined") ? 'medium' : difficulty;
-  var num_trials = (typeof num_trials === "undefined") ? 15 : num_trials;
+  var num_trials = (typeof num_trials === "undefined") ? jsPASAT['TRIALS_PER_BLOCK'] : num_trials;
 
   var stimuli;
   var i = 1;

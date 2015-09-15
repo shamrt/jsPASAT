@@ -6,7 +6,7 @@ var jsPASAT = {
 
   // Pace of PASAT trial presentation
   'TIMING_STIM_DISPLAY': 1000,
-  'TIMING_POST_STIM': 3000,
+  'TIMING_POST_STIM': 4000,
 
   // Practice block stimuli
   'PRACTICE_BLOCK_1_STIMULI': [9, 1, 3, 5, 2, 6],

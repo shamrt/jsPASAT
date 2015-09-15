@@ -104,7 +104,8 @@ function addTrialResults(added_data) {
     response: response,
     correct: correct
   }, added_data);  // merge with given data
-  return trial_results;
+  
+  return trial_results
 }
 
 
@@ -157,7 +158,7 @@ function createPasatBlock(stimuli, options) {
     block['timing_post_trial'] = 1000;
   }
 
-  return block;
+  return block
 }
 
 
@@ -195,7 +196,7 @@ function formatBlockStimuli(trials) {
     trial_stimuli.push(trial_html);
     stimuli.push(trial_stimuli);
   }
-  return stimuli;
+  return stimuli
 }
 
 
@@ -210,7 +211,6 @@ function generateCondition() {
 function generateRandomBlockTypes(condition, outer_block_type) {
   var outer_block_type = (typeof outer_block_type === "undefined") ? 'medium' : outer_block_type,
       blocks_in_condition = jsPASAT['BLOCKS_PER_CONDITION'][condition - 1];
-
 
   // calculate number of middle medium blocks
   // Note: is equal to number of blocks in a given condition, minus 2 'medium'

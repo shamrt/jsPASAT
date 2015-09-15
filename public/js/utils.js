@@ -282,7 +282,8 @@ function generateStimuli(difficulty, num_trials) {
       }
       break;
     case 'hard':
-      // Note: Hard Block defined as each trial has one double digit stimuli
+      // Note: Hard Block defined as each trial has one double digit stimulus
+      // (and one single digit stimulus)
       var digit_max = 19;
       stimuli = [_.random(1, digit_max)]  // add first random number
       while (i < num_trials) {

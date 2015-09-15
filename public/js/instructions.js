@@ -10,7 +10,7 @@ var instructions_block = {
   pages: [
     "<p>This is a <strong>working memory task</strong>. In this working memory task, you will be presented with a series of single or double digit numbers on the computer screen.</p>",
 
-    "<p>These numbers will be presented at the rate of one every 3 seconds. After you see the first two numbers, add them up, and enter the correct number on the computer keyboard.</p>",
+    "<p>These numbers will be presented at the rate of one every 4 seconds. After you see the first two numbers, add them up, and enter the correct number on the computer keyboard.</p>",
 
     "<p>When you see the next number, add it to the one you saw on the computer screen right before it. Continue to add the next number to each preceding one.</p>",
 

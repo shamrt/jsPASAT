@@ -201,17 +201,21 @@ function formatBlockStimuli(trials) {
 
 // generate random condition
 function generateCondition() {
-  return _.random(1, 4)
+  return _.random(1, jsPASAT['BLOCKS_PER_CONDITION'].length)
 }
 
 
-// generate a set of randomized blocks
+// generate a set of randomized block difficulty types
 // return list of block difficulty and block stimuli
-function generateRandomBlocks(condition) {
+function generateRandomBlockTypes(condition, outer_block_type) {
+  var outer_block_type = (typeof outer_block_type === "undefined") ? 'medium' : outer_block_type,
+      blocks_in_condition = jsPASAT['BLOCKS_PER_CONDITION'][condition - 1];
+
+
   // calculate number of middle medium blocks
-  // note: condition ranges 1--4, number of blocks ranges 6--9, minus 2 'medium'
+  // Note: is equal to number of blocks in a given condition, minus 2 'medium'
   // blocks at beginning and end of the list, minus 1 'easy' and 1 'hard' block
-  var num_middle_medium_blocks = condition + 5 - 2 - 2;
+  var num_middle_medium_blocks = blocks_in_condition - 2 - 2;
 
   // add unshuffled middle 'medium', 'easy' and 'hard' blocks
   var unshuffled_middle_blocks = Array.apply(
@@ -222,8 +226,17 @@ function generateRandomBlocks(condition) {
   random_middle_blocks = _.shuffle(unshuffled_middle_blocks);
 
   // complete block difficulty order generation
-  var block_types = ['medium'].concat(random_middle_blocks).concat(['medium']);
+  var block_types = [outer_block_type];
+  block_types = block_types.concat(random_middle_blocks);
+  block_types = block_types.concat([outer_block_type]);
 
+  return block_types
+}
+
+
+// generate a formatted and complete set of jsPsych blocks
+// Note: return an object with block stimuli lists and formatted stimuli
+function generatePasatBlockStimuli(block_types) {
   // get random stimuli for each block
   var block_stimuli = _.map(block_types, function(difficulty) {
     return generateStimuli(difficulty);
@@ -239,7 +252,6 @@ function generateRandomBlocks(condition) {
   });
 
   return {
-    block_types: block_types,
     block_stimuli: block_stimuli,
     formatted_stimuli: formatted_stimuli
   }

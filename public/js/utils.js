@@ -21,22 +21,10 @@ var fixation_trial = {
   type: 'single-stim',
   stimuli: [fixation_cross + play_beep],
   is_html: true,
-  timing_response: 1000,
-  timing_post_trial: 3000,
+  timing_response: jsPASAT['TIMING_STIM_DISPLAY'],
+  timing_post_trial: jsPASAT['TIMING_POST_STIM'],
   choices: 'none'
 }
-
-// for 'survey-likert' plugin
-var likert_scale_1 = ["1 - None", "2", "3", "4", "5", "6", "7 - A Lot"];
-var likert_scale_2 = [
-  "1<br>Significantly<br>Below Average",
-  "2",
-  "3",
-  "4<br>Average",
-  "5",
-  "6",
-  "7<br>Significantly<br>Above Average"
-];
 
 
 // Functions
@@ -116,7 +104,8 @@ function addTrialResults(added_data) {
     response: response,
     correct: correct
   }, added_data);  // merge with given data
-  return trial_results;
+  
+  return trial_results
 }
 
 
@@ -151,8 +140,8 @@ function createPasatBlock(stimuli, options) {
     is_html: true,
     choices: [digit_keycodes, digit_keycodes],
 
-    timing_stim: [1000],
-    timing_response: 3000,
+    timing_stim: [jsPASAT['TIMING_STIM_DISPLAY']],
+    timing_response: jsPASAT['TIMING_POST_STIM'],
     response_ends_trial: false,
 
     data: {block_stimuli: stimuli},
@@ -169,7 +158,7 @@ function createPasatBlock(stimuli, options) {
     block['timing_post_trial'] = 1000;
   }
 
-  return block;
+  return block
 }
 
 
@@ -186,7 +175,7 @@ function generatePasatExperimentChunk(stimuli, options) {
   var survey = {
       type: 'survey-multi-choice',
       questions: [survey_questions],
-      options: [[likert_scale_1, likert_scale_1]],
+      options: [[jsPASAT['LIKERT_SCALE_1'], jsPASAT['LIKERT_SCALE_1']]],
       horizontal: true
   }
 
@@ -207,23 +196,26 @@ function formatBlockStimuli(trials) {
     trial_stimuli.push(trial_html);
     stimuli.push(trial_stimuli);
   }
-  return stimuli;
+  return stimuli
 }
 
 
 // generate random condition
 function generateCondition() {
-  return _.random(1, 4)
+  return _.random(1, jsPASAT['BLOCKS_PER_CONDITION'].length)
 }
 
 
-// generate a set of randomized blocks
+// generate a set of randomized block difficulty types
 // return list of block difficulty and block stimuli
-function generateRandomBlocks(condition) {
+function generateRandomBlockTypes(condition, outer_block_type) {
+  var outer_block_type = (typeof outer_block_type === "undefined") ? 'medium' : outer_block_type,
+      blocks_in_condition = jsPASAT['BLOCKS_PER_CONDITION'][condition - 1];
+
   // calculate number of middle medium blocks
-  // note: condition ranges 1--4, number of blocks ranges 6--9, minus 2 'medium'
+  // Note: is equal to number of blocks in a given condition, minus 2 'medium'
   // blocks at beginning and end of the list, minus 1 'easy' and 1 'hard' block
-  var num_middle_medium_blocks = condition + 5 - 2 - 2;
+  var num_middle_medium_blocks = blocks_in_condition - 2 - 2;
 
   // add unshuffled middle 'medium', 'easy' and 'hard' blocks
   var unshuffled_middle_blocks = Array.apply(
@@ -234,8 +226,17 @@ function generateRandomBlocks(condition) {
   random_middle_blocks = _.shuffle(unshuffled_middle_blocks);
 
   // complete block difficulty order generation
-  var block_types = ['medium'].concat(random_middle_blocks).concat(['medium']);
+  var block_types = [outer_block_type];
+  block_types = block_types.concat(random_middle_blocks);
+  block_types = block_types.concat([outer_block_type]);
 
+  return block_types
+}
+
+
+// generate a formatted and complete set of jsPsych blocks
+// Note: return an object with block stimuli lists and formatted stimuli
+function generatePasatBlockStimuli(block_types) {
   // get random stimuli for each block
   var block_stimuli = _.map(block_types, function(difficulty) {
     return generateStimuli(difficulty);
@@ -251,7 +252,6 @@ function generateRandomBlocks(condition) {
   });
 
   return {
-    block_types: block_types,
     block_stimuli: block_stimuli,
     formatted_stimuli: formatted_stimuli
   }
@@ -262,7 +262,7 @@ function generateRandomBlocks(condition) {
 // return list of trial values
 function generateStimuli(difficulty, num_trials) {
   var difficulty = (typeof difficulty === "undefined") ? 'medium' : difficulty;
-  var num_trials = (typeof num_trials === "undefined") ? 15 : num_trials;
+  var num_trials = (typeof num_trials === "undefined") ? jsPASAT['TRIALS_PER_BLOCK'] : num_trials;
 
   var stimuli;
   var i = 1;
@@ -294,7 +294,8 @@ function generateStimuli(difficulty, num_trials) {
       }
       break;
     case 'hard':
-      // Note: Hard Block defined as each trial has one double digit stimuli
+      // Note: Hard Block defined as each trial has one double digit stimulus
+      // (and one single digit stimulus)
       var digit_max = 19;
       stimuli = [_.random(1, digit_max)]  // add first random number
       while (i < num_trials) {

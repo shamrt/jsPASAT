@@ -104,7 +104,7 @@ function addTrialResults(added_data) {
     response: response,
     correct: correct
   }, added_data);  // merge with given data
-  
+
   return trial_results
 }
 
@@ -166,7 +166,9 @@ function createPasatBlock(stimuli, options) {
 function generatePasatExperimentChunk(stimuli, options) {
   var notice = createTextBlock("When you're ready to continue, a trial block will begin.")
 
-  var pasat_block = createPasatBlock(stimuli, options);
+  var pasat_block = createPasatBlock(stimuli, options),
+      // make all questions required
+      required = _.map(survey_questions, function(){ return true });
 
   var survey_questions = [
     "Rate your current level of <strong>mental effort</strong>.",
@@ -176,6 +178,7 @@ function generatePasatExperimentChunk(stimuli, options) {
       type: 'survey-multi-choice',
       questions: [survey_questions],
       options: [[jsPASAT['LIKERT_SCALE_1'], jsPASAT['LIKERT_SCALE_1']]],
+      required: [required],
       horizontal: true
   }
 

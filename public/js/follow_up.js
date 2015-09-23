@@ -67,7 +67,7 @@ var demographics_5 = {
     [["None", "1", "2", "3", "4", "5", "More than 5"]],
     [["None", "1", "2", "3", "4", "More than 4"]],
     [["None", "1", "2", "3", "4", "5", "More than 5"]],
-    [likert_scale_1],
+    [jsPASAT['LIKERT_SCALE_1']],
     [["Yes", "No"]],
   ],
   horizontal: true
@@ -107,13 +107,22 @@ var prospective_survey_questions = {
     ["How willing would you be to do <strong><u>another</u> working memory task</strong> right now?"],
   ],
   options: [
-    [likert_scale_1],
-    [likert_scale_1],
-    [likert_scale_1],
-    [likert_scale_2],
-    [likert_scale_1],
+    [jsPASAT['LIKERT_SCALE_1']],
+    [jsPASAT['LIKERT_SCALE_1']],
+    [jsPASAT['LIKERT_SCALE_1']],
+    [jsPASAT['LIKERT_SCALE_2']],
+    [jsPASAT['LIKERT_SCALE_1']],
     [["1<br>Not at all<br>satisfied", "2", "3", "4", "5", "6", "7<br>Completely<br>satisfied"]],
     [["1<br>Not at all<br>willing", "2", "3", "4", "5", "6", "7<br>Definitely<br>willing"]],
+  ],
+  required: [
+    [true],
+    [true],
+    [true],
+    [true],
+    [true],
+    [true],
+    [true],
   ],
   horizontal: true
 }

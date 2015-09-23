@@ -167,13 +167,10 @@ function generatePasatExperimentChunk(stimuli, options) {
   var notice = createTextBlock("When you're ready to continue, a trial block will begin.")
 
   var pasat_block = createPasatBlock(stimuli, options),
+      survey_questions = jsPASAT['POST_BLOCK_QUESTIONS'],
       // make all questions required
       required = _.map(survey_questions, function(){ return true });
 
-  var survey_questions = [
-    "Rate your current level of <strong>mental effort</strong>.",
-    "Rate your current level of <strong>discomfort or distress</strong>."
-  ];
   var survey = {
       type: 'survey-multi-choice',
       questions: [survey_questions],

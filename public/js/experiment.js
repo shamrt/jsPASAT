@@ -26,6 +26,13 @@ var prospective_survey = {
       [jsPASAT['LIKERT_SCALE_1']],
       [jsPASAT['LIKERT_SCALE_1']]
     ],
+    required: [
+      [true],
+      [true],
+      [true],
+      [true],
+      [true],
+    ],
     horizontal: true
 }
 experiment.push(prospective_survey);

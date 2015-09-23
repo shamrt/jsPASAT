@@ -23,9 +23,14 @@ var jsPASAT = {
   // --------------------------------
   'TRIALS_PER_BLOCK': 15,
   // The order of blocks presented to a participant, e.g.:
-  // 'BLOCK_TYPE_ORDER': ["medium", "hard", "medium", "medium", "easy", "medium", "medium"],
+  //   'BLOCK_TYPE_ORDER': ["medium", "hard", "medium", "medium", "easy", "medium", "medium"],
   // Note: If set to ``null``, block type order will be randomly generated
   'BLOCK_TYPE_ORDER': null,
+  // Can be a flat array of strings
+  'POST_BLOCK_QUESTIONS': [
+    "Rate your current level of <strong>mental effort</strong>.",
+    "Rate your current level of <strong>discomfort or distress</strong>."
+  ],
 
   // Re-useable Likert scale labels
   // --------------------------------

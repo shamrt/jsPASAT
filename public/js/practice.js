@@ -39,23 +39,6 @@ practice.push(fixation_trial);
 practice.push(practice_block_2);
 
 
-// practice likert questions
-var post_practice_text = "<p>Please answer the following questions. Just give the first rating that comes to mind. Don’t spend a lot of time thinking about your answer</p>";
-var post_practice_instructions = createTextBlock(post_practice_text);
-practice.push(post_practice_instructions);
-
-var practice_survey = {
-    type: 'survey-multi-choice',
-    questions: [
-      ["Rate your current level of <strong>mental effort</strong>."],
-      ["Rate your current level of <strong>discomfort or distress</strong>."]
-    ],
-    options: [[jsPASAT['LIKERT_SCALE_1']], [jsPASAT['LIKERT_SCALE_1']]],
-    horizontal: true
-}
-practice.push(practice_survey);
-
-
 // post-practice notice
 var post_practice_notice_text = "<p><strong>OK, that's the end of the practice block.</strong></p> <p>Do you have any questions at all? Remember, this is a challenging task. If you lose your place, just jump right back in. Watch for two numbers in a row and add them up and keep going.</p> <p>At several points in the task you will pause briefly to report your experience and then continue with the task.</p>";
 var post_practice_notice = createTextBlock(post_practice_notice_text);

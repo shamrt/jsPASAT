@@ -78,13 +78,83 @@ var demographics_6 = {
     ["Please indicate what your current (or intended) university major is:"]
   ]
 }
+
+// extended questions
+var lead_in_question = "When using <strong>computers and/or electronic media</strong>, do you ",
+    extended_questions = [
+      [lead_in_question + "open attachments in emails that are sent by someone you don’t know?"],
+      [lead_in_question + "backup important work and documents on your computer?"],
+      [lead_in_question + "have time limits on how much recreational time you spend using those electronic media at home?"],
+      [lead_in_question + "use the privacy settings on social networking sites, such as Facebook and Twitter, to protect your personal information and privacy?"],
+      ["Do you have anti-virus software on your home computer(s)?"],
+      ["Have you ever had a computer virus?"],
+    ];
+var demographics_7 = {
+  type: 'survey-multi-choice',
+  questions: extended_questions,
+  options: _.map(extended_questions,
+    function(){ return [["Yes", "No"]];
+  })
+}
+var demographics_8 = {
+  type: 'survey-text',
+  questions: [
+    ["How many times have you had a computer virus?"]
+  ]
+}
+
+// behavioural survey
+var lead_in_school = "<strong>At school</strong>, have you had ",
+    lead_in_life = "<strong>In general</strong>, have you ",
+    behavioural_survey_questions = [
+        [lead_in_school + "problems taking notes?"],
+        [lead_in_school + "problems completing assignments?"],
+        [lead_in_school + "problems getting your work done efficiently ?"],
+        [lead_in_school + "problems with instructors?"],
+        [lead_in_school + "problems meeting minimum requirements to stay in school?"],
+        [lead_in_school + "problems with attendance?"],
+        [lead_in_school + "problems with being late?"],
+        [lead_in_school + "problems with working to your potential?"],
+        [lead_in_school + "problems with inconsistent grades?"],
+        [lead_in_life + "made excessive or inappropriate use of internet, video games or TV?"],
+        [lead_in_life + "had problems getting ready to leave the house?"],
+        [lead_in_life + "had problems getting to bed?"],
+        [lead_in_life + "had problems with eating junk food?"],
+        [lead_in_life + "gotten hurt or injured?"],
+        [lead_in_life + "been avoiding exercise?"],
+        [lead_in_life + "had problems attending regular appointments, such as doctor/dentist?"],
+        [lead_in_life + "had problems managing chores at home?"],
+        [lead_in_life + "had problems managing money?"]
+    ],
+    behavioural_survey_likert = [
+      "0<br>Never or<br>not at all",
+      "1<br>Sometimes<br>or somewhat",
+      "2<br>Often or<br>very much",
+      "3<br>Very often<br>or very much",
+      "N/A"
+    ],
+    behavioural_survey_preamble = "For these next items, please indicate how the emotional or behavioural problems listed might have affected you <strong><u>in the last month</u></strong>.";
+var demographics_9_notice = createTextBlock(behavioural_survey_preamble);
+var demographics_9 = {
+  type: 'survey-multi-choice',
+  questions: _.shuffle(behavioural_survey_questions),
+  options: _.map(behavioural_survey_questions,
+    function(){ return [behavioural_survey_likert];
+  }),
+  horizontal: true
+}
+
 follow_up.push(
   demographics_1,
   demographics_2,
   demographics_3,
   demographics_4,
   demographics_5,
-  demographics_6
+  demographics_6,
+  demographics_7,
+  demographics_8,
+  demographics_9_notice,
+  demographics_9
 );
 
 

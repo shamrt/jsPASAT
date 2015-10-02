@@ -163,17 +163,18 @@ var retrospective_survey_text = "<p>Now we are going to ask you some questions a
 var retrospective_survey_notice = createTextBlock(retrospective_survey_text);
 
 // retrospective questions
-var retrospective_survey_questions = {
+var retrospective_survey_questions = [
+  ["On this <strong>working memory task</strong>, what was your <u><strong>total amount of mental effort</strong></u>?"],
+  ["On this <strong>working memory task</strong>, what was your total amount of <u><strong>discomfort or distress</strong></u>?"],
+  ["How much did you <u><strong>enjoy</u></strong> doing this <strong>working memory task</strong>?"],
+  ["How well did you <u><strong>perform</u></strong> on the <strong>working memory task</strong>?"],
+  ["How much <u><strong>mental fatigue</u></strong> did you have during the <strong>working memory task</strong>?"],
+  ["How <u><strong>satisfied</u></strong> are you with your performance on the <strong>working memory task</strong>?"],
+  ["How willing would you be to do <strong><u>another</u> working memory task</strong> right now?"],
+];
+var retrospective_survey = {
   type: 'survey-multi-choice',
-  questions: [
-    ["On this <strong>working memory task</strong>, what was your <u><strong>total amount of mental effort</strong></u>?"],
-    ["On this <strong>working memory task</strong>, what was your total amount of <u><strong>discomfort or distress</strong></u>?"],
-    ["How much did you <u><strong>enjoy</u></strong> doing this <strong>working memory task</strong>?"],
-    ["How well did you <u><strong>perform</u></strong> on the <strong>working memory task</strong>?"],
-    ["How much <u><strong>mental fatigue</u></strong> did you have during the <strong>working memory task</strong>?"],
-    ["How <u><strong>satisfied</u></strong> are you with your performance on the <strong>working memory task</strong>?"],
-    ["How willing would you be to do <strong><u>another</u> working memory task</strong> right now?"],
-  ],
+  questions: retrospective_survey_questions,
   options: [
     [jsPASAT['LIKERT_SCALE_1']],
     [jsPASAT['LIKERT_SCALE_1']],
@@ -183,15 +184,9 @@ var retrospective_survey_questions = {
     [["1<br>Not at all<br>satisfied", "2", "3", "4", "5", "6", "7<br>Completely<br>satisfied"]],
     [["1<br>Not at all<br>willing", "2", "3", "4", "5", "6", "7<br>Definitely<br>willing"]],
   ],
-  required: [
-    [true],
-    [true],
-    [true],
-    [true],
-    [true],
-    [true],
-    [true],
-  ],
+  required: _.map(retrospective_survey_questions, function() {
+    return [true];
+  }),
   horizontal: true
 }
 
@@ -199,7 +194,7 @@ var retrospective_survey_questions = {
 var url_params = getUrlParams();
 if (!url_params.has('skip_experiment')) {
   follow_up.push(retrospective_survey_notice);
-  follow_up.push(retrospective_survey_questions);
+  follow_up.push(retrospective_survey);
 }
 
 

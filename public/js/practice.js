@@ -40,7 +40,7 @@ practice.push(practice_block_2_instructions);
 // note: repeats until 1/4 of problems are correctly answered, or 3 failed
 // trials
 var practice_block_2_attempts = 0,
-    skip_experiment = true;
+    skip_experiment = false;
 var practice_block_2_notice_text = "<p>OK, let's practice the task once more, just as it will be in the experiment...</p>",
     practice_block_2_notice = createTextBlock(practice_block_2_notice_text),
     practice_block_2 = createPasatBlock(jsPASAT['PRACTICE_BLOCK_2_STIMULI']);
@@ -64,7 +64,7 @@ var practice_2_chunk = {
     } else if (practice_block_2_attempts >=
         jsPASAT['PRACTICE_BLOCK_2_MAX_ATTEMPTS']) {
       // skip the experiment in order to go straight to demographics
-
+      skip_experiment = true;
       return false;
     } else {
       // keep going until enough problems are correctly answered
@@ -72,7 +72,7 @@ var practice_2_chunk = {
     }
   }
 }
-// practice.push(practice_2_chunk);
+practice.push(practice_2_chunk);
 
 
 // post-practice notice

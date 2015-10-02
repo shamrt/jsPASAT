@@ -30,14 +30,18 @@ var fixation_trial = {
 // Functions
 // ------------------------
 
+// get url parameters
+function getUrlParams() {
+  var url_params = window.location.search.slice(1);
+  return $.deparam(url_params);
+}
+
 // try to get a participant ID
 function getParticipantId() {
   var pid;
 
   // first attempt to get PID via URL params
-  var
-    url_params = window.location.search.slice(1),
-    params = $.deparam(url_params);
+  params = getUrlParams();
   pid = params['pid'];
 
   // next, get PID via window prompt

@@ -37,6 +37,10 @@ practice.push(practice_block_2_instructions);
 var practice_block_2 = createPasatBlock(jsPASAT['PRACTICE_BLOCK_2_STIMULI']);
 practice.push(fixation_trial);
 practice.push(practice_block_2);
+// note: repeats until 1/4 of problems are correctly answered, or 3 failed
+// trials
+var practice_block_2_attempts = 0,
+    skip_experiment = true;
 
 
 // post-practice notice
@@ -55,7 +59,13 @@ jsPsych.init({
   experiment_structure: practice,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    var url = 'experiment?pid=' + participant_id;
+    var url_params = {pid: participant_id},
+        url_path = 'experiment';
+    if (skip_experiment) {
+      url_params = _.extend(url_params, {skip_experiment: true});
+      url_path = 'follow_up';
+    }
+    var url = url_path + '?' + $.param(url_params);
     postDataToDb(jsPsych.data.getData(), participant_id, url);
   }
 });

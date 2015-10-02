@@ -161,7 +161,6 @@ follow_up.push(
 // prospective questions notice
 var prospective_survey_text = "<p>Now we are going to ask you some questions about <strong>the working memory task</strong> you completed previously – that is, the task where numbers were presented to you on a computer screen one at a time and you had to add them up.</p>";
 var prospective_survey_notice = createTextBlock(prospective_survey_text);
-follow_up.push(prospective_survey_notice);
 
 
 // prospective questions
@@ -196,7 +195,13 @@ var prospective_survey_questions = {
   ],
   horizontal: true
 }
-follow_up.push(prospective_survey_questions);
+
+// don't include retrospective questions if the experiment was skipped
+var url_params = getUrlParams();
+if (!url_params.has('skip_experiment')) {
+  follow_up.push(retrospective_survey_notice);
+  follow_up.push(retrospective_survey_questions);
+}
 
 
 // add generated experiment settings to saved data

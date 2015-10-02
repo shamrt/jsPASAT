@@ -17,7 +17,9 @@ var jsPASAT = {
   // Practice block stimuli
   // --------------------------------
   'PRACTICE_BLOCK_1_STIMULI': [9, 1, 3, 5, 2, 6],
-  'PRACTICE_BLOCK_2_STIMULI': [6, 4, 5, 7, 2, 8, 4, 5, 9, 3, 6, 9, 2, 7, 3, 8],
+  'PRACTICE_BLOCK_2_STIMULI': [6, 4, 5, 7, 2],
+  // 'PRACTICE_BLOCK_2_STIMULI': [6, 4, 5, 7, 2, 8, 4, 5, 9, 3, 6, 9, 2, 7, 3, 8],
+  'PRACTICE_BLOCK_2_MAX_ATTEMPTS': 3,
 
   // Experiment blocks
   // --------------------------------

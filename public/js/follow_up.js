@@ -1,5 +1,5 @@
 /**
- * Experiment view blocks for jsPASAT
+ * Follow-up question blocks for jsPASAT
  */
 var
   follow_up = [],
@@ -89,14 +89,14 @@ var lead_in_question = "When using <strong>computers and/or electronic media</st
       ["Do you have anti-virus software on your home computer(s)?"],
       ["Have you ever had a computer virus?"],
     ];
-var demographics_7 = {
+var extended_questions_1 = {
   type: 'survey-multi-choice',
   questions: extended_questions,
   options: _.map(extended_questions,
     function(){ return [["Yes", "No"]];
   })
 }
-var demographics_8 = {
+var extended_questions_2 = {
   type: 'survey-text',
   questions: [
     ["How many times have you had a computer virus?"]
@@ -134,8 +134,8 @@ var lead_in_school = "<strong>At school</strong>, have you had ",
       "N/A"
     ],
     behavioural_survey_preamble = "For these next items, please indicate how the emotional or behavioural problems listed might have affected you <strong><u>in the last month</u></strong>.";
-var demographics_9_notice = createTextBlock(behavioural_survey_preamble);
-var demographics_9 = {
+var behavioural_survey_notice = createTextBlock(behavioural_survey_preamble);
+var behavioural_survey = {
   type: 'survey-multi-choice',
   questions: _.shuffle(behavioural_survey_questions),
   options: _.map(behavioural_survey_questions,
@@ -151,20 +151,19 @@ follow_up.push(
   demographics_4,
   demographics_5,
   demographics_6,
-  demographics_7,
-  demographics_8,
-  demographics_9_notice,
-  demographics_9
+  extended_questions_1,
+  extended_questions_2,
+  behavioural_survey_notice,
+  behavioural_survey
 );
 
 
-// prospective questions notice
-var prospective_survey_text = "<p>Now we are going to ask you some questions about <strong>the working memory task</strong> you completed previously – that is, the task where numbers were presented to you on a computer screen one at a time and you had to add them up.</p>";
-var prospective_survey_notice = createTextBlock(prospective_survey_text);
+// retrospective questions notice
+var retrospective_survey_text = "<p>Now we are going to ask you some questions about <strong>the working memory task</strong> you completed previously – that is, the task where numbers were presented to you on a computer screen one at a time and you had to add them up.</p>";
+var retrospective_survey_notice = createTextBlock(retrospective_survey_text);
 
-
-// prospective questions
-var prospective_survey_questions = {
+// retrospective questions
+var retrospective_survey_questions = {
   type: 'survey-multi-choice',
   questions: [
     ["On this <strong>working memory task</strong>, what was your <u><strong>total amount of mental effort</strong></u>?"],

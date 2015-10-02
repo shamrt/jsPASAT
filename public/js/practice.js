@@ -21,7 +21,7 @@ practice.push(practice_block_1);
 
 // practice block 2 instructions
 var practice_num_items = jsPASAT['PRACTICE_BLOCK_2_STIMULI'].length,
-    practice_min_correct = Math.floor((practice_num_items - 1) / 4);
+    practice_min_correct = Math.ceil((practice_num_items - 1) / 4);
 
 var practice_block_2_instructions = {
   type: "instructions",
@@ -76,9 +76,23 @@ practice.push(practice_2_chunk);
 
 
 // post-practice notice
-var post_practice_notice_text = "<p><strong>OK, looks like you've got it! That's the end of the practice block.</strong></p> <p>Do you have any questions at all? Remember, this is a challenging task. If you lose your place, just jump right back in. Watch for two numbers in a row and add them up and keep going.</p> <p>In addition, at several points in the task you will pause briefly to report your experience, and then continue to the next part.</p>";
-var post_practice_notice = createTextBlock(post_practice_notice_text);
+// note: skipped if practice block 2 not understood
+var post_practice_notice_block = createTextBlock(
+  "<p><strong>OK, looks like you've got it!</strong></p> <p>Do you have any questions at all? Remember, this is a challenging task. If you lose your place, just jump right back in. Watch for two numbers in a row and add them up and keep going.</p> <p>In addition, at several points in the task you will pause briefly to report your experience, and then continue to the next part.</p>"
+);
+var post_practice_notice = {
+  chunk_type: 'if',
+  timeline: [post_practice_notice_block],
+  conditional_function: function() { return !skip_experiment; }
+}
 practice.push(post_practice_notice);
+
+
+// end practice notice
+var end_practice_notice = createTextBlock(
+  "<strong>You have now completed the practice blocks.</strong>"
+);
+practice.push(end_practice_notice);
 
 
 // add generated experiment settings to saved data
@@ -94,7 +108,7 @@ jsPsych.init({
     var url_params = {pid: participant_id},
         url_path = 'experiment';
     if (skip_experiment) {
-      url_params = _.extend(url_params, {skip_experiment: true});
+      url_params = _.extend(url_params, {skip_experiment: skip_experiment});
       url_path = 'follow_up';
     }
     var url = url_path + '?' + $.param(url_params);

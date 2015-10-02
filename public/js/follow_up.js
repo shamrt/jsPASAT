@@ -6,7 +6,7 @@ var
   participant_id = getParticipantId();
 
 // post-survey notice
-var task_complete_text = "<p><strong>Now you have completed the working memory task.</strong></p> <p>Next you will be asked a series of follow-up questions.</p>";
+var task_complete_text = "<p>Now you will be asked a series of questions about yourself.</p>";
 var task_complete_notice = createTextBlock(task_complete_text);
 follow_up.push(task_complete_notice);
 

@@ -1,12 +1,12 @@
 /**
- * Experiment view blocks for jsPASAT
+ * Follow-up question blocks for jsPASAT
  */
 var
   follow_up = [],
   participant_id = getParticipantId();
 
 // post-survey notice
-var task_complete_text = "<p><strong>Now you have completed the working memory task.</strong></p> <p>Next you will be asked a series of follow-up questions.</p>";
+var task_complete_text = "<p>Now you will be asked a series of questions about yourself.</p>";
 var task_complete_notice = createTextBlock(task_complete_text);
 follow_up.push(task_complete_notice);
 
@@ -78,34 +78,103 @@ var demographics_6 = {
     ["Please indicate what your current (or intended) university major is:"]
   ]
 }
+
+// extended questions
+var lead_in_question = "When using <strong>computers and/or electronic media</strong>, do you ",
+    extended_questions = [
+      [lead_in_question + "open attachments in emails that are sent by someone you don’t know?"],
+      [lead_in_question + "backup important work and documents on your computer?"],
+      [lead_in_question + "have time limits on how much recreational time you spend using those electronic media at home?"],
+      [lead_in_question + "use the privacy settings on social networking sites, such as Facebook and Twitter, to protect your personal information and privacy?"],
+      ["Do you have anti-virus software on your home computer(s)?"],
+      ["Have you ever had a computer virus?"],
+    ];
+var extended_questions_1 = {
+  type: 'survey-multi-choice',
+  questions: extended_questions,
+  options: _.map(extended_questions,
+    function(){ return [["Yes", "No"]];
+  })
+}
+var extended_questions_2 = {
+  type: 'survey-text',
+  questions: [
+    ["How many times have you had a computer virus?"]
+  ]
+}
+
+// behavioural survey
+var lead_in_school = "<strong>At school</strong>, have you had ",
+    lead_in_life = "<strong>In general</strong>, have you ",
+    behavioural_survey_questions = [
+        [lead_in_school + "problems taking notes?"],
+        [lead_in_school + "problems completing assignments?"],
+        [lead_in_school + "problems getting your work done efficiently ?"],
+        [lead_in_school + "problems with instructors?"],
+        [lead_in_school + "problems meeting minimum requirements to stay in school?"],
+        [lead_in_school + "problems with attendance?"],
+        [lead_in_school + "problems with being late?"],
+        [lead_in_school + "problems with working to your potential?"],
+        [lead_in_school + "problems with inconsistent grades?"],
+        [lead_in_life + "made excessive or inappropriate use of internet, video games or TV?"],
+        [lead_in_life + "had problems getting ready to leave the house?"],
+        [lead_in_life + "had problems getting to bed?"],
+        [lead_in_life + "had problems with eating junk food?"],
+        [lead_in_life + "gotten hurt or injured?"],
+        [lead_in_life + "been avoiding exercise?"],
+        [lead_in_life + "had problems attending regular appointments, such as doctor/dentist?"],
+        [lead_in_life + "had problems managing chores at home?"],
+        [lead_in_life + "had problems managing money?"]
+    ],
+    behavioural_survey_likert = [
+      "0<br>Never or<br>not at all",
+      "1<br>Sometimes<br>or somewhat",
+      "2<br>Often or<br>very much",
+      "3<br>Very often<br>or very much",
+      "N/A"
+    ],
+    behavioural_survey_preamble = "For these next items, please indicate how the emotional or behavioural problems listed might have affected you <strong><u>in the last month</u></strong>.";
+var behavioural_survey_notice = createTextBlock(behavioural_survey_preamble);
+var behavioural_survey = {
+  type: 'survey-multi-choice',
+  questions: _.shuffle(behavioural_survey_questions),
+  options: _.map(behavioural_survey_questions,
+    function(){ return [behavioural_survey_likert];
+  }),
+  horizontal: true
+}
+
 follow_up.push(
   demographics_1,
   demographics_2,
   demographics_3,
   demographics_4,
   demographics_5,
-  demographics_6
+  demographics_6,
+  extended_questions_1,
+  extended_questions_2,
+  behavioural_survey_notice,
+  behavioural_survey
 );
 
 
-// prospective questions notice
-var prospective_survey_text = "<p>Now we are going to ask you some questions about <strong>the working memory task</strong> you completed previously – that is, the task where numbers were presented to you on a computer screen one at a time and you had to add them up.</p>";
-var prospective_survey_notice = createTextBlock(prospective_survey_text);
-follow_up.push(prospective_survey_notice);
+// retrospective questions notice
+var retrospective_survey_text = "<p>Now we are going to ask you some questions about <strong>the working memory task</strong> you completed previously – that is, the task where numbers were presented to you on a computer screen one at a time and you had to add them up.</p>";
+var retrospective_survey_notice = createTextBlock(retrospective_survey_text);
 
-
-// prospective questions
-var prospective_survey_questions = {
+// retrospective questions
+var retrospective_survey_questions = [
+  ["On this <strong>working memory task</strong>, what was your <u><strong>total amount of mental effort</strong></u>?"],
+  ["On this <strong>working memory task</strong>, what was your total amount of <u><strong>discomfort or distress</strong></u>?"],
+  ["How much did you <u><strong>enjoy</u></strong> doing this <strong>working memory task</strong>?"],
+  ["How well did you <u><strong>perform</u></strong> on the <strong>working memory task</strong>?"],
+  ["How much <u><strong>mental fatigue</u></strong> did you have during the <strong>working memory task</strong>?"],
+  ["How <u><strong>satisfied</u></strong> are you with your performance on the <strong>working memory task</strong>?"],
+  ["How willing would you be to do <strong><u>another</u> working memory task</strong> right now?"],
+];
+var retrospective_survey = {
   type: 'survey-multi-choice',
-  questions: [
-    ["On this <strong>working memory task</strong>, what was your <u><strong>total amount of mental effort</strong></u>?"],
-    ["On this <strong>working memory task</strong>, what was your total amount of <u><strong>discomfort or distress</strong></u>?"],
-    ["How much did you <u><strong>enjoy</u></strong> doing this <strong>working memory task</strong>?"],
-    ["How well did you <u><strong>perform</u></strong> on the <strong>working memory task</strong>?"],
-    ["How much <u><strong>mental fatigue</u></strong> did you have during the <strong>working memory task</strong>?"],
-    ["How <u><strong>satisfied</u></strong> are you with your performance on the <strong>working memory task</strong>?"],
-    ["How willing would you be to do <strong><u>another</u> working memory task</strong> right now?"],
-  ],
+  questions: retrospective_survey_questions,
   options: [
     [jsPASAT['LIKERT_SCALE_1']],
     [jsPASAT['LIKERT_SCALE_1']],
@@ -115,18 +184,18 @@ var prospective_survey_questions = {
     [["1<br>Not at all<br>satisfied", "2", "3", "4", "5", "6", "7<br>Completely<br>satisfied"]],
     [["1<br>Not at all<br>willing", "2", "3", "4", "5", "6", "7<br>Definitely<br>willing"]],
   ],
-  required: [
-    [true],
-    [true],
-    [true],
-    [true],
-    [true],
-    [true],
-    [true],
-  ],
+  required: _.map(retrospective_survey_questions, function() {
+    return [true];
+  }),
   horizontal: true
 }
-follow_up.push(prospective_survey_questions);
+
+// don't include retrospective questions if the experiment was skipped
+var url_params = getUrlParams();
+if (!_.has(url_params, 'skip_experiment')) {
+  follow_up.push(retrospective_survey_notice);
+  follow_up.push(retrospective_survey);
+}
 
 
 // add generated experiment settings to saved data

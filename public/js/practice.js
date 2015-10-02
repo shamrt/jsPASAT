@@ -20,12 +20,15 @@ practice.push(practice_block_1);
 
 
 // practice block 2 instructions
+var practice_num_items = jsPASAT['PRACTICE_BLOCK_2_STIMULI'].length,
+    practice_min_correct = Math.ceil((practice_num_items - 1) / 4);
+
 var practice_block_2_instructions = {
   type: "instructions",
   pages: [
-    "<p>Good. OK, you should be getting the hang of it.</p> <p>Before continuing, let the experimenter know if you have any questions.</p>",
+    "<p>OK, you should be getting the hang of it.</p> <p>Before continuing, let the experimenter know if you have any questions.</p>",
 
-    "<p>Now we are going to try some more practice but this time the numbers will be presented at a rate of 1 every 4 seconds. Also, you will be asked to report on your experience. This is how the procedure will work when you start the experiment in a moment.</p> <p>Let's practice all of that now, just as it will be in the experiment...</p>"
+    "<p>Now we are going to try some more practice but this time the numbers will be presented at a rate of <code>1</code> every <code>" + (jsPASAT['TIMING_POST_STIM'] / 1000) + "</code> seconds. You will be shown <code>" + practice_num_items + "</code> numbers; try your best to get as many problems right as possible.</p> <p>If you get fewer than <code>" + practice_min_correct + "</code> right, don't worry, the practice will repeat and you can try again! We want to be sure that you understand the task that is ahead of you.</p>"
   ],
   show_clickable_nav: true,
   allow_backward: false
@@ -34,32 +37,62 @@ practice.push(practice_block_2_instructions);
 
 
 // practice block 2
-var practice_block_2 = createPasatBlock(jsPASAT['PRACTICE_BLOCK_2_STIMULI']);
-practice.push(fixation_trial);
-practice.push(practice_block_2);
+// note: repeats until 1/4 of problems are correctly answered, or 3 failed
+// trials
+var practice_block_2_attempts = 0,
+    skip_experiment = false;
+var practice_block_2_notice_text = "<p>OK, let's practice the task once more, just as it will be in the experiment...</p>",
+    practice_block_2_notice = createTextBlock(practice_block_2_notice_text),
+    practice_block_2 = createPasatBlock(jsPASAT['PRACTICE_BLOCK_2_STIMULI']);
 
+var practice_2_chunk = {
+  chunk_type: 'while',
+  timeline: [practice_block_2_notice, fixation_trial, practice_block_2],
+  continue_function: function(data) {
+    practice_block_2_attempts++;
+    // total number of correct problems
+    var num_correct = 0;
+    for (var i in data) {
+      if (data[i].correct) {
+        num_correct++;
+      }
+    }
 
-// practice likert questions
-var post_practice_text = "<p>Please answer the following questions. Just give the first rating that comes to mind. Don’t spend a lot of time thinking about your answer</p>";
-var post_practice_instructions = createTextBlock(post_practice_text);
-practice.push(post_practice_instructions);
-
-var practice_survey = {
-    type: 'survey-multi-choice',
-    questions: [
-      ["Rate your current level of <strong>mental effort</strong>."],
-      ["Rate your current level of <strong>discomfort or distress</strong>."]
-    ],
-    options: [[jsPASAT['LIKERT_SCALE_1']], [jsPASAT['LIKERT_SCALE_1']]],
-    horizontal: true
+    if (num_correct >= practice_min_correct) {
+      // end the practice loop
+      return false;
+    } else if (practice_block_2_attempts >=
+        jsPASAT['PRACTICE_BLOCK_2_MAX_ATTEMPTS']) {
+      // skip the experiment in order to go straight to demographics
+      skip_experiment = true;
+      return false;
+    } else {
+      // keep going until enough problems are correctly answered
+      return true;
+    }
+  }
 }
-practice.push(practice_survey);
+practice.push(practice_2_chunk);
 
 
 // post-practice notice
-var post_practice_notice_text = "<p><strong>OK, that's the end of the practice block.</strong></p> <p>Do you have any questions at all? Remember, this is a challenging task. If you lose your place, just jump right back in. Watch for two numbers in a row and add them up and keep going.</p> <p>At several points in the task you will pause briefly to report your experience and then continue with the task.</p>";
-var post_practice_notice = createTextBlock(post_practice_notice_text);
+// note: skipped if practice block 2 not understood
+var post_practice_notice_block = createTextBlock(
+  "<p><strong>OK, looks like you've got it!</strong></p> <p>Do you have any questions at all? Remember, this is a challenging task. If you lose your place, just jump right back in. Watch for two numbers in a row, then add them up and keep going.</p> <p>Also note that, at several points during the task, you will pause briefly and be asked to report your experience before continuing on.</p>"
+);
+var post_practice_notice = {
+  chunk_type: 'if',
+  timeline: [post_practice_notice_block],
+  conditional_function: function() { return !skip_experiment; }
+}
 practice.push(post_practice_notice);
+
+
+// end practice notice
+var end_practice_notice = createTextBlock(
+  "<strong>You have now completed the practice blocks.</strong>"
+);
+practice.push(end_practice_notice);
 
 
 // add generated experiment settings to saved data
@@ -72,7 +105,13 @@ jsPsych.init({
   experiment_structure: practice,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    var url = 'experiment?pid=' + participant_id;
+    var url_params = {pid: participant_id},
+        url_path = 'experiment';
+    if (skip_experiment) {
+      url_params = _.extend(url_params, {skip_experiment: skip_experiment});
+      url_path = 'follow_up';
+    }
+    var url = url_path + '?' + $.param(url_params);
     postDataToDb(jsPsych.data.getData(), participant_id, url);
   }
 });

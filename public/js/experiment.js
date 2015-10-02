@@ -51,6 +51,13 @@ var pasat_blocks = generatePasatBlockStimuli(block_types);
 experiment = experiment.concat(pasat_blocks.formatted_stimuli);
 
 
+// end notice
+var experiment_end_notice = createTextBlock(
+  "<p><strong>You have completed the working memory task.</strong></p>"
+);
+experiment.push(experiment_end_notice);
+
+
 // add generated experiment settings to saved data
 jsPsych.data.addProperties({
   condition: condition,

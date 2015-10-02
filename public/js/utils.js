@@ -8,7 +8,7 @@
 // NOTE: Prompt sound used in this file is courtesy SoundBible.com - http://soundbible.com/1252-Bleep.html
 var beep = new Howl({
   urls: ['../audio/bleep.mp3', '../audio/bleep.ogg'],
-  volume: 0.7
+  volume: 0.5
 });
 var play_beep = "<script>beep.play()</script>";
 

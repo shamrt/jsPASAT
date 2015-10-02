@@ -192,7 +192,7 @@ var retrospective_survey = {
 
 // don't include retrospective questions if the experiment was skipped
 var url_params = getUrlParams();
-if (!url_params.has('skip_experiment')) {
+if (!_.has(url_params, 'skip_experiment')) {
   follow_up.push(retrospective_survey_notice);
   follow_up.push(retrospective_survey);
 }

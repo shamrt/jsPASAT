@@ -47,14 +47,6 @@ app.get('/practice', function(request, response) {
     });
 });
 
-// post-test questions route
-app.get('/follow_up', function(request, response) {
-    response.render('experiment.html', {
-        js_filename: 'follow_up',
-        jspsych_plugins: ['survey-multi-choice', 'text', 'survey-text']
-    });
-});
-
 // experiment route
 app.get('/experiment', function(request, response) {
     response.render('experiment.html', {
@@ -63,7 +55,15 @@ app.get('/experiment', function(request, response) {
     });
 });
 
-// experiment route
+// post-test questions route
+app.get('/follow_up', function(request, response) {
+    response.render('experiment.html', {
+        js_filename: 'follow_up',
+        jspsych_plugins: ['survey-multi-choice', 'text', 'survey-text']
+    });
+});
+
+// experiment finished route
 app.get('/finish', function(request, response) {
     response.render('finished.html');
 });

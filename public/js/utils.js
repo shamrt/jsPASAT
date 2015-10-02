@@ -8,7 +8,7 @@
 // NOTE: Prompt sound used in this file is courtesy SoundBible.com - http://soundbible.com/1252-Bleep.html
 var beep = new Howl({
   urls: ['../audio/bleep.mp3', '../audio/bleep.ogg'],
-  volume: 0.7
+  volume: 0.5
 });
 var play_beep = "<script>beep.play()</script>";
 
@@ -30,14 +30,18 @@ var fixation_trial = {
 // Functions
 // ------------------------
 
+// get url parameters
+function getUrlParams() {
+  var url_params = window.location.search.slice(1);
+  return $.deparam(url_params);
+}
+
 // try to get a participant ID
 function getParticipantId() {
   var pid;
 
   // first attempt to get PID via URL params
-  var
-    url_params = window.location.search.slice(1),
-    params = $.deparam(url_params);
+  params = getUrlParams();
   pid = params['pid'];
 
   // next, get PID via window prompt

@@ -39,15 +39,18 @@ var demographics_2 = {
     ["What is your mother's occupation?"]
   ]
 }
+var demographics_3_questions = [
+  ["What is your father’s highest level of education?"]
+];
 var demographics_3 = {
   type: 'survey-multi-choice',
-  questions: [
-    ["What is your father’s highest level of education?"]
-  ],
+  questions: demographics_3_questions,
   options: [
     [["Less than high school", "High school", "Some college", "BA/BSc degree", "MA/MSc degree", "PhD", "Professional degree (e.g., law)", "Not applicable"]]
   ],
-  required: [true]
+  required: _.map(demographics_3_questions, function() {
+    return [true];
+  })
 }
 var demographics_4 = {
   type: 'survey-text',

@@ -12,22 +12,26 @@ follow_up.push(task_complete_notice);
 
 
 // post-survey demographics questions
+var demographics_1_questions = [
+  ["Which year of university are you currently in?"],
+  ["What is the highest level of education that you intend to complete?"],
+  ["Is English your first language?"],
+  ["For how many years have you been speaking English?"],
+  ["What is your mother’s highest level of education?"],
+];
 var demographics_1 = {
   type: 'survey-multi-choice',
-  questions: [
-    ["Which year of university are you currently in?"],
-    ["What is the highest level of education that you intend to complete?"],
-    ["Is English your first language?"],
-    ["For how many years have you been speaking English?"],
-    ["What is your mother’s highest level of education?"],
-  ],
+  questions: demographics_1_questions,
   options: [
     [["1st year undergrad", "2nd year undergrad", "3rd year undergrad", "4th year undergrad", "Graduated", "Post-BA/BSc continuing"]],
     [["Bachelor's degree", "Master's degree", "PhD", "Professional degree (e.g., law)"]],
     [["Yes", "No"]],
     [["Less than 1 year", "1–2 years", "3–5 years", "6–10 years", "10+ years", "All my life"]],
     [["Less than high school", "High school", "Some college", "BA/BSc degree", "MA/MSc degree", "PhD", "Professional degree (e.g., law)", "Not applicable"]],
-  ]
+  ],
+  required: _.map(demographics_1_questions, function() {
+    return [true];
+  })
 }
 var demographics_2 = {
   type: 'survey-text',
@@ -42,7 +46,8 @@ var demographics_3 = {
   ],
   options: [
     [["Less than high school", "High school", "Some college", "BA/BSc degree", "MA/MSc degree", "PhD", "Professional degree (e.g., law)", "Not applicable"]]
-  ]
+  ],
+  required: [true]
 }
 var demographics_4 = {
   type: 'survey-text',
@@ -52,16 +57,17 @@ var demographics_4 = {
     ["Estimate your current university average<br><em>(estimate percentage; e.g., <code>75%</code>)</em>:"],
   ]
 }
+var demographics_5_questions = [
+  ["How many <u>statistics</u> courses <strong>in university</strong> have you taken (or are currently taking)?"],
+  ["How many <u>statistics</u> courses did you take <strong>in high school</strong>?"],
+  ["How many years of <strong>mathematics</strong> (algebra, geometry, calculus, etc.) did you take <strong>in high school</strong>?"],
+  ["How many <u>mathematics</u> courses <strong>in university</strong> have you taken (or are currently taking)?"],
+  ["On a scale of 1–7, how much do you like math?"],
+  ["Have you been previously diagnosed with ADD or AD/HD?"],
+];
 var demographics_5 = {
   type: 'survey-multi-choice',
-  questions: [
-    ["How many <u>statistics</u> courses <strong>in university</strong> have you taken (or are currently taking)?"],
-    ["How many <u>statistics</u> courses did you take <strong>in high school</strong>?"],
-    ["How many years of <strong>mathematics</strong> (algebra, geometry, calculus, etc.) did you take <strong>in high school</strong>?"],
-    ["How many <u>mathematics</u> courses <strong>in university</strong> have you taken (or are currently taking)?"],
-    ["On a scale of 1–7, how much do you like math?"],
-    ["Have you been previously diagnosed with ADD or AD/HD?"],
-  ],
+  questions: demographics_5_questions,
   options: [
     [["None", "1", "2", "3", "4", "5", "More than 5"]],
     [["None", "1", "2", "3", "4", "5", "More than 5"]],
@@ -70,6 +76,9 @@ var demographics_5 = {
     [jsPASAT['LIKERT_SCALE_1']],
     [["Yes", "No"]],
   ],
+  required: _.map(demographics_5_questions, function() {
+    return [true];
+  }),
   horizontal: true
 }
 var demographics_6 = {
@@ -94,6 +103,9 @@ var extended_questions_1 = {
   questions: extended_questions,
   options: _.map(extended_questions,
     function(){ return [["Yes", "No"]];
+  }),
+  required: _.map(extended_questions, function() {
+    return [true];
   })
 }
 var extended_questions_2 = {
@@ -140,6 +152,9 @@ var behavioural_survey = {
   questions: _.shuffle(behavioural_survey_questions),
   options: _.map(behavioural_survey_questions,
     function(){ return [behavioural_survey_likert];
+  }),
+  required: _.map(behavioural_survey_questions, function() {
+    return [true];
   }),
   horizontal: true
 }

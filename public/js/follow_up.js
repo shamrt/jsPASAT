@@ -12,7 +12,16 @@ follow_up.push(task_complete_notice);
 
 
 // post-survey demographics questions
+var demographics_0 = {
+  type: 'survey-text',
+  questions: [
+    ["How old are you?"],
+    ["What is your date of birth? (MM/YYYY; e.g., <code>01/1995</code>)"]
+  ]
+}
+
 var demographics_1_questions = [
+  ["Please indicate your sex:"],
   ["Which year of university are you currently in?"],
   ["What is the highest level of education that you intend to complete?"],
   ["Is English your first language?"],
@@ -23,6 +32,7 @@ var demographics_1 = {
   type: 'survey-multi-choice',
   questions: demographics_1_questions,
   options: [
+    [["Male", "Female"]],
     [["1st year undergrad", "2nd year undergrad", "3rd year undergrad", "4th year undergrad", "Graduated", "Post-BA/BSc continuing"]],
     [["Bachelor's degree", "Master's degree", "PhD", "Professional degree (e.g., law)"]],
     [["Yes", "No"]],
@@ -163,6 +173,7 @@ var behavioural_survey = {
 }
 
 follow_up.push(
+  demographics_0,
   demographics_1,
   demographics_2,
   demographics_3,

@@ -13,5 +13,5 @@ def test_get_data_file_paths():
     mock_practice_csvs = compile_data.get_data_file_paths(
         MOCK_DATA_DIR, 'practice')
     assert len(mock_practice_csvs) == 7
-    csv_1_path = '/Users/smartin/dev/workspaces/gh/jsPASAT/scripts/tests/mock_data/practice/1.csv'
+    csv_1_path = os.path.join(TESTS_DIR, 'mock_data', 'practice', '1.csv')
     assert csv_1_path in mock_practice_csvs

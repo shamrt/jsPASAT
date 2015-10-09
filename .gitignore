@@ -10,3 +10,6 @@ node_modules
 
 # Python
 env/
+__pycache__
+.cache
+*.pyc

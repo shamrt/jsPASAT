@@ -10,18 +10,21 @@ import glob
 import pandas as pd
 
 
-PROJECT_DIR = os.path.abspath(__file__ + '/../../')
+PROJECT_DIR = os.path.abspath(os.path.join(__file__, '..', '..'))
 DATA_DIR = os.path.join(PROJECT_DIR, 'data')
 
 
-def get_data_file_paths(basedir, type_):
-    pass
+def get_data_file_paths(basedir, exp_stage):
+    """Take base data directory and experiment stage. Return list of file paths.
+    """
+    glob_path = os.path.join(basedir, exp_stage, '*.csv')
+    return glob.glob(glob_path)
 
 
 def main():
-    practice_glob_path = os.path.join(DATA_DIR, 'practice', '*.csv')
-    practice_csv_paths = glob.glob(practice_path)
-    print practice_csv_paths
+    for exp_stage in ['practice', 'experiment', 'follow_up']:
+        csv_paths = get_data_file_paths(DATA_DIR, exp_stage)
+        print csv_paths
 
 
 if __name__ == '__main__':

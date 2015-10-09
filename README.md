@@ -56,3 +56,10 @@ Finally, run the Python script:
     python scripts/tidy_data.py
 
 A new file will be created/updated in the `data` directory.
+
+
+## Run tests
+
+Unit tests for the data compilation code (along with mock data) can be run with the following:
+
+    py.test scripts

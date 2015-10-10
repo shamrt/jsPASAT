@@ -14,7 +14,7 @@ PROJECT_DIR = os.path.abspath(os.path.join(__file__, '..', '..'))
 DATA_DIR = os.path.join(PROJECT_DIR, 'data')
 
 
-def get_data_file_paths(basedir, exp_stage):
+def get_csv_paths(basedir, exp_stage):
     """Take base data directory and experiment stage. Return list of file paths.
     """
     glob_path = os.path.join(basedir, exp_stage, '*.csv')
@@ -22,9 +22,13 @@ def get_data_file_paths(basedir, exp_stage):
 
 
 def main():
+    raw_data = {
+        'paths': {}
+    }
+
     for exp_stage in ['practice', 'experiment', 'follow_up']:
-        csv_paths = get_data_file_paths(DATA_DIR, exp_stage)
-        print csv_paths
+        raw_data['paths'][exp_stage] = get_csv_paths(DATA_DIR, exp_stage)
+    print raw_data
 
 
 if __name__ == '__main__':

@@ -6,6 +6,7 @@ directory.
 """
 import os
 import glob
+import json
 
 import pandas as pd
 
@@ -44,6 +45,16 @@ def compile_practice_data(df):
     return compiled_data
 
 
+def get_response_from_json(string, question_number=0):
+    """Take JSON string representing a survey response and decode.
+    Return target question answer string.
+    """
+    decoder = json.JSONDecoder()
+    resp_json = decoder.decode(string)
+    target_question = "Q{}".format(question_number)
+    return resp_json[target_question]
+
+
 def compile_experiment_data(df):
     """Take pandas dataframe and compile key variables. Return dict.
     """
@@ -53,23 +64,35 @@ def compile_experiment_data(df):
     condition_col = df['condition'].values
     compiled_data['condition'] = condition_col[0]
 
-    # block order
+    # blocks and block order
     block_order_col = df['block_order'].values
     block_order = block_order_col[0]
     blocks = block_order.split(',')
     compiled_data['block_order'] = block_order
     compiled_data['num_blocks'] = len(blocks)
 
+    # anticipanted questions
+    anticipated_questions_index = [
+        ('anticipated_enjoyment', 1),
+        ('anticipated_performance', 2),
+        ('anticipated_effort', 3),
+        ('anticipated_discomfort', 4),
+        ('anticipated_fatigue', 5)
+    ]
+    for label, i in anticipated_questions_index:
+        response = get_response_from_json(df.ix[i]['responses'])
+        compiled_data[label] = response
+
     return compiled_data
 
 
 def main():
-    # TODO: "SubjectID.", "OutliersAndMissingdata",
     # collect lists of raw data CSVs
     raw_data_csvs = {}
     for exp_stage in ['practice', 'experiment', 'follow_up']:
         raw_data_csvs[exp_stage] = get_csv_paths(DATA_DIR, exp_stage)
 
+    # create list of compiled participant data
     compiled_participants = []
     for practice_csv in raw_data_csvs['practice']:
         participant = {

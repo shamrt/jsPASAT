@@ -32,10 +32,23 @@ def test_failing_compile_practice_data():
     assert compiled['passed_practice'] == False
 
 
+def test_get_response_from_json():
+    mock_json_string = '{"Q0":"3"}'
+    response = compile_data.get_response_from_json(mock_json_string)
+    assert response == "3"
+
+
 def test_complete_compile_experiment_data():
     experiment_path_1 = os.path.join(MOCK_DATA_DIR, 'experiment', '1.csv')
     df = compile_data.get_csv_as_dataframe(experiment_path_1)
     compiled = compile_data.compile_experiment_data(df)
     assert compiled['condition'] == 5
+
     assert compiled['block_order'] == 'medium,medium,hard,medium,easy,medium,medium,medium,medium'
     assert compiled['num_blocks'] == 9
+
+    assert compiled['anticipated_enjoyment'] == '3'
+    assert compiled['anticipated_performance'] == '4<br>Average'
+    assert compiled['anticipated_effort'] == '4'
+    assert compiled['anticipated_discomfort'] == '4'
+    assert compiled['anticipated_fatigue'] == '4'

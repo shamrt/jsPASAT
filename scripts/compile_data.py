@@ -30,6 +30,8 @@ def main():
         'paths': {}
     }
 
+    # TODO: "SubjectID.", "OutliersAndMissingdata",
+
     for exp_stage in ['practice', 'experiment', 'follow_up']:
         raw_data['paths'][exp_stage] = get_csv_paths(DATA_DIR, exp_stage)
 
@@ -40,6 +42,11 @@ def main():
         practice_data = pd.DataFrame.from_csv(csv_path)
         compiled_practice_data = compile_practice_data(practice_data)
         participant.update()
+
+    # TODO: "BlockLength", "Anticipated_Enjoyment", "Anticipated_Performance", "Anticipated_Effort", "Anticipated_Fatigue", "Max_Effort", "Min_Effort", "First_Effort", "Last_Effort", "Average_Effort", "AUC_Effort", "Hard_Effort", "Medium_Effort", "Easy_Effort", "Max_Discomfort", "Min_Discomfort", "First_Discomfort", "Last_Discomfort", "Average_Discomfort", "AUC_Discomfort", "Hard_Discomfort", "Medium_Discomfort", "Easy_Discomfort",
+    # "Max_Accuracy", "Min_Accuracy", "First_Accuracy", "Last_Accuracy", "Average_Accuracy", "AUC_Accuracy", "Hard_Accuracy", "Medium_Accuracy", "Easy_Accuracy",
+    # "PWMT_Effort", "PWMT_Discomfort", "PWMT_Enjoyment", "PWMT_Performance", "PWMT_fatigue", "PWMT_satisfaction", "PWMT_WillingToDoWMT", "PWMT_BeContacted",
+    # "Sex", "Age", "edu_year", "edu_plan", "first_lang", "years_eng", "moth_edu", "moth_job", "fath_edu", "fath_job", "uni_major", "ethnicity", "ethnicity_TEXT", "born", "motherborn", "fatherborn",
 
 
 if __name__ == '__main__':

@@ -21,6 +21,10 @@ def get_csv_paths(basedir, exp_stage):
     return glob.glob(glob_path)
 
 
+def compile_practice_data(data):
+    pass
+
+
 def main():
     raw_data = {
         'paths': {}
@@ -28,7 +32,14 @@ def main():
 
     for exp_stage in ['practice', 'experiment', 'follow_up']:
         raw_data['paths'][exp_stage] = get_csv_paths(DATA_DIR, exp_stage)
-    print raw_data
+
+    compiled_data = []
+    for csv_path in raw_data['paths']['practice']:
+        participant = {}
+
+        practice_data = pd.DataFrame.from_csv(csv_path)
+        compiled_practice_data = compile_practice_data(practice_data)
+        participant.update()
 
 
 if __name__ == '__main__':

@@ -44,23 +44,59 @@ def compile_practice_data(df):
     return compiled_data
 
 
+def compile_experiment_data(df):
+    """Take pandas dataframe and compile key variables. Return dict.
+    """
+    compiled_data = {}
+
+    # condition
+    condition_col = df['condition'].values
+    compiled_data['condition'] = condition_col[0]
+
+    # block order
+    block_order_col = df['block_order'].values
+    block_order = block_order_col[0]
+    blocks = block_order.split(',')
+    compiled_data['block_order'] = block_order
+    compiled_data['num_blocks'] = len(blocks)
+
+    return compiled_data
+
+
 def main():
-    raw_data = {
-        'paths': {}
-    }
-
     # TODO: "SubjectID.", "OutliersAndMissingdata",
-
+    # collect lists of raw data CSVs
+    raw_data_csvs = {}
     for exp_stage in ['practice', 'experiment', 'follow_up']:
-        raw_data['paths'][exp_stage] = get_csv_paths(DATA_DIR, exp_stage)
+        raw_data_csvs[exp_stage] = get_csv_paths(DATA_DIR, exp_stage)
 
-    compiled_data = []
-    for csv_path in raw_data['paths']['practice']:
-        participant = {}
+    compiled_participants = []
+    for practice_csv in raw_data_csvs['practice']:
+        participant = {
+            'missing_data': False
+        }
 
-        practice_data_df = get_csv_as_dataframe(csv_path)
-        compiled_practice_data = compile_practice_data(practice_data_df)
+        # compile practice data
+        practice_df = get_csv_as_dataframe(practice_csv)
+        compiled_practice_data = compile_practice_data(practice_df)
         participant.update(compiled_practice_data)
+
+        # compile experiment data
+        # note: checks to ensure that assumed experiment CSV file exists
+        assumed_experiment_csv_path = os.path.join(
+            DATA_DIR, 'experiment', '{}.csv'.format(participant['id']))
+
+        if assumed_experiment_csv_path in raw_data_csvs['experiment'] and \
+                os.path.exists(assumed_experiment_csv_path):
+            experiment_df = get_csv_as_dataframe(assumed_experiment_csv_path)
+            compiled_experiment_data = compile_experiment_data(experiment_df)
+            participant.update(compiled_experiment_data)
+        elif not participant['passed_practice']:
+            participant['missing_data'] = True
+
+        # append compiled participant data to master list
+        compiled_participants.append(participant)
+
 
 
     # TODO: "BlockLength", "Anticipated_Enjoyment", "Anticipated_Performance", "Anticipated_Effort", "Anticipated_Fatigue", "Max_Effort", "Min_Effort", "First_Effort", "Last_Effort", "Average_Effort", "AUC_Effort", "Hard_Effort", "Medium_Effort", "Easy_Effort", "Max_Discomfort", "Min_Discomfort", "First_Discomfort", "Last_Discomfort", "Average_Discomfort", "AUC_Discomfort", "Hard_Discomfort", "Medium_Discomfort", "Easy_Discomfort",

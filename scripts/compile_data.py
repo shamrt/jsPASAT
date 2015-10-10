@@ -21,8 +21,27 @@ def get_csv_paths(basedir, exp_stage):
     return glob.glob(glob_path)
 
 
-def compile_practice_data(data):
-    pass
+def get_csv_as_dataframe(path):
+    """Take CSV path. Return pandas dataframe.
+    """
+    return pd.DataFrame.from_csv(path, index_col='trial_index_global')
+
+
+def compile_practice_data(df):
+    """Take pandas dataframe and compile key variables. Return dict.
+    """
+    compiled_data = {}
+
+    # participant ID
+    participant_id_col = df['participant_id'].values
+    compiled_data['id'] = participant_id_col[0]
+
+    # was the second practice block completed successfully?
+    print df.columns.values
+    passed_practice = ('0-0.5-0' in df['internal_chunk_id'].values)
+    compiled_data['passed_practice'] = passed_practice
+
+    return compiled_data
 
 
 def main():
@@ -39,9 +58,10 @@ def main():
     for csv_path in raw_data['paths']['practice']:
         participant = {}
 
-        practice_data = pd.DataFrame.from_csv(csv_path)
-        compiled_practice_data = compile_practice_data(practice_data)
-        participant.update()
+        practice_data_df = get_csv_as_dataframe(csv_path)
+        compiled_practice_data = compile_practice_data(practice_data_df)
+        participant.update(compiled_practice_data)
+
 
     # TODO: "BlockLength", "Anticipated_Enjoyment", "Anticipated_Performance", "Anticipated_Effort", "Anticipated_Fatigue", "Max_Effort", "Min_Effort", "First_Effort", "Last_Effort", "Average_Effort", "AUC_Effort", "Hard_Effort", "Medium_Effort", "Easy_Effort", "Max_Discomfort", "Min_Discomfort", "First_Discomfort", "Last_Discomfort", "Average_Discomfort", "AUC_Discomfort", "Hard_Discomfort", "Medium_Discomfort", "Easy_Discomfort",
     # "Max_Accuracy", "Min_Accuracy", "First_Accuracy", "Last_Accuracy", "Average_Accuracy", "AUC_Accuracy", "Hard_Accuracy", "Medium_Accuracy", "Easy_Accuracy",

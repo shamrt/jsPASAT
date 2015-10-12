@@ -55,6 +55,29 @@ def get_response_from_json(string, question_number=0):
     return resp_json[target_question]
 
 
+def summarize_pasat_chunk(df):
+    """Take pandas dataframe representing raw PASAT chunk data and summarize.
+    Return dict.
+    """
+    summary = {}
+
+    block_type_col = df['block_type'].dropna().values
+    summary['block_type'] = block_type_col[0]
+
+    # summarize performance
+    raw_trials = df.loc[df['trial_type'] == 'multi-stim-multi-response']
+    trials = list(raw_trials['correct'].values)
+    trials.pop(0)  # remove fixation data
+    summary['accuracy'] = round(float(trials.count(True)) / len(trials), 7)
+
+    # affective ratings
+    ratings_json = df.ix[df.last_valid_index()]['responses']
+    summary['effort_rating'] = get_response_from_json(ratings_json)
+    summary['discomfort_rating'] = get_response_from_json(ratings_json, 1)
+
+    return summary
+
+
 def compile_experiment_data(df):
     """Take pandas dataframe and compile key variables. Return dict.
     """
@@ -71,7 +94,7 @@ def compile_experiment_data(df):
     compiled_data['block_order'] = block_order
     compiled_data['num_blocks'] = len(blocks)
 
-    # anticipanted questions
+    # anticipated questions
     anticipated_questions_index = [
         ('anticipated_enjoyment', 1),
         ('anticipated_performance', 2),
@@ -82,6 +105,33 @@ def compile_experiment_data(df):
     for label, i in anticipated_questions_index:
         response = get_response_from_json(df.ix[i]['responses'])
         compiled_data[label] = response
+
+    # PASAT accuracy and affective reports
+    hard_accuracy = None
+    medium_accuracy = None
+    easy_accuracy = None
+    hard_effort = None
+    medium_effort = None
+    easy_effort = None
+    hard_discomfort = None
+    medium_discomfort = None
+    easy_discomfort = None
+
+    effort_ratings = []
+    discomfort_ratings = []
+    pasat_accuracies = []
+
+    for i, block in enumerate(blocks, start=3):
+        pasat_block_chunk_id = '0-0.{}-0'.format(i)
+        pasat_block = df.loc[df['internal_chunk_id'] == pasat_block_chunk_id]
+        block_summary = summarize_pasat_chunk(pasat_block)
+
+        effort_ratings.append(block_summary['effort_rating'])
+        discomfort_ratings.append(block_summary['discomfort_rating'])
+        pasat_accuracies.append(block_summary['accuracy'])
+
+
+
 
     return compiled_data
 
@@ -122,10 +172,10 @@ def main():
 
 
 
-    # TODO: "BlockLength", "Anticipated_Enjoyment", "Anticipated_Performance", "Anticipated_Effort", "Anticipated_Fatigue", "Max_Effort", "Min_Effort", "First_Effort", "Last_Effort", "Average_Effort", "AUC_Effort", "Hard_Effort", "Medium_Effort", "Easy_Effort", "Max_Discomfort", "Min_Discomfort", "First_Discomfort", "Last_Discomfort", "Average_Discomfort", "AUC_Discomfort", "Hard_Discomfort", "Medium_Discomfort", "Easy_Discomfort",
-    # "Max_Accuracy", "Min_Accuracy", "First_Accuracy", "Last_Accuracy", "Average_Accuracy", "AUC_Accuracy", "Hard_Accuracy", "Medium_Accuracy", "Easy_Accuracy",
-    # "PWMT_Effort", "PWMT_Discomfort", "PWMT_Enjoyment", "PWMT_Performance", "PWMT_fatigue", "PWMT_satisfaction", "PWMT_WillingToDoWMT", "PWMT_BeContacted",
-    # "Sex", "Age", "edu_year", "edu_plan", "first_lang", "years_eng", "moth_edu", "moth_job", "fath_edu", "fath_job", "uni_major", "ethnicity", "ethnicity_TEXT", "born", "motherborn", "fatherborn",
+    # TODO: "Max_Effort", "Min_Effort", "First_Effort", "Last_Effort", "Average_Effort", "AUC_Effort", "Hard_Effort", "Medium_Effort", "Easy_Effort", "Max_Discomfort", "Min_Discomfort", "First_Discomfort", "Last_Discomfort", "Average_Discomfort", "AUC_Discomfort", "Hard_Discomfort", "Medium_Discomfort", "Easy_Discomfort",
+    # TODO: "Max_Accuracy", "Min_Accuracy", "First_Accuracy", "Last_Accuracy", "Average_Accuracy", "AUC_Accuracy", "Hard_Accuracy", "Medium_Accuracy", "Easy_Accuracy",
+    # TODO: "PWMT_Effort", "PWMT_Discomfort", "PWMT_Enjoyment", "PWMT_Performance", "PWMT_fatigue", "PWMT_satisfaction", "PWMT_WillingToDoWMT", "PWMT_BeContacted",
+    # TODO: "Sex", "Age", "edu_year", "edu_plan", "first_lang", "years_eng", "moth_edu", "moth_job", "fath_edu", "fath_job", "uni_major", "ethnicity", "ethnicity_TEXT", "born", "motherborn", "fatherborn",
 
 
 if __name__ == '__main__':

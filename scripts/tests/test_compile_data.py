@@ -38,9 +38,33 @@ def test_get_response_from_json():
     assert response == "3"
 
 
+def get_experiment_data_as_df(id):
+    experiment_path = os.path.join(
+        MOCK_DATA_DIR, 'experiment', '{}.csv'.format(id))
+    df = compile_data.get_csv_as_dataframe(experiment_path)
+    return df
+
+
+def test_summarize_pasat_chunk():
+    df = get_experiment_data_as_df(1)
+    pasat_block = df.loc[df['internal_chunk_id'] == '0-0.3-0']
+    block_summary = compile_data.summarize_pasat_chunk(pasat_block)
+    assert block_summary['accuracy'] == 0.5714286
+    assert block_summary['effort_rating'] == '5'
+    assert block_summary['discomfort_rating'] == '5'
+    assert block_summary['block_type'] == 'medium'
+
+
+    pasat_block = df.loc[df['internal_chunk_id'] == '0-0.11-0']
+    block_summary = compile_data.summarize_pasat_chunk(pasat_block)
+    assert block_summary['accuracy'] == 0.3571429
+    assert block_summary['effort_rating'] == '7<br>A Lot'
+    assert block_summary['discomfort_rating'] == '7<br>A Lot'
+    assert block_summary['block_type'] == 'medium'
+
+
 def test_complete_compile_experiment_data():
-    experiment_path_1 = os.path.join(MOCK_DATA_DIR, 'experiment', '1.csv')
-    df = compile_data.get_csv_as_dataframe(experiment_path_1)
+    df = get_experiment_data_as_df(1)
     compiled = compile_data.compile_experiment_data(df)
     assert compiled['condition'] == 5
 

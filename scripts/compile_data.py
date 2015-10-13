@@ -247,6 +247,29 @@ def compile_demographic_data(df):
     return compiled_data
 
 
+def compile_retrospective_data(df):
+    """Take pandas dataframe and compile key variables. Return dict.
+    """
+    compiled_data = {}
+    responses = list(df['responses'].dropna().values)
+
+    # anticipated questions
+    demographics_index = [
+        ('pwmt_effort', 48),
+        ('pwmt_discomfort', 49),
+        ('pwmt_enjoyment', 50),
+        ('pwmt_performance', 51),
+        ('pwmt_fatigue', 52),
+        ('pwmt_satisfaction', 53),
+        ('pwmt_willingtodowmt', 54),
+    ]
+    for label, i in demographics_index:
+        response = get_response_from_json(df.ix[i]['responses'])
+        compiled_data[label] = int(response[0])
+
+    return compiled_data
+
+
 def main():
     # collect lists of raw data CSVs
     raw_data_csvs = {}
@@ -281,6 +304,9 @@ def main():
                 elif exp_stage == 'follow_up':
                     demographics = compile_demographic_data(stage_df)
                     participant.update(demographics)
+                    if participant['passed_practice']:
+                        retrospective = compile_retrospective_data(stage_df)
+                        participant.update(retrospective)
 
             elif exp_stage == 'experiment' and \
                     not participant['passed_practice']:

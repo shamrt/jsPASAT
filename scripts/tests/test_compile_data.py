@@ -101,7 +101,7 @@ def test_complete_compile_experiment_data():
     assert data['auc_discomfort'] == 32.0
 
 
-def test_complete_compile_experiment_data():
+def test_complete_demographics_data():
     df = get_csv_as_df('follow_up', 1)
     data = compile_data.compile_demographic_data(df)
     expected_answers = [
@@ -152,6 +152,24 @@ def test_complete_compile_experiment_data():
         ('behav_survey_16', '0<br>Never or<br>not at all'),
         ('behav_survey_17', 'N/A'),
         ('behav_survey_18', '3<br>Very often<br>or very much'),
+    ]
+    for label, answer in expected_answers:
+        print label
+        print answer
+        assert data[label] == answer
+
+
+def test_complete_retrospective_data():
+    df = get_csv_as_df('follow_up', 1)
+    data = compile_data.compile_retrospective_data(df)
+    expected_answers = [
+        ('pwmt_effort', 4),
+        ('pwmt_discomfort', 4),
+        ('pwmt_enjoyment', 4),
+        ('pwmt_performance', 4),
+        ('pwmt_fatigue', 4),
+        ('pwmt_satisfaction', 4),
+        ('pwmt_willingtodowmt', 4),
     ]
     for label, answer in expected_answers:
         print label

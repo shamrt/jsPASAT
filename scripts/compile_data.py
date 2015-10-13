@@ -40,7 +40,6 @@ def compile_practice_data(df):
     compiled_data['id'] = participant_id_col[0]
 
     # was the second practice block completed successfully?
-    print df.columns.values
     passed_practice = ('0-0.5-0' in df['internal_chunk_id'].values)
     compiled_data['passed_practice'] = passed_practice
 
@@ -200,23 +199,34 @@ def main():
         compiled_practice_data = compile_practice_data(practice_df)
         participant.update(compiled_practice_data)
 
-        # compile experiment data
-        # note: checks to ensure that assumed experiment CSV file exists
-        assumed_experiment_csv_path = os.path.join(
-            DATA_DIR, 'experiment', '{}.csv'.format(participant['id']))
+        # compile experimental and follow up data
+        # note: checks to ensure that assumed CSV files exist
+        for exp_stage in ['experiment', 'follow_up']:
+            assumed_csv_path = os.path.join(
+                DATA_DIR, exp_stage, '{}.csv'.format(participant['id']))
 
-        if assumed_experiment_csv_path in raw_data_csvs['experiment'] and \
-                os.path.exists(assumed_experiment_csv_path):
-            experiment_df = get_csv_as_dataframe(assumed_experiment_csv_path)
-            compiled_experiment_data = compile_experiment_data(experiment_df)
-            participant.update(compiled_experiment_data)
-        elif not participant['passed_practice']:
-            participant['missing_data'] = True
+            if assumed_csv_path in raw_data_csvs[exp_stage] and \
+                    os.path.exists(assumed_csv_path):
+                stage_df = get_csv_as_dataframe(assumed_csv_path)
+
+                if exp_stage == 'experiment':
+                    compiled_data = compile_experiment_data(stage_df)
+                # elif exp_stage == 'follow_up':
+                #     compiled_data = compile_follow_up_data(stage_df)
+
+                participant.update(compiled_data)
+            elif exp_stage == 'experiment' and \
+                    not participant['passed_practice']:
+                participant['missing_data'] = True
 
         # append compiled participant data to master list
         compiled_participants.append(participant)
 
-    # TODO: "PWMT_Effort", "PWMT_Discomfort", "PWMT_Enjoyment", "PWMT_Performance", "PWMT_fatigue", "PWMT_satisfaction", "PWMT_WillingToDoWMT", "PWMT_BeContacted",
+    participants_df = pd.DataFrame.from_dict(compiled_participants)
+    compiled_csv_path = os.path.join(DATA_DIR, 'compiled.csv')
+    participants_df.to_csv(compiled_csv_path)
+
+    # TODO: "pwmt_effort", "pwmt_discomfort", "pwmt_enjoyment", "pwmt_performance", "pwmt_fatigue", "pwmt_satisfaction", "pwmt_willingtodowmt", "pwmt_becontacted",
     # TODO: "Sex", "Age", "edu_year", "edu_plan", "first_lang", "years_eng", "moth_edu", "moth_job", "fath_edu", "fath_job", "uni_major", "ethnicity", "ethnicity_TEXT", "born", "motherborn", "fatherborn",
 
 

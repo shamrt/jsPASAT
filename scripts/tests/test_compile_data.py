@@ -80,8 +80,8 @@ def test_complete_compile_experiment_data():
     assert compiled['anticipated_fatigue'] == 4
 
     assert compiled['medium_accuracy'] == 0.4183674
-    assert compiled['medium_effort'] == None
-    assert compiled['medium_discomfort'] == None
+    assert compiled['medium_effort'] == 4
+    assert compiled['medium_discomfort'] == 4
 
     assert compiled['hard_accuracy'] == 0.3571429
     assert compiled['hard_effort'] == 4

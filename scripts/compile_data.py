@@ -124,8 +124,8 @@ def compile_experiment_data(df):
     effort_ratings = []
     discomfort_ratings = []
     accuracies = []
-    effort_medium_ratings = []
-    discomfort_medium_ratings = []
+    medium_effort_ratings = []
+    medium_discomfort_ratings = []
     medium_accuracies = []
 
     for i, block in enumerate(blocks, start=3):
@@ -139,8 +139,8 @@ def compile_experiment_data(df):
 
         if block_summary['block_type'] == 'medium':
             medium_accuracies.append(block_summary['accuracy'])
-            effort_medium_ratings.append(block_summary['effort_rating'])
-            discomfort_medium_ratings.append(block_summary['discomfort_rating'])
+            medium_effort_ratings.append(block_summary['effort_rating'])
+            medium_discomfort_ratings.append(block_summary['discomfort_rating'])
         elif block_summary['block_type'] == 'hard':
             hard_accuracy = block_summary['accuracy']
             hard_effort = block_summary['effort_rating']
@@ -152,7 +152,10 @@ def compile_experiment_data(df):
 
     medium_accuracy = sum(medium_accuracies) / len(medium_accuracies)
     compiled_data['medium_accuracy'] = round(medium_accuracy, ROUND_NDIGITS)
+    medium_effort = sum(medium_effort_ratings) / len(medium_effort_ratings)
     compiled_data['medium_effort'] = medium_effort
+    medium_discomfort = sum(medium_discomfort_ratings) / \
+        len(medium_discomfort_ratings)
     compiled_data['medium_discomfort'] = medium_discomfort
 
     compiled_data['hard_accuracy'] = hard_accuracy

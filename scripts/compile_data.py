@@ -181,6 +181,72 @@ def compile_experiment_data(df):
     return compiled_data
 
 
+def compile_demographic_data(df):
+    """Take pandas dataframe and compile key variables. Return dict.
+    """
+    compiled_data = {}
+    responses = list(df['responses'].dropna().values)
+
+    # anticipated questions
+    demographics_index = [
+        ('age', 1),
+        ('dob', 2),
+        ('sex', 3),
+        ('edu_year', 4),
+        ('edu_plan', 5),
+        ('first_lang', 6),
+        ('years_eng', 7),
+        ('mother_edu', 8),
+        ('mother_job', 9),
+        ('father_edu', 10),
+        ('father_job', 11),
+        ('high_school_avg', 12),
+        ('uni_avg', 13),
+        ('num_uni_stats', 14),
+        ('num_hs_stats', 15),
+        ('num_hs_math', 16),
+        ('num_uni_math', 17),
+        ('math_enjoy', 18),
+        ('adhd_diag', 19),
+        ('uni_major', 20),
+
+        # electronics and Internet survey
+        ('elect_survey_1', 21),
+        ('elect_survey_2', 22),
+        ('elect_survey_3', 23),
+        ('elect_survey_4', 24),
+        ('elect_survey_5', 25),
+        ('elect_survey_6', 26),
+        ('elect_survey_7', 27),
+
+        # behavioural survey
+        ('behav_survey_1', 29),
+        ('behav_survey_2', 30),
+        ('behav_survey_3', 31),
+        ('behav_survey_4', 32),
+        ('behav_survey_5', 33),
+        ('behav_survey_6', 34),
+        ('behav_survey_7', 35),
+        ('behav_survey_8', 36),
+        ('behav_survey_9', 37),
+        ('behav_survey_10', 38),
+        ('behav_survey_11', 39),
+        ('behav_survey_12', 40),
+        ('behav_survey_13', 41),
+        ('behav_survey_14', 42),
+        ('behav_survey_15', 43),
+        ('behav_survey_16', 44),
+        ('behav_survey_17', 45),
+        ('behav_survey_18', 46),
+
+    ]
+    for label, i in demographics_index:
+        response = get_response_from_json(df.ix[i]['responses'])
+        compiled_data[label] = response.strip()
+
+    return compiled_data
+
+
 def main():
     # collect lists of raw data CSVs
     raw_data_csvs = {}
@@ -210,11 +276,12 @@ def main():
                 stage_df = get_csv_as_dataframe(assumed_csv_path)
 
                 if exp_stage == 'experiment':
-                    compiled_data = compile_experiment_data(stage_df)
-                # elif exp_stage == 'follow_up':
-                #     compiled_data = compile_follow_up_data(stage_df)
+                    experiment_data = compile_experiment_data(stage_df)
+                    participant.update(experiment_data)
+                elif exp_stage == 'follow_up':
+                    demographics = compile_demographic_data(stage_df)
+                    participant.update(demographics)
 
-                participant.update(compiled_data)
             elif exp_stage == 'experiment' and \
                     not participant['passed_practice']:
                 participant['missing_data'] = True
@@ -222,12 +289,10 @@ def main():
         # append compiled participant data to master list
         compiled_participants.append(participant)
 
+    # export final data to CSV
     participants_df = pd.DataFrame.from_dict(compiled_participants)
     compiled_csv_path = os.path.join(DATA_DIR, 'compiled.csv')
     participants_df.to_csv(compiled_csv_path)
-
-    # TODO: "pwmt_effort", "pwmt_discomfort", "pwmt_enjoyment", "pwmt_performance", "pwmt_fatigue", "pwmt_satisfaction", "pwmt_willingtodowmt", "pwmt_becontacted",
-    # TODO: "Sex", "Age", "edu_year", "edu_plan", "first_lang", "years_eng", "moth_edu", "moth_job", "fath_edu", "fath_job", "uni_major", "ethnicity", "ethnicity_TEXT", "born", "motherborn", "fatherborn",
 
 
 if __name__ == '__main__':

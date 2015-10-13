@@ -266,8 +266,8 @@ def compile_retrospective_data(df):
     compiled_data = {}
     responses = list(df['responses'].dropna().values)
 
-    # anticipated questions
-    demographics_index = [
+    # retrospective questions
+    retrospective_index = [
         ('pwmt_effort', 48),
         ('pwmt_discomfort', 49),
         ('pwmt_enjoyment', 50),
@@ -276,7 +276,7 @@ def compile_retrospective_data(df):
         ('pwmt_satisfaction', 53),
         ('pwmt_willingtodowmt', 54),
     ]
-    for label, i in demographics_index:
+    for label, i in retrospective_index:
         response = get_response_from_json(df.ix[i]['responses'])
         compiled_data[label] = int(response[0])
 

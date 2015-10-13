@@ -200,8 +200,8 @@ def compile_demographic_data(df):
     compiled_data = {}
     responses = list(df['responses'].dropna().values)
 
-    # anticipated questions
     demographics_index = [
+        # demographics questions
         ('age', 1),
         ('dob', 2),
         ('sex', 3),

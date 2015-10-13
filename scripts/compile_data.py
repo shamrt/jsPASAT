@@ -53,7 +53,8 @@ def get_response_from_json(string, question_number=0):
     decoder = json.JSONDecoder()
     resp_json = decoder.decode(string)
     target_question = "Q{}".format(question_number)
-    return resp_json[target_question]
+    resp = resp_json[target_question] if target_question in resp_json else None
+    return resp
 
 
 def summarize_pasat_chunk(df):

@@ -74,8 +74,10 @@ def summarize_pasat_chunk(df):
 
     # affective ratings
     ratings_json = df.ix[df.last_valid_index()]['responses']
-    summary['effort_rating'] = get_response_from_json(ratings_json)
-    summary['discomfort_rating'] = get_response_from_json(ratings_json, 1)
+    raw_effort_rating = get_response_from_json(ratings_json)
+    summary['effort_rating'] = int(raw_effort_rating[0])
+    raw_discomfort_rating = get_response_from_json(ratings_json, 1)
+    summary['discomfort_rating'] = int(raw_discomfort_rating[0])
 
     return summary
 
@@ -106,7 +108,7 @@ def compile_experiment_data(df):
     ]
     for label, i in anticipated_questions_index:
         response = get_response_from_json(df.ix[i]['responses'])
-        compiled_data[label] = response
+        compiled_data[label] = int(response[0])
 
     # PASAT accuracy and affective reports
     hard_accuracy = None
@@ -121,23 +123,51 @@ def compile_experiment_data(df):
 
     effort_ratings = []
     discomfort_ratings = []
-    pasat_accuracies = []
+    accuracies = []
+    effort_medium_ratings = []
+    discomfort_medium_ratings = []
+    medium_accuracies = []
 
     for i, block in enumerate(blocks, start=3):
-        pasat_block_chunk_id = '0-0.{}-0'.format(i)
-        pasat_block = df.loc[df['internal_chunk_id'] == pasat_block_chunk_id]
-        block_summary = summarize_pasat_chunk(pasat_block)
+        block_chunk_id = '0-0.{}-0'.format(i)
+        block = df.loc[df['internal_chunk_id'] == block_chunk_id]
+        block_summary = summarize_pasat_chunk(block)
 
         effort_ratings.append(block_summary['effort_rating'])
         discomfort_ratings.append(block_summary['discomfort_rating'])
-        pasat_accuracies.append(block_summary['accuracy'])
+        accuracies.append(block_summary['accuracy'])
 
-    average_accuracy = sum(pasat_accuracies) / len(pasat_accuracies)
+        if block_summary['block_type'] == 'medium':
+            medium_accuracies.append(block_summary['accuracy'])
+            effort_medium_ratings.append(block_summary['effort_rating'])
+            discomfort_medium_ratings.append(block_summary['discomfort_rating'])
+        elif block_summary['block_type'] == 'hard':
+            hard_accuracy = block_summary['accuracy']
+            hard_effort = block_summary['effort_rating']
+            hard_discomfort = block_summary['discomfort_rating']
+        elif block_summary['block_type'] == 'easy':
+            easy_accuracy = block_summary['accuracy']
+            easy_effort = block_summary['effort_rating']
+            easy_discomfort = block_summary['discomfort_rating']
+
+    medium_accuracy = sum(medium_accuracies) / len(medium_accuracies)
+    compiled_data['medium_accuracy'] = round(medium_accuracy, ROUND_NDIGITS)
+    compiled_data['medium_effort'] = medium_effort
+    compiled_data['medium_discomfort'] = medium_discomfort
+
+    compiled_data['hard_accuracy'] = hard_accuracy
+    compiled_data['hard_effort'] = hard_effort
+    compiled_data['hard_discomfort'] = hard_discomfort
+    compiled_data['easy_accuracy'] = easy_accuracy
+    compiled_data['easy_effort'] = easy_effort
+    compiled_data['easy_discomfort'] = easy_discomfort
+
+    average_accuracy = sum(accuracies) / len(accuracies)
     compiled_data['average_accuracy'] = round(average_accuracy, ROUND_NDIGITS)
-    compiled_data['max_accuracy'] = max(pasat_accuracies)
-    compiled_data['min_accuracy'] = min(pasat_accuracies)
-    compiled_data['first_accuracy'] = pasat_accuracies[0]
-    compiled_data['last_accuracy'] = pasat_accuracies[-1]
+    compiled_data['max_accuracy'] = max(accuracies)
+    compiled_data['min_accuracy'] = min(accuracies)
+    compiled_data['first_accuracy'] = accuracies[0]
+    compiled_data['last_accuracy'] = accuracies[-1]
 
 
     return compiled_data

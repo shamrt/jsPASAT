@@ -52,16 +52,16 @@ def test_summarize_pasat_chunk():
     pasat_block = df.loc[df['internal_chunk_id'] == '0-0.3-0']
     block_summary = compile_data.summarize_pasat_chunk(pasat_block)
     assert block_summary['accuracy'] == 0.5714286
-    assert block_summary['effort_rating'] == '5'
-    assert block_summary['discomfort_rating'] == '5'
+    assert block_summary['effort_rating'] == 5
+    assert block_summary['discomfort_rating'] == 5
     assert block_summary['block_type'] == 'medium'
 
     # last block
     pasat_block = df.loc[df['internal_chunk_id'] == '0-0.11-0']
     block_summary = compile_data.summarize_pasat_chunk(pasat_block)
     assert block_summary['accuracy'] == 0.3571429
-    assert block_summary['effort_rating'] == '7<br>A Lot'
-    assert block_summary['discomfort_rating'] == '7<br>A Lot'
+    assert block_summary['effort_rating'] == 7
+    assert block_summary['discomfort_rating'] == 7
     assert block_summary['block_type'] == 'medium'
 
 
@@ -73,11 +73,22 @@ def test_complete_compile_experiment_data():
     assert compiled['block_order'] == 'medium,medium,hard,medium,easy,medium,medium,medium,medium'
     assert compiled['num_blocks'] == 9
 
-    assert compiled['anticipated_enjoyment'] == '3'
-    assert compiled['anticipated_performance'] == '4<br>Average'
-    assert compiled['anticipated_effort'] == '4'
-    assert compiled['anticipated_discomfort'] == '4'
-    assert compiled['anticipated_fatigue'] == '4'
+    assert compiled['anticipated_enjoyment'] == 3
+    assert compiled['anticipated_performance'] == 4
+    assert compiled['anticipated_effort'] == 4
+    assert compiled['anticipated_discomfort'] == 4
+    assert compiled['anticipated_fatigue'] == 4
+
+    assert compiled['medium_accuracy'] == 0.4183674
+    assert compiled['medium_effort'] == None
+    assert compiled['medium_discomfort'] == None
+
+    assert compiled['hard_accuracy'] == 0.3571429
+    assert compiled['hard_effort'] == 4
+    assert compiled['hard_discomfort'] == 4
+    assert compiled['easy_accuracy'] == 0.5714286
+    assert compiled['easy_effort'] == 4
+    assert compiled['easy_discomfort'] == 4
 
     assert compiled['average_accuracy'] == 0.4285714
     assert compiled['max_accuracy'] == 0.5714286

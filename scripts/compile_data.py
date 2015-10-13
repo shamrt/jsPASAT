@@ -13,6 +13,7 @@ import pandas as pd
 
 PROJECT_DIR = os.path.abspath(os.path.join(__file__, '..', '..'))
 DATA_DIR = os.path.join(PROJECT_DIR, 'data')
+ROUND_NDIGITS = 7
 
 
 def get_csv_paths(basedir, exp_stage):
@@ -68,7 +69,8 @@ def summarize_pasat_chunk(df):
     raw_trials = df.loc[df['trial_type'] == 'multi-stim-multi-response']
     trials = list(raw_trials['correct'].values)
     trials.pop(0)  # remove fixation data
-    summary['accuracy'] = round(float(trials.count(True)) / len(trials), 7)
+    accuracy = float(trials.count(True)) / len(trials)
+    summary['accuracy'] = round(accuracy, ROUND_NDIGITS)
 
     # affective ratings
     ratings_json = df.ix[df.last_valid_index()]['responses']
@@ -130,7 +132,12 @@ def compile_experiment_data(df):
         discomfort_ratings.append(block_summary['discomfort_rating'])
         pasat_accuracies.append(block_summary['accuracy'])
 
-
+    average_accuracy = sum(pasat_accuracies) / len(pasat_accuracies)
+    compiled_data['average_accuracy'] = round(average_accuracy, ROUND_NDIGITS)
+    compiled_data['max_accuracy'] = max(pasat_accuracies)
+    compiled_data['min_accuracy'] = min(pasat_accuracies)
+    compiled_data['first_accuracy'] = pasat_accuracies[0]
+    compiled_data['last_accuracy'] = pasat_accuracies[-1]
 
 
     return compiled_data

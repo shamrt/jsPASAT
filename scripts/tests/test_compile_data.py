@@ -47,6 +47,8 @@ def get_experiment_data_as_df(id):
 
 def test_summarize_pasat_chunk():
     df = get_experiment_data_as_df(1)
+
+    # first block
     pasat_block = df.loc[df['internal_chunk_id'] == '0-0.3-0']
     block_summary = compile_data.summarize_pasat_chunk(pasat_block)
     assert block_summary['accuracy'] == 0.5714286
@@ -54,7 +56,7 @@ def test_summarize_pasat_chunk():
     assert block_summary['discomfort_rating'] == '5'
     assert block_summary['block_type'] == 'medium'
 
-
+    # last block
     pasat_block = df.loc[df['internal_chunk_id'] == '0-0.11-0']
     block_summary = compile_data.summarize_pasat_chunk(pasat_block)
     assert block_summary['accuracy'] == 0.3571429
@@ -76,3 +78,9 @@ def test_complete_compile_experiment_data():
     assert compiled['anticipated_effort'] == '4'
     assert compiled['anticipated_discomfort'] == '4'
     assert compiled['anticipated_fatigue'] == '4'
+
+    assert compiled['average_accuracy'] == 0.4285714
+    assert compiled['max_accuracy'] == 0.5714286
+    assert compiled['min_accuracy'] == 0.2857143
+    assert compiled['first_accuracy'] == 0.5714286
+    assert compiled['last_accuracy'] == 0.3571429

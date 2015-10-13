@@ -166,6 +166,18 @@ def compile_experiment_data(df):
     compiled_data['easy_effort'] = easy_effort
     compiled_data['easy_discomfort'] = easy_discomfort
 
+    compiled_data['start_effort'] = effort_ratings[0]
+    compiled_data['peak_effort'] = max(effort_ratings)
+    compiled_data['end_effort'] = effort_ratings[-1]
+    avg_effort = sum(effort_ratings) / len(effort_ratings)
+    compiled_data['avg_effort'] = avg_effort
+
+    compiled_data['start_discomfort'] = discomfort_ratings[0]
+    compiled_data['peak_discomfort'] = max(discomfort_ratings)
+    compiled_data['end_discomfort'] = discomfort_ratings[-1]
+    avg_discomfort = sum(discomfort_ratings) / len(discomfort_ratings)
+    compiled_data['avg_discomfort'] = avg_discomfort
+
     average_accuracy = sum(accuracies) / len(accuracies)
     compiled_data['average_accuracy'] = round(average_accuracy, ROUND_NDIGITS)
     compiled_data['max_accuracy'] = max(accuracies)

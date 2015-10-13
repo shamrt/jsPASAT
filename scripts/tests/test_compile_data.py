@@ -93,12 +93,12 @@ def test_complete_compile_experiment_data():
     assert data['start_discomfort'] == 5
     assert data['peak_discomfort'] == 7
     assert data['end_discomfort'] == 7
-    assert data['avg_discomfort'] == 4
+    assert data['avg_discomfort'] == 4.2222222
 
     assert data['start_effort'] == 5
     assert data['peak_effort'] == 7
     assert data['end_effort'] == 7
-    assert data['avg_effort'] == 4
+    assert data['avg_effort'] == 4.2222222
 
     assert data['avg_accuracy'] == 0.4285714
     assert data['max_accuracy'] == 0.5714286

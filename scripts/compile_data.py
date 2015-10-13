@@ -179,7 +179,7 @@ def compile_experiment_data(df):
     compiled_data['avg_discomfort'] = avg_discomfort
 
     average_accuracy = sum(accuracies) / len(accuracies)
-    compiled_data['average_accuracy'] = round(average_accuracy, ROUND_NDIGITS)
+    compiled_data['avg_accuracy'] = round(average_accuracy, ROUND_NDIGITS)
     compiled_data['max_accuracy'] = max(accuracies)
     compiled_data['min_accuracy'] = min(accuracies)
     compiled_data['first_accuracy'] = accuracies[0]

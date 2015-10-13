@@ -95,3 +95,7 @@ def test_complete_compile_experiment_data():
     assert compiled['min_accuracy'] == 0.2857143
     assert compiled['first_accuracy'] == 0.5714286
     assert compiled['last_accuracy'] == 0.3571429
+
+    assert compiled['auc_accuracy'] == 3.3928572
+    assert compiled['auc_effort'] == 32.0
+    assert compiled['auc_discomfort'] == 32.0

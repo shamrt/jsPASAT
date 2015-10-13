@@ -9,6 +9,7 @@ import glob
 import json
 
 import pandas as pd
+import numpy as np
 
 
 PROJECT_DIR = os.path.abspath(os.path.join(__file__, '..', '..'))
@@ -172,6 +173,11 @@ def compile_experiment_data(df):
     compiled_data['first_accuracy'] = accuracies[0]
     compiled_data['last_accuracy'] = accuracies[-1]
 
+    # area under the curve calculations
+    compiled_data['auc_accuracy'] = round(np.trapz(accuracies), ROUND_NDIGITS)
+    compiled_data['auc_effort'] = round(np.trapz(effort_ratings), ROUND_NDIGITS)
+    compiled_data['auc_discomfort'] = round(
+        np.trapz(discomfort_ratings), ROUND_NDIGITS)
 
     return compiled_data
 
@@ -210,10 +216,6 @@ def main():
         # append compiled participant data to master list
         compiled_participants.append(participant)
 
-
-
-    # TODO: "Max_Effort", "Min_Effort", "First_Effort", "Last_Effort", "Average_Effort", "AUC_Effort", "Hard_Effort", "Medium_Effort", "Easy_Effort", "Max_Discomfort", "Min_Discomfort", "First_Discomfort", "Last_Discomfort", "Average_Discomfort", "AUC_Discomfort", "Hard_Discomfort", "Medium_Discomfort", "Easy_Discomfort",
-    # TODO: "Max_Accuracy", "Min_Accuracy", "First_Accuracy", "Last_Accuracy", "Average_Accuracy", "AUC_Accuracy", "Hard_Accuracy", "Medium_Accuracy", "Easy_Accuracy",
     # TODO: "PWMT_Effort", "PWMT_Discomfort", "PWMT_Enjoyment", "PWMT_Performance", "PWMT_fatigue", "PWMT_satisfaction", "PWMT_WillingToDoWMT", "PWMT_BeContacted",
     # TODO: "Sex", "Age", "edu_year", "edu_plan", "first_lang", "years_eng", "moth_edu", "moth_job", "fath_edu", "fath_job", "uni_major", "ethnicity", "ethnicity_TEXT", "born", "motherborn", "fatherborn",
 

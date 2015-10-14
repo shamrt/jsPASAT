@@ -275,7 +275,7 @@ function generateStimuli(difficulty, num_trials) {
       // Note: Easy Block defined by 2 digits summing to <= 9
       var digit_max = 7;
       stimuli = [_.random(1, digit_max)]  // add first random number
-      while (i < num_trials) {
+      while (i <= num_trials) {
         var trial_value = _.random(1, digit_max);
         var digit_sum = trial_value + _.last(stimuli);
         if (digit_sum <= 9) {
@@ -288,7 +288,7 @@ function generateStimuli(difficulty, num_trials) {
       // Note: Medium Block defined by 2 digits summing to >= 9
       var digit_max = 9;
       stimuli = [_.random(1, digit_max)]  // add first random number
-      while (i < num_trials) {
+      while (i <= num_trials) {
         var trial_value = _.random(1, digit_max);
         var digit_sum = trial_value + _.last(stimuli);
         if (digit_sum >= 9) {
@@ -302,7 +302,7 @@ function generateStimuli(difficulty, num_trials) {
       // (and one single digit stimulus)
       var digit_max = 19;
       stimuli = [_.random(1, digit_max)]  // add first random number
-      while (i < num_trials) {
+      while (i <= num_trials) {
         var trial_value = _.random(1, digit_max);
         var index_is_even = (i % 2 == 0);
         if (index_is_even && trial_value >= 10) {

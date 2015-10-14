@@ -151,13 +151,12 @@ def compile_experiment_data(df):
             easy_effort = block_summary['effort_rating']
             easy_discomfort = block_summary['discomfort_rating']
 
-    medium_accuracy = sum(medium_accuracies) / len(medium_accuracies)
+    medium_accuracy = np.mean(medium_accuracies)
     compiled_data['medium_accuracy'] = round(medium_accuracy, ROUND_NDIGITS)
-    medium_effort = sum(medium_effort_ratings) / len(medium_effort_ratings)
-    compiled_data['medium_effort'] = medium_effort
-    medium_discomfort = sum(medium_discomfort_ratings) / \
-        len(medium_discomfort_ratings)
-    compiled_data['medium_discomfort'] = medium_discomfort
+    medium_effort = np.mean(medium_effort_ratings)
+    compiled_data['medium_effort'] = round(medium_effort, ROUND_NDIGITS)
+    medium_discomfort = np.mean(medium_discomfort_ratings)
+    compiled_data['medium_discomfort'] = round(medium_discomfort, ROUND_NDIGITS)
 
     compiled_data['hard_accuracy'] = hard_accuracy
     compiled_data['hard_effort'] = hard_effort
@@ -169,16 +168,16 @@ def compile_experiment_data(df):
     compiled_data['start_effort'] = effort_ratings[0]
     compiled_data['peak_effort'] = max(effort_ratings)
     compiled_data['end_effort'] = effort_ratings[-1]
-    avg_effort = sum(effort_ratings) / float(len(effort_ratings))
+    avg_effort = np.mean(effort_ratings)
     compiled_data['avg_effort'] = round(avg_effort, ROUND_NDIGITS)
 
     compiled_data['start_discomfort'] = discomfort_ratings[0]
     compiled_data['peak_discomfort'] = max(discomfort_ratings)
     compiled_data['end_discomfort'] = discomfort_ratings[-1]
-    avg_discomfort = sum(discomfort_ratings) / float(len(discomfort_ratings))
+    avg_discomfort = np.mean(discomfort_ratings)
     compiled_data['avg_discomfort'] = round(avg_discomfort, ROUND_NDIGITS)
 
-    average_accuracy = sum(accuracies) / float(len(accuracies))
+    average_accuracy = np.mean(accuracies)
     compiled_data['avg_accuracy'] = round(average_accuracy, ROUND_NDIGITS)
     compiled_data['max_accuracy'] = max(accuracies)
     compiled_data['min_accuracy'] = min(accuracies)

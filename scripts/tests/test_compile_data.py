@@ -103,8 +103,8 @@ def test_complete_compile_experiment_data():
     assert data['avg_accuracy'] == 0.4285714
     assert data['max_accuracy'] == 0.5714286
     assert data['min_accuracy'] == 0.2857143
-    assert data['first_accuracy'] == 0.5714286
-    assert data['last_accuracy'] == 0.3571429
+    assert data['start_accuracy'] == 0.5714286
+    assert data['end_accuracy'] == 0.3571429
 
     assert data['auc_accuracy'] == 3.3928572
     assert data['auc_effort'] == 32.0

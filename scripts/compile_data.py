@@ -181,8 +181,8 @@ def compile_experiment_data(df):
     compiled_data['avg_accuracy'] = round(average_accuracy, ROUND_NDIGITS)
     compiled_data['max_accuracy'] = max(accuracies)
     compiled_data['min_accuracy'] = min(accuracies)
-    compiled_data['first_accuracy'] = accuracies[0]
-    compiled_data['last_accuracy'] = accuracies[-1]
+    compiled_data['start_accuracy'] = accuracies[0]
+    compiled_data['end_accuracy'] = accuracies[-1]
 
     # area under the curve calculations
     compiled_data['auc_accuracy'] = round(np.trapz(accuracies), ROUND_NDIGITS)

@@ -22,6 +22,7 @@ def test_passing_compile_practice_data():
     data = compile_data.compile_practice_data(df)
     assert data['id'] == 1
     assert data['passed_practice'] == True
+    assert data['time_practice_ms'] == 151671
 
 
 def test_failing_compile_practice_data():
@@ -30,6 +31,7 @@ def test_failing_compile_practice_data():
     data = compile_data.compile_practice_data(df)
     assert data['id'] == 7
     assert data['passed_practice'] == False
+    assert data['time_practice_ms'] == 334489
 
 
 def test_get_response_from_json():
@@ -110,6 +112,8 @@ def test_complete_compile_experiment_data():
     assert data['auc_effort'] == 32.0
     assert data['auc_discomfort'] == 32.0
 
+    assert data['time_experiment_ms'] == 831136
+
 
 def test_complete_demographics_data():
     df = get_csv_as_df('follow_up', 1)
@@ -163,11 +167,10 @@ def test_complete_demographics_data():
         ('behav_survey_17', 'N/A'),
         ('behav_survey_18', '3<br>Very often<br>or very much'),
 
-        ('pwmt_delay_ms', 205396),
+        ('time_pwmt_delay_ms', 205396),
+        ('time_follow_up_ms', 223823),
     ]
     for label, answer in expected_answers:
-        print label
-        print answer
         assert data[label] == answer
 
 

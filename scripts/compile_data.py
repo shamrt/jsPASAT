@@ -43,6 +43,10 @@ def compile_practice_data(df):
     passed_practice = ('0-0.5-0' in df['internal_chunk_id'].values)
     compiled_data['passed_practice'] = passed_practice
 
+    # time taken to complete practice
+    time_practice_ms = int(df.ix[df.last_valid_index()]['time_elapsed'])
+    compiled_data['time_practice_ms'] = time_practice_ms
+
     return compiled_data
 
 
@@ -181,14 +185,18 @@ def compile_experiment_data(df):
     compiled_data['avg_accuracy'] = round(average_accuracy, ROUND_NDIGITS)
     compiled_data['max_accuracy'] = max(accuracies)
     compiled_data['min_accuracy'] = min(accuracies)
-    compiled_data['first_accuracy'] = accuracies[0]
-    compiled_data['last_accuracy'] = accuracies[-1]
+    compiled_data['start_accuracy'] = accuracies[0]
+    compiled_data['end_accuracy'] = accuracies[-1]
 
     # area under the curve calculations
     compiled_data['auc_accuracy'] = round(np.trapz(accuracies), ROUND_NDIGITS)
     compiled_data['auc_effort'] = round(np.trapz(effort_ratings), ROUND_NDIGITS)
     compiled_data['auc_discomfort'] = round(
         np.trapz(discomfort_ratings), ROUND_NDIGITS)
+
+    # time taken to complete working memory task
+    time_experiment_ms = int(df.ix[df.last_valid_index()]['time_elapsed'])
+    compiled_data['time_experiment_ms'] = time_experiment_ms
 
     return compiled_data
 
@@ -256,6 +264,14 @@ def compile_demographic_data(df):
         response = get_response_from_json(df.ix[i]['responses'])
         compiled_data[label] = response.strip()
 
+    # post-working memory task delay
+    if 47 in df.index.values:
+        compiled_data['time_pwmt_delay_ms'] = int(df.ix[47]['time_elapsed'])
+
+    # time taken for post-working memory task follow-up
+    time_follow_up_ms = int(df.ix[df.last_valid_index()]['time_elapsed'])
+    compiled_data['time_follow_up_ms'] = time_follow_up_ms
+
     return compiled_data
 
 
@@ -278,6 +294,10 @@ def compile_retrospective_data(df):
     for label, i in retrospective_index:
         response = get_response_from_json(df.ix[i]['responses'])
         compiled_data[label] = int(response[0])
+
+    # time taken for post-working memory task follow-up
+    time_follow_up_ms = int(df.ix[df.last_valid_index()]['time_elapsed'])
+    compiled_data['time_follow_up_ms'] = time_follow_up_ms
 
     return compiled_data
 

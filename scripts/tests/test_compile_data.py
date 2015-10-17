@@ -22,6 +22,7 @@ def test_passing_compile_practice_data():
     data = compile_data.compile_practice_data(df)
     assert data['id'] == 1
     assert data['passed_practice'] == True
+    assert data['time_practice_ms'] == 151671
 
 
 def test_failing_compile_practice_data():
@@ -30,6 +31,7 @@ def test_failing_compile_practice_data():
     data = compile_data.compile_practice_data(df)
     assert data['id'] == 7
     assert data['passed_practice'] == False
+    assert data['time_practice_ms'] == 334489
 
 
 def test_get_response_from_json():
@@ -103,12 +105,14 @@ def test_complete_compile_experiment_data():
     assert data['avg_accuracy'] == 0.4285714
     assert data['max_accuracy'] == 0.5714286
     assert data['min_accuracy'] == 0.2857143
-    assert data['first_accuracy'] == 0.5714286
-    assert data['last_accuracy'] == 0.3571429
+    assert data['start_accuracy'] == 0.5714286
+    assert data['end_accuracy'] == 0.3571429
 
     assert data['auc_accuracy'] == 3.3928572
     assert data['auc_effort'] == 32.0
     assert data['auc_discomfort'] == 32.0
+
+    assert data['time_experiment_ms'] == 831136
 
 
 def test_complete_demographics_data():
@@ -162,10 +166,11 @@ def test_complete_demographics_data():
         ('behav_survey_16', '0<br>Never or<br>not at all'),
         ('behav_survey_17', 'N/A'),
         ('behav_survey_18', '3<br>Very often<br>or very much'),
+
+        ('time_pwmt_delay_ms', 205396),
+        ('time_follow_up_ms', 223823),
     ]
     for label, answer in expected_answers:
-        print label
-        print answer
         assert data[label] == answer
 
 

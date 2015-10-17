@@ -256,6 +256,10 @@ def compile_demographic_data(df):
         response = get_response_from_json(df.ix[i]['responses'])
         compiled_data[label] = response.strip()
 
+    # post-working memory task delay
+    if 47 in df.index.values:
+        compiled_data['pwmt_delay_ms'] = int(df.ix[47]['time_elapsed'])
+
     return compiled_data
 
 

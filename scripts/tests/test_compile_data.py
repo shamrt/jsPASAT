@@ -162,6 +162,8 @@ def test_complete_demographics_data():
         ('behav_survey_16', '0<br>Never or<br>not at all'),
         ('behav_survey_17', 'N/A'),
         ('behav_survey_18', '3<br>Very often<br>or very much'),
+
+        ('pwmt_delay_ms', 205396),
     ]
     for label, answer in expected_answers:
         print label

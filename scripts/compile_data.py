@@ -350,7 +350,7 @@ def main():
     # export final data to CSV
     participants_df = pd.DataFrame.from_dict(compiled_participants)
     compiled_csv_path = os.path.join(DATA_DIR, 'compiled.csv')
-    participants_df.to_csv(compiled_csv_path)
+    participants_df.to_csv(compiled_csv_path, encoding='utf-8')
 
 
 if __name__ == '__main__':

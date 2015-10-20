@@ -70,6 +70,7 @@ jsPsych.init({
   experiment_structure: experiment,
   display_element: $('#jspsych-target'),
   on_finish: function() {
-    postDataToDb(jsPsych.data.getData(), participant_id, 'follow_up');
+    var url = 'follow_up?pid=' + participant_id;
+    postDataToDb(jsPsych.data.getData(), participant_id, url);
   }
 });

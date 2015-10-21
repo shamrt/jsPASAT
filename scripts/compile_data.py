@@ -340,8 +340,8 @@ def main():
                         retrospective = compile_retrospective_data(stage_df)
                         participant.update(retrospective)
 
-            elif exp_stage == 'experiment' and \
-                    not participant['passed_practice']:
+            elif (exp_stage == 'experiment' and
+                    participant['passed_practice']) or exp_stage == 'follow_up':
                 participant['missing_data'] = True
 
         # append compiled participant data to master list

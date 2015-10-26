@@ -238,7 +238,12 @@ def compile_demographic_data(df):
         ('elect_survey_5', 25),
         ('elect_survey_6', 26),
         ('elect_survey_7', 27),
+    ]
+    for label, i in demographics_index:
+        response = get_response_from_json(df.ix[i]['responses'])
+        compiled_data[label] = response.strip()
 
+    behavioural_survey = [
         # behavioural survey
         ('behav_survey_1', 29),
         ('behav_survey_2', 30),
@@ -260,9 +265,11 @@ def compile_demographic_data(df):
         ('behav_survey_18', 46),
 
     ]
-    for label, i in demographics_index:
+    for label, i in behavioural_survey:
         response = get_response_from_json(df.ix[i]['responses'])
-        compiled_data[label] = response.strip()
+        if response[0].isdigit():
+            response = response[0]
+        compiled_data[label] = response
 
     # post-working memory task delay
     if 47 in df.index.values:

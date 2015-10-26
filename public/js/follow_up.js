@@ -162,14 +162,15 @@ var lead_in_school = "<strong>At school</strong>, have you had ",
 var behavioural_survey_notice = createTextBlock(behavioural_survey_preamble);
 var behavioural_survey = {
   type: 'survey-multi-choice',
-  questions: _.shuffle(behavioural_survey_questions),
+  questions: behavioural_survey_questions,
   options: _.map(behavioural_survey_questions,
     function(){ return [behavioural_survey_likert];
   }),
   required: _.map(behavioural_survey_questions, function() {
     return [true];
   }),
-  horizontal: true
+  horizontal: true,
+  randomize_order: true
 }
 
 follow_up.push(

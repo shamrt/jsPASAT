@@ -302,10 +302,6 @@ def compile_retrospective_data(df):
         response = get_response_from_json(df.ix[i]['responses'])
         compiled_data[label] = int(response[0])
 
-    # time taken for post-working memory task follow-up
-    time_follow_up_ms = int(df.ix[df.last_valid_index()]['time_elapsed'])
-    compiled_data['time_follow_up_ms'] = time_follow_up_ms
-
     return compiled_data
 
 

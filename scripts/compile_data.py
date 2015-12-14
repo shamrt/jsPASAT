@@ -133,11 +133,12 @@ def compile_experiment_data(df):
     medium_effort_ratings = []
     medium_discomfort_ratings = []
     medium_accuracies = []
+    medium_blocks_order = []
 
     # collect and organize experiment data from experimental blocks
-    # note: PASAT chunks start at chunk_id 0-0.3-0
-    for i, block in enumerate(blocks, start=3):
-        block_chunk_id = '0-0.{}-0'.format(i)
+    for i, block in enumerate(blocks, start=1):
+        # note: PASAT chunks start at chunk_id 0-0.3-0
+        block_chunk_id = '0-0.{}-0'.format(i + 2)
         block = df.loc[df['internal_chunk_id'] == block_chunk_id]
         block_summary = summarize_pasat_chunk(block)
 
@@ -146,6 +147,7 @@ def compile_experiment_data(df):
         accuracies.append(block_summary['accuracy'])
 
         if block_summary['block_type'] == 'medium':
+            medium_blocks_order.append(i)
             medium_accuracies.append(block_summary['accuracy'])
             medium_effort_ratings.append(block_summary['effort_rating'])
             medium_discomfort_ratings.append(block_summary['discomfort_rating'])
@@ -167,14 +169,13 @@ def compile_experiment_data(df):
     compiled_data['medium_discomfort'] = round(medium_discomfort, ROUND_NDIGITS)
 
     # compute regression variables for medium blocks
-    medium_blocks_range = range(1, len(medium_accuracies) + 1)
     medium_block_measures = [
         ('medium_accuracy', medium_accuracies),
         ('medium_effort', medium_effort_ratings),
         ('medium_discomfort', medium_discomfort_ratings)
     ]
     for measure_name, measure_values in medium_block_measures:
-        measure_regress = stats.linregress(medium_blocks_range, measure_values)
+        measure_regress = stats.linregress(medium_blocks_order, measure_values)
         compiled_data['{}_slope'.format(measure_name)] = round(
             measure_regress.slope, ROUND_NDIGITS)
         compiled_data['{}_intercept'.format(measure_name)] = round(

@@ -10,11 +10,12 @@ import json
 
 import pandas as pd
 import numpy as np
+from scipy import stats
 
 
 PROJECT_DIR = os.path.abspath(os.path.join(__file__, '..', '..'))
 DATA_DIR = os.path.join(PROJECT_DIR, 'data')
-ROUND_NDIGITS = 7
+ROUND_NDIGITS = 9
 
 
 def get_csv_paths(basedir, exp_stage):
@@ -133,6 +134,8 @@ def compile_experiment_data(df):
     medium_discomfort_ratings = []
     medium_accuracies = []
 
+    # collect and organize experiment data from experimental blocks
+    # note: PASAT chunks start at chunk_id 0-0.3-0
     for i, block in enumerate(blocks, start=3):
         block_chunk_id = '0-0.{}-0'.format(i)
         block = df.loc[df['internal_chunk_id'] == block_chunk_id]
@@ -155,6 +158,7 @@ def compile_experiment_data(df):
             easy_effort = block_summary['effort_rating']
             easy_discomfort = block_summary['discomfort_rating']
 
+    # compute medium block averages
     medium_accuracy = np.mean(medium_accuracies)
     compiled_data['medium_accuracy'] = round(medium_accuracy, ROUND_NDIGITS)
     medium_effort = np.mean(medium_effort_ratings)
@@ -162,6 +166,21 @@ def compile_experiment_data(df):
     medium_discomfort = np.mean(medium_discomfort_ratings)
     compiled_data['medium_discomfort'] = round(medium_discomfort, ROUND_NDIGITS)
 
+    # compute regression variables for medium blocks
+    medium_blocks_range = range(1, len(medium_accuracies) + 1)
+    medium_block_measures = [
+        ('medium_accuracy', medium_accuracies),
+        ('medium_effort', medium_effort_ratings),
+        ('medium_discomfort', medium_discomfort_ratings)
+    ]
+    for measure_name, measure_values in medium_block_measures:
+        measure_regress = stats.linregress(medium_blocks_range, measure_values)
+        compiled_data['{}_slope'.format(measure_name)] = round(
+            measure_regress.slope, ROUND_NDIGITS)
+        compiled_data['{}_intercept'.format(measure_name)] = round(
+            measure_regress.intercept, ROUND_NDIGITS)
+
+    # assign other variables
     compiled_data['hard_accuracy'] = hard_accuracy
     compiled_data['hard_effort'] = hard_effort
     compiled_data['hard_discomfort'] = hard_discomfort
@@ -302,10 +321,6 @@ def compile_retrospective_data(df):
         response = get_response_from_json(df.ix[i]['responses'])
         compiled_data[label] = int(response[0])
 
-    # time taken for post-working memory task follow-up
-    time_follow_up_ms = int(df.ix[df.last_valid_index()]['time_elapsed'])
-    compiled_data['time_follow_up_ms'] = time_follow_up_ms
-
     return compiled_data
 
 
@@ -347,8 +362,8 @@ def main():
                         retrospective = compile_retrospective_data(stage_df)
                         participant.update(retrospective)
 
-            elif exp_stage == 'experiment' and \
-                    not participant['passed_practice']:
+            elif (exp_stage == 'experiment' and
+                    participant['passed_practice']) or exp_stage == 'follow_up':
                 participant['missing_data'] = True
 
         # append compiled participant data to master list

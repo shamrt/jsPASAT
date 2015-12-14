@@ -133,6 +133,8 @@ def compile_experiment_data(df):
     medium_discomfort_ratings = []
     medium_accuracies = []
 
+    # collect and organize experiment data from experimental blocks
+    # note: PASAT chunks start at chunk_id 0-0.3-0
     for i, block in enumerate(blocks, start=3):
         block_chunk_id = '0-0.{}-0'.format(i)
         block = df.loc[df['internal_chunk_id'] == block_chunk_id]
@@ -155,6 +157,7 @@ def compile_experiment_data(df):
             easy_effort = block_summary['effort_rating']
             easy_discomfort = block_summary['discomfort_rating']
 
+    # compute medium block averages
     medium_accuracy = np.mean(medium_accuracies)
     compiled_data['medium_accuracy'] = round(medium_accuracy, ROUND_NDIGITS)
     medium_effort = np.mean(medium_effort_ratings)
@@ -162,6 +165,7 @@ def compile_experiment_data(df):
     medium_discomfort = np.mean(medium_discomfort_ratings)
     compiled_data['medium_discomfort'] = round(medium_discomfort, ROUND_NDIGITS)
 
+    # assign other variables
     compiled_data['hard_accuracy'] = hard_accuracy
     compiled_data['hard_effort'] = hard_effort
     compiled_data['hard_discomfort'] = hard_discomfort

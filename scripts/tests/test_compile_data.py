@@ -85,12 +85,12 @@ def test_complete_compile_experiment_data():
     assert data['medium_effort'] == 4.285714286
     assert data['medium_discomfort'] == 4.285714286
 
-    assert data['medium_accuracy_slope'] == -0.028061224
-    assert data['medium_accuracy_intercept'] == 0.530612245
-    assert data['medium_effort_slope'] == -0.035714286
-    assert data['medium_effort_intercept'] == 4.428571429
-    assert data['medium_discomfort_slope'] == -0.035714286
-    assert data['medium_discomfort_intercept'] == 4.428571429
+    assert data['medium_accuracy_slope'] == -0.021539028
+    assert data['medium_accuracy_intercept'] == 0.532216495
+    assert data['medium_effort_slope'] == -0.028350515
+    assert data['medium_effort_intercept'] == 4.43556701
+    assert data['medium_discomfort_slope'] == -0.028350515
+    assert data['medium_discomfort_intercept'] == 4.43556701
 
     assert data['hard_accuracy'] == 0.357142857
     assert data['hard_effort'] == 4

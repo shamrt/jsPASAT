@@ -10,6 +10,7 @@ import json
 
 import pandas as pd
 import numpy as np
+from scipy import stats
 
 
 PROJECT_DIR = os.path.abspath(os.path.join(__file__, '..', '..'))
@@ -164,6 +165,27 @@ def compile_experiment_data(df):
     compiled_data['medium_effort'] = round(medium_effort, ROUND_NDIGITS)
     medium_discomfort = np.mean(medium_discomfort_ratings)
     compiled_data['medium_discomfort'] = round(medium_discomfort, ROUND_NDIGITS)
+
+    # compute regression variables for medium blocks
+    medium_blocks_range = range(1, len(medium_accuracies) + 1)
+    medium_block_measures = [
+        ('medium_accuracy', medium_accuracies),
+        ('medium_effort', medium_effort_ratings),
+        ('medium_discomfort', medium_discomfort_ratings)
+    ]
+    for measure_name, measure_values in medium_block_measures:
+        print measure_name
+        print measure_values
+        print medium_blocks_range
+
+        # compute linear regression stats
+        measure_regress = stats.linregress(medium_blocks_range, measure_values)
+
+        slope_var = '{}_slope'.format(measure_name)
+        compiled_data[slope_var] = round(measure_regress.slope, ROUND_NDIGITS)
+        intercept_var = '{}_intercept'.format(measure_name)
+        compiled_data[intercept_var] = round(
+            measure_regress.intercept, ROUND_NDIGITS)
 
     # assign other variables
     compiled_data['hard_accuracy'] = hard_accuracy

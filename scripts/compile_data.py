@@ -174,17 +174,10 @@ def compile_experiment_data(df):
         ('medium_discomfort', medium_discomfort_ratings)
     ]
     for measure_name, measure_values in medium_block_measures:
-        print measure_name
-        print measure_values
-        print medium_blocks_range
-
-        # compute linear regression stats
         measure_regress = stats.linregress(medium_blocks_range, measure_values)
-
-        slope_var = '{}_slope'.format(measure_name)
-        compiled_data[slope_var] = round(measure_regress.slope, ROUND_NDIGITS)
-        intercept_var = '{}_intercept'.format(measure_name)
-        compiled_data[intercept_var] = round(
+        compiled_data['{}_slope'.format(measure_name)] = round(
+            measure_regress.slope, ROUND_NDIGITS)
+        compiled_data['{}_intercept'.format(measure_name)] = round(
             measure_regress.intercept, ROUND_NDIGITS)
 
     # assign other variables

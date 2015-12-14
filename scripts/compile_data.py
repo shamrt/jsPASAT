@@ -14,7 +14,7 @@ import numpy as np
 
 PROJECT_DIR = os.path.abspath(os.path.join(__file__, '..', '..'))
 DATA_DIR = os.path.join(PROJECT_DIR, 'data')
-ROUND_NDIGITS = 7
+ROUND_NDIGITS = 9
 
 
 def get_csv_paths(basedir, exp_stage):

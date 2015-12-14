@@ -53,7 +53,7 @@ def test_summarize_pasat_chunk():
     # first block
     pasat_block = df.loc[df['internal_chunk_id'] == '0-0.3-0']
     block_summary = compile_data.summarize_pasat_chunk(pasat_block)
-    assert block_summary['accuracy'] == 0.5714286
+    assert block_summary['accuracy'] == 0.571428571
     assert block_summary['effort_rating'] == 5
     assert block_summary['discomfort_rating'] == 5
     assert block_summary['block_type'] == 'medium'
@@ -61,7 +61,7 @@ def test_summarize_pasat_chunk():
     # last block
     pasat_block = df.loc[df['internal_chunk_id'] == '0-0.11-0']
     block_summary = compile_data.summarize_pasat_chunk(pasat_block)
-    assert block_summary['accuracy'] == 0.3571429
+    assert block_summary['accuracy'] == 0.357142857
     assert block_summary['effort_rating'] == 7
     assert block_summary['discomfort_rating'] == 7
     assert block_summary['block_type'] == 'medium'
@@ -81,34 +81,34 @@ def test_complete_compile_experiment_data():
     assert data['anticipated_discomfort'] == 4
     assert data['anticipated_fatigue'] == 4
 
-    assert data['medium_accuracy'] == 0.4183674
-    assert data['medium_effort'] == 4.2857143
-    assert data['medium_discomfort'] == 4.2857143
+    assert data['medium_accuracy'] == 0.418367347
+    assert data['medium_effort'] == 4.285714286
+    assert data['medium_discomfort'] == 4.285714286
 
-    assert data['hard_accuracy'] == 0.3571429
+    assert data['hard_accuracy'] == 0.357142857
     assert data['hard_effort'] == 4
     assert data['hard_discomfort'] == 4
-    assert data['easy_accuracy'] == 0.5714286
+    assert data['easy_accuracy'] == 0.571428571
     assert data['easy_effort'] == 4
     assert data['easy_discomfort'] == 4
 
     assert data['start_discomfort'] == 5
     assert data['peak_discomfort'] == 7
     assert data['end_discomfort'] == 7
-    assert data['avg_discomfort'] == 4.2222222
+    assert data['avg_discomfort'] == 4.222222222
 
     assert data['start_effort'] == 5
     assert data['peak_effort'] == 7
     assert data['end_effort'] == 7
-    assert data['avg_effort'] == 4.2222222
+    assert data['avg_effort'] == 4.222222222
 
-    assert data['avg_accuracy'] == 0.4285714
-    assert data['max_accuracy'] == 0.5714286
-    assert data['min_accuracy'] == 0.2857143
-    assert data['start_accuracy'] == 0.5714286
-    assert data['end_accuracy'] == 0.3571429
+    assert data['avg_accuracy'] == 0.428571429
+    assert data['max_accuracy'] == 0.571428571
+    assert data['min_accuracy'] == 0.285714286
+    assert data['start_accuracy'] == 0.571428571
+    assert data['end_accuracy'] == 0.357142857
 
-    assert data['auc_accuracy'] == 3.3928572
+    assert data['auc_accuracy'] == 3.392857143
     assert data['auc_effort'] == 32.0
     assert data['auc_discomfort'] == 32.0
 

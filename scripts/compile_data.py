@@ -44,7 +44,18 @@ def compile_practice_data(df):
     passed_practice = ('0-0.5-0' in df['internal_chunk_id'].values)
     compiled_data['passed_practice'] = passed_practice
 
-    # time taken to complete practice
+    # time taken to complete practice blocks
+    time_block_1_start_ms = int(df.ix[1]['time_elapsed'])
+    time_block_1_end_ms = int(df.ix[7]['time_elapsed'])
+    time_practice_blk1_ms = time_block_1_end_ms - time_block_1_start_ms
+    compiled_data['time_practice_blk1_ms'] = time_practice_blk1_ms
+
+    time_block_2_start_ms = int(df.ix[10]['time_elapsed'])
+    time_block_2_end_ms = int(df.ix[26]['time_elapsed'])
+    time_practice_blk2_ms = time_block_2_end_ms - time_block_2_start_ms
+    compiled_data['time_practice_blk2_ms'] = time_practice_blk2_ms
+
+    # time taken to complete entire practice
     time_practice_ms = int(df.ix[df.last_valid_index()]['time_elapsed'])
     compiled_data['time_practice_ms'] = time_practice_ms
 

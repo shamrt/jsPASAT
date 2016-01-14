@@ -22,6 +22,8 @@ def test_passing_compile_practice_data():
     data = compile_data.compile_practice_data(df)
     assert data['id'] == 1
     assert data['passed_practice'] == True
+    assert data['time_practice_blk1_ms'] == 33045
+    assert data['time_practice_blk2_ms'] == 83144
     assert data['time_practice_ms'] == 151671
 
 

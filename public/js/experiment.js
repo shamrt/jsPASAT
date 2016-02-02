@@ -20,11 +20,11 @@ var prospective_survey = {
       ["In light of your experience so far, how much <strong><u>mental fatigue</strong></u> do you expect to have while completing the <strong>working memory task</strong>?"],
     ],
     options: [
-      [jsPASAT['LIKERT_SCALE_1']],
-      [jsPASAT['LIKERT_SCALE_2']],
-      [jsPASAT['LIKERT_SCALE_1']],
-      [jsPASAT['LIKERT_SCALE_1']],
-      [jsPASAT['LIKERT_SCALE_1']]
+      [jsPASAT.LIKERT_SCALE_1],
+      [jsPASAT.LIKERT_SCALE_2],
+      [jsPASAT.LIKERT_SCALE_1],
+      [jsPASAT.LIKERT_SCALE_1],
+      [jsPASAT.LIKERT_SCALE_1]
     ],
     required: [
       [true],
@@ -34,7 +34,7 @@ var prospective_survey = {
       [true],
     ],
     horizontal: true
-}
+};
 experiment.push(prospective_survey);
 
 
@@ -46,7 +46,7 @@ experiment.push(experiment_notice);
 
 // generate the experiment blocks
 var condition = generateCondition();
-var block_types = (jsPASAT['BLOCK_TYPE_ORDER'] === null) ? generateRandomBlockTypes(condition) : jsPASAT['BLOCK_TYPE_ORDER'];
+var block_types = (jsPASAT.BLOCK_TYPE_ORDER === null) ? generateRandomBlockTypes(condition) : jsPASAT.BLOCK_TYPE_ORDER;
 var pasat_blocks = generatePasatBlockStimuli(block_types);
 experiment = experiment.concat(pasat_blocks.formatted_stimuli);
 

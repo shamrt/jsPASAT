@@ -92,9 +92,9 @@ def summarize_pasat_chunk(df):
     # affective ratings
     ratings_json = df.ix[df.last_valid_index()]['responses']
     raw_effort_rating = get_response_from_json(ratings_json)
-    summary['effort_rating'] = int(raw_effort_rating[0])
+    summary['effort'] = int(raw_effort_rating[0])
     raw_discomfort_rating = get_response_from_json(ratings_json, 1)
-    summary['discomfort_rating'] = int(raw_discomfort_rating[0])
+    summary['discomfort'] = int(raw_discomfort_rating[0])
 
     return summary
 
@@ -153,24 +153,32 @@ def compile_experiment_data(df):
         block = df.loc[df['internal_chunk_id'] == block_chunk_id]
         block_summary = summarize_pasat_chunk(block)
 
-        effort_ratings.append(block_summary['effort_rating'])
-        discomfort_ratings.append(block_summary['discomfort_rating'])
+        # add block summaries to compiled data
+        compiled_data['effort_{}'.format(i)] = block_summary['effort']
+        discomfort_key = 'discomfort_{}'.format(i)
+        compiled_data[discomfort_key] = block_summary['discomfort']
+        accuracy_key = 'accuracy_{}'.format(i)
+        compiled_data[accuracy_key] = block_summary['accuracy']
+
+        # identify and organize data by block type
+        effort_ratings.append(block_summary['effort'])
+        discomfort_ratings.append(block_summary['discomfort'])
         accuracies.append(block_summary['accuracy'])
 
         if block_summary['block_type'] == 'medium':
             medium_blocks_order.append(i)
             medium_accuracies.append(block_summary['accuracy'])
-            medium_effort_ratings.append(block_summary['effort_rating'])
+            medium_effort_ratings.append(block_summary['effort'])
             medium_discomfort_ratings.append(
-                block_summary['discomfort_rating'])
+                block_summary['discomfort'])
         elif block_summary['block_type'] == 'hard':
             hard_accuracy = block_summary['accuracy']
-            hard_effort = block_summary['effort_rating']
-            hard_discomfort = block_summary['discomfort_rating']
+            hard_effort = block_summary['effort']
+            hard_discomfort = block_summary['discomfort']
         elif block_summary['block_type'] == 'easy':
             easy_accuracy = block_summary['accuracy']
-            easy_effort = block_summary['effort_rating']
-            easy_discomfort = block_summary['discomfort_rating']
+            easy_effort = block_summary['effort']
+            easy_discomfort = block_summary['discomfort']
 
     # compute medium block averages
     medium_accuracy = np.mean(medium_accuracies)
@@ -386,10 +394,25 @@ def main():
         # append compiled participant data to master list
         compiled_participants.append(participant)
 
-    # export final data to CSV
+    # export complete data set to CSV
     participants_df = pd.DataFrame.from_dict(compiled_participants)
     compiled_csv_path = os.path.join(DATA_DIR, 'compiled.csv')
     participants_df.to_csv(compiled_csv_path, encoding='utf-8')
+
+    # create list of columns for alternative analysis
+    first_columns = ['id', 'num_blocks']
+    block_columns = []
+    for i in range(1, 10):
+        block_columns.append('accuracy_{}'.format(i))
+        block_columns.append('discomfort_{}'.format(i))
+        block_columns.append('effort_{}'.format(i))
+    columns = (first_columns + sorted(block_columns))
+
+    # export data for alternative analysis to CSV
+    alt_analysis_df = participants_df[columns].copy()
+    alt_analysis_df.sort(columns=['num_blocks'], inplace=True)
+    alt_analysis_csv_path = os.path.join(DATA_DIR, 'alt_compiled.csv')
+    alt_analysis_df.to_csv(alt_analysis_csv_path, encoding='utf-8')
 
 
 if __name__ == '__main__':

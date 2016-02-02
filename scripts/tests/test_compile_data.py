@@ -43,6 +43,9 @@ def test_get_response_from_json():
 
 
 def get_csv_as_df(stage, id):
+    """Take an experiment stage and participant ID and return a pandas
+    data frame.
+    """
     experiment_path = os.path.join(
         MOCK_DATA_DIR, stage, '{}.csv'.format(id))
     df = compile_data.get_csv_as_dataframe(experiment_path)
@@ -56,16 +59,16 @@ def test_summarize_pasat_chunk():
     pasat_block = df.loc[df['internal_chunk_id'] == '0-0.3-0']
     block_summary = compile_data.summarize_pasat_chunk(pasat_block)
     assert block_summary['accuracy'] == 0.571428571
-    assert block_summary['effort_rating'] == 5
-    assert block_summary['discomfort_rating'] == 5
+    assert block_summary['effort'] == 5
+    assert block_summary['discomfort'] == 5
     assert block_summary['block_type'] == 'medium'
 
     # last block
     pasat_block = df.loc[df['internal_chunk_id'] == '0-0.11-0']
     block_summary = compile_data.summarize_pasat_chunk(pasat_block)
     assert block_summary['accuracy'] == 0.357142857
-    assert block_summary['effort_rating'] == 7
-    assert block_summary['discomfort_rating'] == 7
+    assert block_summary['effort'] == 7
+    assert block_summary['discomfort'] == 7
     assert block_summary['block_type'] == 'medium'
 
 
@@ -74,7 +77,8 @@ def test_complete_compile_experiment_data():
     data = compile_data.compile_experiment_data(df)
     assert data['condition'] == 5
 
-    assert data['block_order'] == 'medium,medium,hard,medium,easy,medium,medium,medium,medium'
+    assert data['block_order'] == ('medium,medium,hard,medium,easy,'
+                                   'medium,medium,medium,medium')
     assert data['num_blocks'] == 9
 
     assert data['anticipated_enjoyment'] == 3
@@ -83,6 +87,41 @@ def test_complete_compile_experiment_data():
     assert data['anticipated_discomfort'] == 4
     assert data['anticipated_fatigue'] == 4
 
+    # real-time data for each block
+    assert data['accuracy_1'] == 0.571428571
+    assert data['accuracy_2'] == 0.428571429
+    assert data['accuracy_3'] == 0.357142857
+    assert data['accuracy_4'] == 0.5
+    assert data['accuracy_5'] == 0.571428571
+    assert data['accuracy_6'] == 0.285714286
+    assert data['accuracy_7'] == 0.357142857
+    assert data['accuracy_8'] == 0.428571429
+    assert data['accuracy_9'] == 0.357142857
+    assert 'accuracy_10' not in data.keys()
+
+    assert data['effort_1'] == 5
+    assert data['effort_2'] == 4
+    assert data['effort_3'] == 4
+    assert data['effort_4'] == 4
+    assert data['effort_5'] == 4
+    assert data['effort_6'] == 7
+    assert data['effort_7'] == 1
+    assert data['effort_8'] == 2
+    assert data['effort_9'] == 7
+    assert 'effort_10' not in data.keys()
+
+    assert data['discomfort_1'] == 5
+    assert data['discomfort_2'] == 4
+    assert data['discomfort_3'] == 4
+    assert data['discomfort_4'] == 4
+    assert data['discomfort_5'] == 4
+    assert data['discomfort_6'] == 7
+    assert data['discomfort_7'] == 1
+    assert data['discomfort_8'] == 2
+    assert data['discomfort_9'] == 7
+    assert 'discomfort_10' not in data.keys()
+
+    # real-time data by block type
     assert data['medium_accuracy'] == 0.418367347
     assert data['medium_effort'] == 4.285714286
     assert data['medium_discomfort'] == 4.285714286
@@ -196,6 +235,4 @@ def test_complete_retrospective_data():
         ('pwmt_willingtodowmt', 4),
     ]
     for label, answer in expected_answers:
-        print label
-        print answer
         assert data[label] == answer

@@ -74,7 +74,8 @@ def test_complete_compile_experiment_data():
     data = compile_data.compile_experiment_data(df)
     assert data['condition'] == 5
 
-    assert data['block_order'] == 'medium,medium,hard,medium,easy,medium,medium,medium,medium'
+    assert data['block_order'] == ('medium,medium,hard,medium,easy,'
+                                   'medium,medium,medium,medium')
     assert data['num_blocks'] == 9
 
     assert data['anticipated_enjoyment'] == 3

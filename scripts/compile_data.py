@@ -161,7 +161,8 @@ def compile_experiment_data(df):
             medium_blocks_order.append(i)
             medium_accuracies.append(block_summary['accuracy'])
             medium_effort_ratings.append(block_summary['effort_rating'])
-            medium_discomfort_ratings.append(block_summary['discomfort_rating'])
+            medium_discomfort_ratings.append(
+                block_summary['discomfort_rating'])
         elif block_summary['block_type'] == 'hard':
             hard_accuracy = block_summary['accuracy']
             hard_effort = block_summary['effort_rating']
@@ -177,7 +178,8 @@ def compile_experiment_data(df):
     medium_effort = np.mean(medium_effort_ratings)
     compiled_data['medium_effort'] = round(medium_effort, ROUND_NDIGITS)
     medium_discomfort = np.mean(medium_discomfort_ratings)
-    compiled_data['medium_discomfort'] = round(medium_discomfort, ROUND_NDIGITS)
+    compiled_data['medium_discomfort'] = round(
+        medium_discomfort, ROUND_NDIGITS)
 
     # compute regression variables for medium blocks
     medium_block_measures = [
@@ -220,8 +222,10 @@ def compile_experiment_data(df):
     compiled_data['end_accuracy'] = accuracies[-1]
 
     # area under the curve calculations
-    compiled_data['auc_accuracy'] = round(np.trapz(accuracies), ROUND_NDIGITS)
-    compiled_data['auc_effort'] = round(np.trapz(effort_ratings), ROUND_NDIGITS)
+    compiled_data['auc_accuracy'] = round(
+        np.trapz(accuracies), ROUND_NDIGITS)
+    compiled_data['auc_effort'] = round(
+        np.trapz(effort_ratings), ROUND_NDIGITS)
     compiled_data['auc_discomfort'] = round(
         np.trapz(discomfort_ratings), ROUND_NDIGITS)
 
@@ -375,7 +379,8 @@ def main():
                         participant.update(retrospective)
 
             elif (exp_stage == 'experiment' and
-                    participant['passed_practice']) or exp_stage == 'follow_up':
+                    participant['passed_practice']) or \
+                    exp_stage == 'follow_up':
                 participant['missing_data'] = True
 
         # append compiled participant data to master list

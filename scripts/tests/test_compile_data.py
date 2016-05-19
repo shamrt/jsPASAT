@@ -72,7 +72,7 @@ def test_summarize_pasat_chunk():
     assert block_summary['block_type'] == 'medium'
 
 
-def test_complete_compile_experiment_data():
+def test_complete_compile_experiment_data_1():
     df = get_csv_as_df('experiment', 1)
     data = compile_data.compile_experiment_data(df)
     assert data['condition'] == 5
@@ -171,6 +171,20 @@ def test_complete_compile_experiment_data():
     assert data['auc_discomfort'] == 32.0
 
     assert data['time_experiment_ms'] == 831136
+
+
+def test_complete_compile_experiment_data_3():
+    df = get_csv_as_df('experiment', 3)
+    data = compile_data.compile_experiment_data(df)
+
+    # effort and discomfort ratings
+    assert data['prop_effort_ups'] == 0.166666667  # 3/6
+    assert data['prop_effort_downs'] == 0.333333333  # 2/6
+    assert data['prop_effort_sames'] == 0.500000000  # 1/6
+
+    assert data['prop_discomfort_ups'] == 0.333333333  # 2/6
+    assert data['prop_discomfort_downs'] == 0.333333333  # 2/6
+    assert data['prop_discomfort_sames'] == 0.333333333  # 2/6
 
 
 def test_complete_demographics_data():

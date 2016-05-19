@@ -99,6 +99,37 @@ def summarize_pasat_chunk(df):
     return summary
 
 
+def _calculate_ratings_proportions(ratings):
+    """Given a list of ratings integers, calcuate the number of changes.
+    Return dict indicating proportion of increases, decreases, and no-changes.
+    """
+    def changes_prop(changes):
+        """Calculate changes as a proportion of possible changes in main list.
+        """
+        possible_changes = (len(ratings) - 1)
+        return round(float(len(changes)) / possible_changes, ROUND_NDIGITS)
+
+    ups = []
+    downs = []
+    sames = []
+    last_rating = None
+    for rating in ratings:
+        if last_rating:
+            if rating > last_rating:
+                ups.append(rating)
+            elif rating < last_rating:
+                downs.append(rating)
+            else:
+                sames.append(rating)
+        last_rating = rating
+
+    return {
+        'ups': changes_prop(ups),
+        'downs': changes_prop(downs),
+        'sames': changes_prop(sames)
+    }
+
+
 def compile_experiment_data(df):
     """Take pandas dataframe and compile key variables. Return dict.
     """
@@ -212,6 +243,18 @@ def compile_experiment_data(df):
             measure_regress.slope, ROUND_NDIGITS)
         compiled_data['{}_intercept'.format(measure_name)] = round(
             measure_regress.intercept, ROUND_NDIGITS)
+
+    # proportion of effort and discomfort ratings that increase or decrease
+    discomfort_props = _calculate_ratings_proportions(
+        discomfort_ratings)
+    compiled_data['prop_discomfort_ups'] = discomfort_props['ups']
+    compiled_data['prop_discomfort_downs'] = discomfort_props['downs']
+    compiled_data['prop_discomfort_sames'] = discomfort_props['sames']
+
+    effort_props = _calculate_ratings_proportions(effort_ratings)
+    compiled_data['prop_effort_ups'] = effort_props['ups']
+    compiled_data['prop_effort_downs'] = effort_props['downs']
+    compiled_data['prop_effort_sames'] = effort_props['sames']
 
     # assign other variables
     compiled_data['hard_accuracy'] = hard_accuracy

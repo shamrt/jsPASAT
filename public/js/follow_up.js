@@ -18,7 +18,7 @@ var demographics_0 = {
     ["How old are you?"],
     ["What is your date of birth? (MM/YYYY; e.g., <code>01/1995</code>)"]
   ]
-}
+};
 
 var demographics_1_questions = [
   ["Please indicate your sex:"],
@@ -42,13 +42,13 @@ var demographics_1 = {
   required: _.map(demographics_1_questions, function() {
     return [true];
   })
-}
+};
 var demographics_2 = {
   type: 'survey-text',
   questions: [
     ["What is your mother's occupation?"]
   ]
-}
+};
 var demographics_3_questions = [
   ["What is your father’s highest level of education?"]
 ];
@@ -61,7 +61,7 @@ var demographics_3 = {
   required: _.map(demographics_3_questions, function() {
     return [true];
   })
-}
+};
 var demographics_4 = {
   type: 'survey-text',
   questions: [
@@ -69,7 +69,7 @@ var demographics_4 = {
     ["What was your final average at the end of high school?<br><em>(percentage; e.g., <code>75%</code>)</em>"],
     ["Estimate your current university average<br><em>(estimate percentage; e.g., <code>75%</code>)</em>:"],
   ]
-}
+};
 var demographics_5_questions = [
   ["How many <u>statistics</u> courses <strong>in university</strong> have you taken (or are currently taking)?"],
   ["How many <u>statistics</u> courses did you take <strong>in high school</strong>?"],
@@ -86,20 +86,20 @@ var demographics_5 = {
     [["None", "1", "2", "3", "4", "5", "More than 5"]],
     [["None", "1", "2", "3", "4", "More than 4"]],
     [["None", "1", "2", "3", "4", "5", "More than 5"]],
-    [jsPASAT['LIKERT_SCALE_1']],
+    [jsPASAT.LIKERT_SCALE_1],
     [["Yes", "No"]],
   ],
   required: _.map(demographics_5_questions, function() {
     return [true];
   }),
   horizontal: true
-}
+};
 var demographics_6 = {
   type: 'survey-text',
   questions: [
     ["Please indicate what your current (or intended) university major is:"]
   ]
-}
+};
 
 // extended questions
 var lead_in_question = "When using <strong>computers and/or electronic media</strong>, do you ",
@@ -120,13 +120,13 @@ var extended_questions_1 = {
   required: _.map(extended_questions, function() {
     return [true];
   })
-}
+};
 var extended_questions_2 = {
   type: 'survey-text',
   questions: [
     ["How many times have you had a computer virus?"]
   ]
-}
+};
 
 // behavioural survey
 var lead_in_school = "<strong>At school</strong>, have you had ",
@@ -171,7 +171,7 @@ var behavioural_survey = {
   }),
   horizontal: true,
   randomize_order: true
-}
+};
 
 follow_up.push(
   demographics_0,
@@ -206,11 +206,11 @@ var retrospective_survey = {
   type: 'survey-multi-choice',
   questions: retrospective_survey_questions,
   options: [
-    [jsPASAT['LIKERT_SCALE_1']],
-    [jsPASAT['LIKERT_SCALE_1']],
-    [jsPASAT['LIKERT_SCALE_1']],
-    [jsPASAT['LIKERT_SCALE_2']],
-    [jsPASAT['LIKERT_SCALE_1']],
+    [jsPASAT.LIKERT_SCALE_1],
+    [jsPASAT.LIKERT_SCALE_1],
+    [jsPASAT.LIKERT_SCALE_1],
+    [jsPASAT.LIKERT_SCALE_2],
+    [jsPASAT.LIKERT_SCALE_1],
     [["1<br>Not at all<br>satisfied", "2", "3", "4", "5", "6", "7<br>Completely<br>satisfied"]],
     [["1<br>Not at all<br>willing", "2", "3", "4", "5", "6", "7<br>Definitely<br>willing"]],
   ],
@@ -218,7 +218,7 @@ var retrospective_survey = {
     return [true];
   }),
   horizontal: true
-}
+};
 
 // don't include retrospective questions if the experiment was skipped
 var url_params = getUrlParams();

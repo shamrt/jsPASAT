@@ -72,7 +72,7 @@ def test_summarize_pasat_chunk():
     assert block_summary['block_type'] == 'medium'
 
 
-def test_complete_compile_experiment_data():
+def test_complete_compile_experiment_data_1():
     df = get_csv_as_df('experiment', 1)
     data = compile_data.compile_experiment_data(df)
     assert data['condition'] == 5
@@ -80,6 +80,8 @@ def test_complete_compile_experiment_data():
     assert data['block_order'] == ('medium,medium,hard,medium,easy,'
                                    'medium,medium,medium,medium')
     assert data['num_blocks'] == 9
+    assert data['block_hard'] == 3
+    assert data['block_easy'] == 5
 
     assert data['anticipated_enjoyment'] == 3
     assert data['anticipated_performance'] == 4
@@ -121,6 +123,20 @@ def test_complete_compile_experiment_data():
     assert data['discomfort_9'] == 7
     assert 'discomfort_10' not in data.keys()
 
+    # minimum/maximum discomfort and effort ratings
+    assert data['min_effort'] == 1
+    assert data['max_effort'] == 7
+    assert data['min_discomfort'] == 1
+    assert data['max_discomfort'] == 7
+
+    # slope and intercept values for all blocks
+    assert data['accuracy_slope'] == -0.017857143
+    assert data['accuracy_intercept'] == 0.517857143
+    assert data['effort_slope'] == -0.016666667
+    assert data['effort_intercept'] == 4.305555556
+    assert data['discomfort_slope'] == -0.016666667
+    assert data['discomfort_intercept'] == 4.305555556
+
     # real-time data by block type
     assert data['medium_accuracy'] == 0.418367347
     assert data['medium_effort'] == 4.285714286
@@ -161,6 +177,20 @@ def test_complete_compile_experiment_data():
     assert data['auc_discomfort'] == 32.0
 
     assert data['time_experiment_ms'] == 831136
+
+
+def test_complete_compile_experiment_data_3():
+    df = get_csv_as_df('experiment', 3)
+    data = compile_data.compile_experiment_data(df)
+
+    # effort and discomfort ratings
+    assert data['prop_effort_ups'] == 0.166666667  # 3/6
+    assert data['prop_effort_downs'] == 0.333333333  # 2/6
+    assert data['prop_effort_sames'] == 0.500000000  # 1/6
+
+    assert data['prop_discomfort_ups'] == 0.333333333  # 2/6
+    assert data['prop_discomfort_downs'] == 0.333333333  # 2/6
+    assert data['prop_discomfort_sames'] == 0.333333333  # 2/6
 
 
 def test_complete_demographics_data():

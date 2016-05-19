@@ -21,10 +21,10 @@ var fixation_trial = {
   type: 'single-stim',
   stimuli: [fixation_cross + play_beep],
   is_html: true,
-  timing_response: jsPASAT['TIMING_STIM_DISPLAY'],
-  timing_post_trial: jsPASAT['TIMING_POST_STIM'],
+  timing_response: jsPASAT.TIMING_STIM_DISPLAY,
+  timing_post_trial: jsPASAT.TIMING_POST_STIM,
   choices: 'none'
-}
+};
 
 
 // Functions
@@ -42,7 +42,7 @@ function getParticipantId() {
 
   // first attempt to get PID via URL params
   params = getUrlParams();
-  pid = params['pid'];
+  pid = params.pid;
 
   // next, get PID via window prompt
   pid = pid || window.prompt("Please enter a participant ID.");
@@ -50,7 +50,7 @@ function getParticipantId() {
   // as a last resort, use 99999 with 5-digit random integer appended
   pid = pid || "99999" + _.random(10000, 99999);
 
-  return pid
+  return pid;
 }
 
 
@@ -60,21 +60,21 @@ function createTextBlock(text_html) {
     type: "text",
     text: text_html + continue_html,
     cont_key: 13
-  }
+  };
 }
 
 
 // add results data to the last trial
 function addTrialResults(added_data) {
+  added_data = added_data || {};
   var expected,
       response,
       correct,
       current_trial = jsPsych.data.getLastTrialData(),
-      current_index = current_trial.trial_index,
-      added_data = added_data || {};
+      current_index = current_trial.trial_index;
 
   // nothing expected on first trial
-  if (current_index != 0) {
+  if (current_index !== 0) {
     var previous_index = current_index - 1,
         current_value = current_trial.block_stimuli[current_index],
         previous_value = current_trial.block_stimuli[previous_index];
@@ -109,7 +109,7 @@ function addTrialResults(added_data) {
     correct: correct
   }, added_data);  // merge with given data
 
-  return trial_results
+  return trial_results;
 }
 
 
@@ -132,7 +132,7 @@ function displayTrialFeedback(trial_data) {
 
 // create a block of trials
 function createPasatBlock(stimuli, options) {
-  var options = options || {};
+  options = options || {};
   var give_feedback = options.give_feedback || false;
   var added_data = options.added_data || {};
 
@@ -144,8 +144,8 @@ function createPasatBlock(stimuli, options) {
     is_html: true,
     choices: [digit_keycodes, digit_keycodes],
 
-    timing_stim: [jsPASAT['TIMING_STIM_DISPLAY']],
-    timing_response: jsPASAT['TIMING_POST_STIM'],
+    timing_stim: [jsPASAT.TIMING_STIM_DISPLAY],
+    timing_response: jsPASAT.TIMING_POST_STIM,
     response_ends_trial: false,
 
     data: {block_stimuli: stimuli},
@@ -156,38 +156,38 @@ function createPasatBlock(stimuli, options) {
         displayTrialFeedback(trial_data);
       }
     }
-  }
+  };
   if (give_feedback) {
     // add post-trial time for feedback display
-    block['timing_post_trial'] = 1000;
+    block.timing_post_trial = 1000;
   }
 
-  return block
+  return block;
 }
 
 
 // generate a complete PASAT experiment chunk, complete with survey
 function generatePasatExperimentChunk(stimuli, options) {
-  var notice = createTextBlock("When you're ready to continue, a trial block will begin.")
+  var notice = createTextBlock("When you're ready to continue, a trial block will begin.");
 
   var pasat_block = createPasatBlock(stimuli, options),
-      survey_questions = jsPASAT['POST_BLOCK_QUESTIONS'],
+      survey_questions = jsPASAT.POST_BLOCK_QUESTIONS,
       // make all questions required
-      required = _.map(survey_questions, function(){ return true });
+      required = _.map(survey_questions, function(){ return true; });
 
   var survey = {
       type: 'survey-multi-choice',
       questions: [survey_questions],
-      options: [[jsPASAT['LIKERT_SCALE_1'], jsPASAT['LIKERT_SCALE_1']]],
+      options: [[jsPASAT.LIKERT_SCALE_1, jsPASAT.LIKERT_SCALE_1]],
       required: [required],
       horizontal: true
-  }
+  };
 
   var chunk = {
     chunk_type: 'linear',
     timeline: [notice, fixation_trial, pasat_block, survey]
-  }
-  return chunk
+  };
+  return chunk;
 }
 
 
@@ -200,21 +200,21 @@ function formatBlockStimuli(trials) {
     trial_stimuli.push(trial_html);
     stimuli.push(trial_stimuli);
   }
-  return stimuli
+  return stimuli;
 }
 
 
 // generate random condition
 function generateCondition() {
-  return _.random(1, jsPASAT['BLOCKS_PER_CONDITION'].length)
+  return _.random(1, jsPASAT.BLOCKS_PER_CONDITION.length);
 }
 
 
 // generate a set of randomized block difficulty types
 // return list of block difficulty and block stimuli
 function generateRandomBlockTypes(condition, outer_block_type) {
-  var outer_block_type = (typeof outer_block_type === "undefined") ? 'medium' : outer_block_type,
-      blocks_in_condition = jsPASAT['BLOCKS_PER_CONDITION'][condition - 1];
+  outer_block_type = (typeof outer_block_type === "undefined") ? 'medium' : outer_block_type;
+  var blocks_in_condition = jsPASAT.BLOCKS_PER_CONDITION[condition - 1];
 
   // calculate number of middle medium blocks
   // Note: is equal to number of blocks in a given condition, minus 2 'medium'
@@ -223,7 +223,7 @@ function generateRandomBlockTypes(condition, outer_block_type) {
 
   // add unshuffled middle 'medium', 'easy' and 'hard' blocks
   var unshuffled_middle_blocks = Array.apply(
-    null, Array(num_middle_medium_blocks)).map(function() {return 'medium'});
+    null, Array(num_middle_medium_blocks)).map(function() { return 'medium'; });
   unshuffled_middle_blocks.push('easy', 'hard');
 
   // randomize blocks
@@ -234,7 +234,7 @@ function generateRandomBlockTypes(condition, outer_block_type) {
   block_types = block_types.concat(random_middle_blocks);
   block_types = block_types.concat([outer_block_type]);
 
-  return block_types
+  return block_types;
 }
 
 
@@ -249,7 +249,8 @@ function generatePasatBlockStimuli(block_types) {
   // generate jsPsych block objects
   var stimuli_types = _.zip(block_stimuli, block_types);
   var formatted_stimuli = _.map(stimuli_types, function(stimuli_type) {
-    var added_data = {block_type: stimuli_type[1]}
+    var added_data = {block_type: stimuli_type[1]};
+
     return generatePasatExperimentChunk(stimuli_type[0], {
       added_data: added_data
     });
@@ -258,26 +259,27 @@ function generatePasatBlockStimuli(block_types) {
   return {
     block_stimuli: block_stimuli,
     formatted_stimuli: formatted_stimuli
-  }
+  };
 }
 
 
 // generate random stimuli for PASAT blocks
 // return list of trial values
 function generateStimuli(difficulty, num_trials) {
-  var difficulty = (typeof difficulty === "undefined") ? 'medium' : difficulty;
-  var num_trials = (typeof num_trials === "undefined") ? jsPASAT['TRIALS_PER_BLOCK'] : num_trials;
+  difficulty = (typeof difficulty === "undefined") ? 'medium' : difficulty;
+  num_trials = (typeof num_trials === "undefined") ? jsPASAT.TRIALS_PER_BLOCK : num_trials;
 
   var stimuli;
   var i = 1;
+  var trial_value, digit_sum, digit_max;
   switch (difficulty) {
     case 'easy':
       // Note: Easy Block defined by 2 digits summing to <= 9
-      var digit_max = 7;
-      stimuli = [_.random(1, digit_max)]  // add first random number
+      digit_max = 7;
+      stimuli = [_.random(1, digit_max)];  // add first random number
       while (i <= num_trials) {
-        var trial_value = _.random(1, digit_max);
-        var digit_sum = trial_value + _.last(stimuli);
+        trial_value = _.random(1, digit_max);
+        digit_sum = trial_value + _.last(stimuli);
         if (digit_sum <= 9) {
           stimuli.push(trial_value);
           i++;
@@ -286,11 +288,11 @@ function generateStimuli(difficulty, num_trials) {
       break;
     case 'medium':
       // Note: Medium Block defined by 2 digits summing to >= 9
-      var digit_max = 9;
-      stimuli = [_.random(1, digit_max)]  // add first random number
+      digit_max = 9;
+      stimuli = [_.random(1, digit_max)];  // add first random number
       while (i <= num_trials) {
-        var trial_value = _.random(1, digit_max);
-        var digit_sum = trial_value + _.last(stimuli);
+        digit_sum = trial_value + _.last(stimuli);
+        trial_value = _.random(1, digit_max);
         if (digit_sum >= 9) {
           stimuli.push(trial_value);
           i++;
@@ -300,11 +302,11 @@ function generateStimuli(difficulty, num_trials) {
     case 'hard':
       // Note: Hard Block defined as each trial has one double digit stimulus
       // (and one single digit stimulus)
-      var digit_max = 19;
-      stimuli = [_.random(1, digit_max)]  // add first random number
+      digit_max = 19;
+      stimuli = [_.random(1, digit_max)];  // add first random number
       while (i <= num_trials) {
-        var trial_value = _.random(1, digit_max);
-        var index_is_even = (i % 2 == 0);
+        trial_value = _.random(1, digit_max);
+        var index_is_even = (i % 2 === 0);
         if (index_is_even && trial_value >= 10) {
           stimuli.push(trial_value);
           i++;
@@ -315,7 +317,7 @@ function generateStimuli(difficulty, num_trials) {
       }
       break;
   }
-  return stimuli
+  return stimuli;
 }
 
 
@@ -337,3 +339,4 @@ function postDataToDb(data, filename, redirect) {
     alert("A problem occurred while writing to the database. We cannot continue. Please contact the researcher for more information.");
   });
 }
+  

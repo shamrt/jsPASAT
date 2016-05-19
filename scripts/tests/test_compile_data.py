@@ -123,6 +123,14 @@ def test_complete_compile_experiment_data():
     assert data['discomfort_9'] == 7
     assert 'discomfort_10' not in data.keys()
 
+    # slope and intercept values for all blocks
+    assert data['accuracy_slope'] == -0.017857143
+    assert data['accuracy_intercept'] == 0.517857143
+    assert data['effort_slope'] == -0.016666667
+    assert data['effort_intercept'] == 4.305555556
+    assert data['discomfort_slope'] == -0.016666667
+    assert data['discomfort_intercept'] == 4.305555556
+
     # real-time data by block type
     assert data['medium_accuracy'] == 0.418367347
     assert data['medium_effort'] == 4.285714286

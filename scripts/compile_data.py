@@ -145,6 +145,7 @@ def compile_experiment_data(df):
     effort_ratings = []
     discomfort_ratings = []
     accuracies = []
+    blocks_order = []
     medium_effort_ratings = []
     medium_discomfort_ratings = []
     medium_accuracies = []
@@ -156,6 +157,7 @@ def compile_experiment_data(df):
         block_chunk_id = '0-0.{}-0'.format(i + 2)
         block = df.loc[df['internal_chunk_id'] == block_chunk_id]
         block_summary = summarize_pasat_chunk(block)
+        blocks_order.append(i)
 
         # add block summaries to compiled data
         compiled_data['effort_{}'.format(i)] = block_summary['effort']
@@ -193,14 +195,19 @@ def compile_experiment_data(df):
     compiled_data['medium_discomfort'] = round(
         medium_discomfort, ROUND_NDIGITS)
 
-    # compute regression variables for medium blocks
-    medium_block_measures = [
-        ('medium_accuracy', medium_accuracies),
-        ('medium_effort', medium_effort_ratings),
-        ('medium_discomfort', medium_discomfort_ratings)
+    # compute regression variables for blocks
+    block_measures = [
+        ('accuracy', accuracies, blocks_order),
+        ('effort', effort_ratings, blocks_order),
+        ('discomfort', discomfort_ratings, blocks_order),
+        ('medium_accuracy', medium_accuracies, medium_blocks_order),
+        ('medium_effort', medium_effort_ratings, medium_blocks_order),
+        ('medium_discomfort', medium_discomfort_ratings,
+            medium_blocks_order)
     ]
-    for measure_name, measure_values in medium_block_measures:
-        measure_regress = stats.linregress(medium_blocks_order, measure_values)
+    for measure_name, measure_values, measure_order in block_measures:
+        measure_regress = stats.linregress(
+            measure_order, measure_values)
         compiled_data['{}_slope'.format(measure_name)] = round(
             measure_regress.slope, ROUND_NDIGITS)
         compiled_data['{}_intercept'.format(measure_name)] = round(

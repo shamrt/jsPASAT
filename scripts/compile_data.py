@@ -115,6 +115,10 @@ def compile_experiment_data(df):
     compiled_data['block_order'] = block_order
     compiled_data['num_blocks'] = len(blocks)
 
+    # hard and easy block positions (1-based index)
+    compiled_data['block_hard'] = blocks.index('hard') + 1
+    compiled_data['block_easy'] = blocks.index('easy') + 1
+
     # anticipated questions
     anticipated_questions_index = [
         ('anticipated_enjoyment', 1),

@@ -80,6 +80,8 @@ def test_complete_compile_experiment_data():
     assert data['block_order'] == ('medium,medium,hard,medium,easy,'
                                    'medium,medium,medium,medium')
     assert data['num_blocks'] == 9
+    assert data['block_hard'] == 3
+    assert data['block_easy'] == 5
 
     assert data['anticipated_enjoyment'] == 3
     assert data['anticipated_performance'] == 4

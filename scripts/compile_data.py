@@ -217,6 +217,12 @@ def compile_experiment_data(df):
             easy_effort = block_summary['effort']
             easy_discomfort = block_summary['discomfort']
 
+    # minimum/maximum discomfort and effort ratings
+    compiled_data['effort_min'] = min(effort_ratings)
+    compiled_data['effort_max'] = max(effort_ratings)
+    compiled_data['discomfort_min'] = min(discomfort_ratings)
+    compiled_data['discomfort_max'] = max(discomfort_ratings)
+
     # compute medium block averages
     medium_accuracy = np.mean(medium_accuracies)
     compiled_data['medium_accuracy'] = round(medium_accuracy, ROUND_NDIGITS)

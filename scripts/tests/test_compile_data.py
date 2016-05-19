@@ -123,6 +123,12 @@ def test_complete_compile_experiment_data_1():
     assert data['discomfort_9'] == 7
     assert 'discomfort_10' not in data.keys()
 
+    # minimum/maximum discomfort and effort ratings
+    assert data['effort_min'] == 1
+    assert data['effort_max'] == 7
+    assert data['discomfort_min'] == 1
+    assert data['discomfort_max'] == 7
+
     # slope and intercept values for all blocks
     assert data['accuracy_slope'] == -0.017857143
     assert data['accuracy_intercept'] == 0.517857143

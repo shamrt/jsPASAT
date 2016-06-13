@@ -96,6 +96,11 @@ def summarize_pasat_chunk(df):
     raw_discomfort_rating = get_response_from_json(ratings_json, 1)
     summary['discomfort'] = int(raw_discomfort_rating[0])
 
+    # get time elapsed (in minutes) at ratings for later slope calculations
+    ratings_time_ms = df.ix[df.last_valid_index()]['time_elapsed']
+    summary['ratings_time_min'] = round(
+        ratings_time_ms / 1000 / 60.0, ROUND_NDIGITS)
+
     return summary
 
 
@@ -176,11 +181,12 @@ def compile_experiment_data(df):
     effort_ratings = []
     discomfort_ratings = []
     accuracies = []
+    rating_times = []
     blocks_order = []
     medium_effort_ratings = []
     medium_discomfort_ratings = []
     medium_accuracies = []
-    medium_blocks_order = []
+    medium_block_rating_times = []
 
     # collect and organize experiment data from experimental blocks
     for i, block in enumerate(blocks, start=1):
@@ -189,6 +195,11 @@ def compile_experiment_data(df):
         block = df.loc[df['internal_chunk_id'] == block_chunk_id]
         block_summary = summarize_pasat_chunk(block)
         blocks_order.append(i)
+
+        # add block summary rating times to list for later slope
+        # calculations
+        ratings_time_min = block_summary.pop('ratings_time_min')
+        rating_times.append(ratings_time_min)
 
         # add block summaries to compiled data
         compiled_data['effort_{}'.format(i)] = block_summary['effort']
@@ -203,7 +214,7 @@ def compile_experiment_data(df):
         accuracies.append(block_summary['accuracy'])
 
         if block_summary['block_type'] == 'medium':
-            medium_blocks_order.append(i)
+            medium_block_rating_times.append(ratings_time_min)
             medium_accuracies.append(block_summary['accuracy'])
             medium_effort_ratings.append(block_summary['effort'])
             medium_discomfort_ratings.append(
@@ -234,17 +245,19 @@ def compile_experiment_data(df):
 
     # compute regression variables for blocks
     block_measures = [
-        ('accuracy', accuracies, blocks_order),
-        ('effort', effort_ratings, blocks_order),
-        ('discomfort', discomfort_ratings, blocks_order),
-        ('medium_accuracy', medium_accuracies, medium_blocks_order),
-        ('medium_effort', medium_effort_ratings, medium_blocks_order),
+        ('accuracy', accuracies, rating_times),
+        ('effort', effort_ratings, rating_times),
+        ('discomfort', discomfort_ratings, rating_times),
+        ('medium_accuracy', medium_accuracies,
+            medium_block_rating_times),
+        ('medium_effort', medium_effort_ratings,
+            medium_block_rating_times),
         ('medium_discomfort', medium_discomfort_ratings,
-            medium_blocks_order)
+            medium_block_rating_times)
     ]
-    for measure_name, measure_values, measure_order in block_measures:
+    for measure_name, measure_y_val, measure_x_val in block_measures:
         measure_regress = stats.linregress(
-            measure_order, measure_values)
+            measure_x_val, measure_y_val)
         compiled_data['{}_slope'.format(measure_name)] = round(
             measure_regress.slope, ROUND_NDIGITS)
         compiled_data['{}_intercept'.format(measure_name)] = round(

@@ -130,24 +130,24 @@ def test_complete_compile_experiment_data_1():
     assert data['max_discomfort'] == 7
 
     # slope and intercept values for all blocks
-    assert data['accuracy_slope'] == -0.017857143
-    assert data['accuracy_intercept'] == 0.517857143
-    assert data['effort_slope'] == -0.016666667
-    assert data['effort_intercept'] == 4.305555556
-    assert data['discomfort_slope'] == -0.016666667
-    assert data['discomfort_intercept'] == 4.305555556
+    assert data['accuracy_slope'] == -0.012189013
+    assert data['accuracy_intercept'] == 0.525361222
+    assert data['effort_slope'] == -0.011834331
+    assert data['effort_intercept'] == 4.316195575
+    assert data['discomfort_slope'] == -0.011834331
+    assert data['discomfort_intercept'] == 4.316195575
 
     # real-time data by block type
     assert data['medium_accuracy'] == 0.418367347
     assert data['medium_effort'] == 4.285714286
     assert data['medium_discomfort'] == 4.285714286
 
-    assert data['medium_accuracy_slope'] == -0.021539028
-    assert data['medium_accuracy_intercept'] == 0.532216495
-    assert data['medium_effort_slope'] == -0.028350515
-    assert data['medium_effort_intercept'] == 4.43556701
-    assert data['medium_discomfort_slope'] == -0.028350515
-    assert data['medium_discomfort_intercept'] == 4.43556701
+    assert data['medium_accuracy_slope'] == -0.014672245
+    assert data['medium_accuracy_intercept'] == 0.541020328
+    assert data['medium_effort_slope'] == -0.019802768
+    assert data['medium_effort_intercept'] == 4.451256
+    assert data['medium_discomfort_slope'] == -0.019802768
+    assert data['medium_discomfort_intercept'] == 4.451256
 
     assert data['hard_accuracy'] == 0.357142857
     assert data['hard_effort'] == 4
